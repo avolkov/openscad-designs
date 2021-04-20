@@ -63,7 +63,8 @@ gopro_connector_th3_middle= 3.1;
 // Thickness of the side arms in the 3-arm mount part
 gopro_connector_th3_side= 2.7;
 // Thickness of the arms in the 2-arm mount part
-gopro_connector_th2= 3.04;
+// gopro_connector_th2= 3.04 // Orig
+gopro_connector_th2= 3.0;
 // The gap in the 3-arm mount part for the two-arm
 // gopro_connector_gap= 3.1; // Orig
 gopro_connector_gap= 3.3;
