@@ -142,13 +142,27 @@ module filter_w_gopro_mount() {
 }
 
 module rod_connector(){
-    gopro_connector("double");
-    gopro_extended(len=140, th=3)
-        scale([1,-1,1])
+    /*
+    rotate([0,90,0]){
+        gopro_connector("double");
+        gopro_extended(len=75, th=3)
+            scale([1,-1,1])
+                gopro_connector("double");
+    }
+    */
+    
+    translate([20, 0, 0]){
+        rotate([0,90,0]){
             gopro_connector("double");
+            gopro_extended(len=75, th=3)
+                scale([1,-1,1])
+                    gopro_connector("triple");
+        }
+    }
 }
 
-filter_w_gopro_mount();
+
+//filter_w_gopro_mount();
 //base_w_gopro_mount();
 
-//rod_connector();
+rod_connector();
