@@ -58,13 +58,15 @@ gopro_holed_two= 5;
 // Hole diameter for the three-arm mount part
 gopro_holed_three= 5.5;
 // Thickness of the internal arm in the 3-arm mount part
+//gopro_connector_th3_middle= 3.1;
 gopro_connector_th3_middle= 3.1;
 // Thickness of the side arms in the 3-arm mount part
 gopro_connector_th3_side= 2.7;
 // Thickness of the arms in the 2-arm mount part
 gopro_connector_th2= 3.04;
 // The gap in the 3-arm mount part for the two-arm
-gopro_connector_gap= 3.1;
+// gopro_connector_gap= 3.1; // Orig
+gopro_connector_gap= 3.3;
 // How round are the 2 and 3-arm parts
 gopro_connector_roundness= 1;
 // How thick are the mount walls

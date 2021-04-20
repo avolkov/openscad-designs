@@ -1,5 +1,7 @@
 include <../libs/hardware-recess.scad>;
 use <../libs/gopro_mounts_mooncactus.scad>;
+
+
 /*
  * Adapter for Simple Microphone Pop filter -- https://www.thingiverse.com/thing:1108999
  * and Ammon MS-12 Mini Foldable Desktop Microphone Stand
@@ -107,16 +109,33 @@ module dummy_adjust_tolerances() {
 
 module base_w_gopro_mount(){
     // Base around the tube with triple gopro mount
-    tube_mount(14, MOUNT_H, 27);
-    translate([3.35,37.3, 7.35])
-        rotate([0, 90, 180])
-            gopro_connector("triple");
+    gopro_bar_clamp(
+        rod_d=13.5,
+        th=3.2,
+        gap=2.4,
+        screw_d=m3_bolt_thick,
+        screw_head_d = m3_bolt_head_d,
+        screw_nut_d = m3_nut_trap_d,
+        screw_shoulder_th=4.5,
+        screw_reversed=true
+        );
+    //gopro_extended(len=20, th=3);
+    //tube_mount(14, MOUNT_H, 27);
+    //translate([3.35,37.3, 7.35])
+    //    rotate([0, 90, 180])
+    //rotate([0, 90, 0])
+    //        gopro_connector("triple");
+    translate([0,21, 0])
+        rotate([180,90,0])
+            gopro_extended(len=30, th=3)
+                scale([1,-1,1])
+                    gopro_connector("triple");
 }
 
 module filter_w_gopro_mount() {
     // Filter connector 
     gopro_connector("triple");
-    translate([7.35, 10.8, 10])
+    translate([7.55, 10.8, 10])
         rotate([0, 90, 90])
         pop_filter_mount_points();
 
@@ -129,7 +148,7 @@ module rod_connector(){
             gopro_connector("double");
 }
 
-//filter_w_gopro_mount();
-base_w_gopro_mount();
+filter_w_gopro_mount();
+//base_w_gopro_mount();
 
 //rod_connector();
