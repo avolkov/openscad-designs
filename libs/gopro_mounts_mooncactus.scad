@@ -50,7 +50,7 @@ gopro_bar_screw_reversed=false; // [true,false]
 // The gopro connector itself (you most probably do not want to change this but for the first two)
 
 // The locking nut on the gopro mount triple arm mount (keep it tight)
-gopro_nut_d= 9.2;
+gopro_nut_d= 9.3;
 // How deep is this nut embossing (keep it small to avoid over-overhangs)
 gopro_nut_h= 2;
 // Hole diameter for the two-arm mount part
