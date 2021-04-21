@@ -154,5 +154,5 @@ module rod_connector(){
 
 
 //filter_w_gopro_mount();
-base_w_gopro_mount("double");
+base_w_gopro_mount("triple");
 //rod_connector();
