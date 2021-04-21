@@ -107,7 +107,7 @@ module dummy_adjust_tolerances() {
     }
 }
 
-module base_w_gopro_mount(){
+module base_w_gopro_mount(connector_type){
     // Base around the tube with triple gopro mount
     gopro_bar_clamp(
         rod_d=13.5,
@@ -119,17 +119,11 @@ module base_w_gopro_mount(){
         screw_shoulder_th=4.5,
         screw_reversed=true
         );
-    //gopro_extended(len=20, th=3);
-    //tube_mount(14, MOUNT_H, 27);
-    //translate([3.35,37.3, 7.35])
-    //    rotate([0, 90, 180])
-    //rotate([0, 90, 0])
-    //        gopro_connector("triple");
     translate([0,21, 0])
         rotate([180,90,0])
             gopro_extended(len=30, th=3)
                 scale([1,-1,1])
-                    gopro_connector("triple");
+                    gopro_connector(connector_type);
 }
 
 module filter_w_gopro_mount() {
@@ -142,15 +136,12 @@ module filter_w_gopro_mount() {
 }
 
 module rod_connector(){
-    /*
     rotate([0,90,0]){
         gopro_connector("double");
         gopro_extended(len=75, th=3)
             scale([1,-1,1])
                 gopro_connector("double");
     }
-    */
-    
     translate([20, 0, 0]){
         rotate([0,90,0]){
             gopro_connector("double");
@@ -163,6 +154,5 @@ module rod_connector(){
 
 
 //filter_w_gopro_mount();
-//base_w_gopro_mount();
-
-rod_connector();
+base_w_gopro_mount("double");
+//rod_connector();
