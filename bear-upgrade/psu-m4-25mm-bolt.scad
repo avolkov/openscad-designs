@@ -1,10 +1,13 @@
 /*
  *
- * Re-implementation of PSU connector in OpenScad for 25mm M4 bolt
+ * Re-implementation of Bear Upgrade silver PSU connector in
+ * OpenScad for 25mm M4 bolt
  *
- *Copyright 2021 Alex Volkov <alex@flamy.ca>
+ * Copyright 2021 Alex Volkov <alex@flamy.ca>
  * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
  * https://creativecommons.org/licenses/by-sa/4.0/
+ *
+ * Version: 0.1 2021-05-26 Initial implementation
  */
 
 include <../libs/hardware-recess.scad>;
