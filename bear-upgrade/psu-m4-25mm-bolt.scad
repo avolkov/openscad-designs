@@ -38,7 +38,7 @@ module make_psu_mount(){
         //Mount for M4 bolt
         translate([buff_len, buff_w/2, 10])
             rotate([0,270, 0])
-                hole_w_end(buff_len, M_DIM[4][2], "round", 4);
+                hole_w_end(buff_len, M_DIM[4][2] + 1, "round", 4);
         //Shave off angle
         
         translate([buff_len+5, 0, 15])
