@@ -21,9 +21,9 @@ module make_connector(){
         translate([alu_2020_w/2, part_len/2, 0]){
             hole_w_end(thick+2, 2, "round", 5, flip=true);
             hull() {
-                cylinder(h=1.2, d=M_DIM[5][3] + 1.2);
+                cylinder(h=1, d=M_DIM[5][1] + 1.1, $fn=60);
                 translate([0, 10, 0])
-                cylinder(h=1.2, d=M_DIM[5][3] + 1.2);
+                cylinder(h=1, d=M_DIM[5][1] + 1.1, $fn=60);
             }
         }
     }

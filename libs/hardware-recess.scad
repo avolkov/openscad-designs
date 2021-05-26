@@ -34,6 +34,10 @@ M_DIM = [
     [5.2, 8.6, 4.90, 9.7, 4, 5]  // M5
 ];
 
+
+function get_trap_d(head_type, bolt) =(head_type == "round") ? M_DIM[bolt][1]
+    : (head_type == "hex") ? M_DIM[bolt][3] : M_DIM[bolt[0]];
+
 module m_recess(length, end_type, bolt_d) {
     /*
     Create nut or bolt capture hole
@@ -46,15 +50,22 @@ module m_recess(length, end_type, bolt_d) {
 
 }
 
-module make_recess(height, end_type, trap_d){
+module make_recess(height, end_type, head_d){
     /*
     Make recess to capture
     */
+    outer_chamfer = 1.2;
+    local_fn = 60;
     rotate([0, 0,90]){
         if (end_type == "hex"){
             cylinder(h=height, d=trap_d, $fn=6);
         } else if (end_type == "round"){
-            cylinder(h=height, d=trap_d, $fn=20);
+            cylinder(h=height/2, d=head_d + outer_chamfer, $fn=local_fn);
+            translate([0,0, height/2])
+                cylinder(
+                    h=height/2 + 0.1,
+                    d1=head_d + outer_chamfer,
+                    d2=head_d, $fn=local_fn);
         }
     }
 }
@@ -72,13 +83,14 @@ module hole_w_end(hole_len, trap_height, type, bolt_d, flip=false){
     if (type != "none"){
         cylinder(h=hole_len-trap_height, d=M_DIM[bolt_d][0], $fn=20);
         if (flip){
-            make_recess(trap_height, type, M_DIM[bolt_d][0]);
+            make_recess(trap_height, type, get_trap_d(type, bolt_d));
             translate([0,0,trap_height])
                 cylinder(h=hole_len-trap_height, d=M_DIM[bolt_d][0], $fn=20);
 
         } else {
-                translate([0,0, hole_len - trap_height])
-                    make_recess(trap_height, type, M_DIM[bolt_d][0]);
+                translate([0,0, hole_len])
+                    rotate([0,180,0])
+                        make_recess(trap_height, type, get_trap_d(type, bolt_d));
         }
     } else {
         cylinder(h=hole_len, d=bolt_d);
