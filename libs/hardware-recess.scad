@@ -33,6 +33,10 @@ m3_nut_thick= 2.4;
 m3_bolt_head_d = 5.6;
 m3_bolt_thick = 3.2;
 
+//M4 fastener values
+m4_bolt_head_d = 6.5;
+m4_bolt_thick = 4.1;
+
 //M5 fastener values
 m5_nut_thick = 4;
 m5_locknut_thick = 5;
@@ -246,4 +250,22 @@ module mounting_holes(fastener_len, nut_height, end_type){
         fastener_len,
         nut_height,
         end_type);
+}
+
+
+// Aluminium profile connectors
+
+module alu_connector(face_len, thickness){
+
+    face_w = 18;
+    flat_gap = 5;
+    alu_2020_base = 8;
+
+    union(){
+        cube([face_w, face_len, thickness]);
+        translate([face_w/2 + alu_2020_base/2, face_len, thickness])
+            rotate([0,270,90])
+                linear_extrude(face_len)
+                    polygon(points=[[0,0], [2,1.5], [2,6.5], [0,alu_2020_base]]);
+    }
 }
