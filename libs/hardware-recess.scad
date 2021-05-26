@@ -9,6 +9,7 @@
  * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
  * https://creativecommons.org/licenses/by-sa/4.0/
  *
+ * Version 0.2 2021-05-26 Refactoring variables into M_DIM list
  * Version 0.1 2021-04-05 Initial publication
  */
 
