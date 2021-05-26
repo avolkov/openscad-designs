@@ -11,14 +11,45 @@ include <../libs/hardware-recess.scad>;
 $fn=30;
 
 
-
-difference(){
-    thick = 6;
-    part_len = 20;
-    alu_connector(part_len, thick);
-    translate([18/2, part_len/2, 0])
-        hole_w_end(thick+2, 2, "round", 5, flip=true);
+module make_connector(){
+    difference(){
+        thick = 6;
+        part_len = 20;
+        alu_connector(part_len, thick);
+        translate([18/2, part_len/2, 0])
+            hole_w_end(thick+2, 2, "round", 5, flip=true);
+    }
 }
 
-translate([18, 0,0])
-    cube([20, 22, 15]);
+module make_psu_mount(){
+    buff_len = 22;
+    buff_w = 20;
+    difference(){
+        
+        cube([buff_len, buff_w, 30]);
+        //Mount for M4 bolt
+        translate([buff_len, buff_w/2, 10])
+            rotate([0,270, 0])
+                hole_w_end(buff_len, M_DIM[4][2], "round", 4);
+        
+        //Shave off angle
+        
+        translate([buff_len+5, 0, 15])
+            rotate([0,-45,0])
+                cube([15, buff_w, 25]);
+        
+        translate([2, buff_w, 15])
+            rotate([90,0,0])
+                linear_extrude(buff_w)
+                    polygon(points=[[0,0], [0,14], [10,14], [9, 14],[18, 5], [18, 0]]);
+    }
+}
+
+
+
+
+
+make_connector();
+translate([18, 0,0]){
+    make_psu_mount();
+}
