@@ -45,6 +45,18 @@ bolt_head_d = 8.6;
 m5_bolt_head_d = bolt_head_d;
 
 
+// Dimensional info for metric capscrew hardware
+// List values [bolt_d, bolt_head_d, bolt_h, nut_trap_d, nut_h, locknut_h]
+M_DIM = [
+    [], // spacing
+    [], // M1
+    [], // M2
+    [3.2, 5.6, 3.2, 6.7, 2.4, 3], // M3
+    [4.1, 6.5, 4.05, 9.0, 3.9, 4], // M4
+    [5.2, 8.6, 4.90, 9.7, 4, 5]  // M5
+];
+
+
 module bolt_nut(hole_len, bolt_d, flip=false){
     /*
     Create a model for a hole with bolt end on one end and nut hole on the other end.
@@ -56,17 +68,17 @@ module bolt_nut(hole_len, bolt_d, flip=false){
     */
     // currently only implemented for 3mm
     if (flip){
-        hole_w_end(hole_len, m3_nut_thick, "hex", bolt_d);
+        hole_w_end(hole_len, M_DIM[bolt_d][4], "hex", M_DIM[bolt_d][0]);
         translate([0,0, hole_len]){
             rotate([180, 0, 0]){
-                hole_w_end(hole_len, m3_bolt_thick, "round", bolt_d);
+                hole_w_end(hole_len, M_DIM[bolt_d][2], "round", M_DIM[bolt_d][0]);
             }
         }
     } else {
-        hole_w_end(hole_len, m3_bolt_thick, "round", bolt_d);
+        hole_w_end(hole_len, M_DIM[bolt_d][2], "round", M_DIM[bolt_d][0]);
         translate([0,0, hole_len]){
             rotate([180, 0, 0]){
-                hole_w_end(hole_len, m3_nut_thick, "hex", bolt_d);
+                hole_w_end(hole_len, M_DIM[bolt_d][4], "hex", M_DIM[bolt_d][0]);
             }
         }
     }
@@ -82,15 +94,15 @@ module hole_w_end(hole_len, trap_height, type, bolt_d, flip=false){
     :type: type of the head hole: 'none', 'hex', 'round
     */
     if (type != "none"){
-        cylinder(h=hole_len-trap_height, d=bolt_d, $fn=20);
+        cylinder(h=hole_len-trap_height, d=M_DIM[bolt_d][0], $fn=20);
         if (flip){
-            m_recess(trap_height, type, bolt_d);
+            m_recess(trap_height, type, M_DIM[bolt_d][0]);
             translate([0,0,trap_height])
-                cylinder(h=hole_len-trap_height, d=bolt_d, $fn=20);
+                cylinder(h=hole_len-trap_height, d=M_DIM[bolt_d][0], $fn=20);
 
         } else {
                 translate([0,0, hole_len - trap_height])
-                    m_recess(trap_height, type, bolt_d);
+                    m_recess(trap_height, type, M_DIM[bolt_d][0]);
         }
     } else {
         cylinder(h=hole_len, d=bolt_d);
@@ -105,13 +117,7 @@ module m_recess(length, end_type, bolt_d) {
     :end_type: type of the head hole: 'none', 'hex', 'round
     :bolt_d: bolt diameter, i.e. 3, 5 mm
     */
-    if (bolt_d >= 3 && bolt_d <= 4){
-        //M3
-        make_recess(length, end_type, m3_nut_trap_d);
-    } else if (bolt_d >= 5 && bolt_d <= 6){
-        // M5
-        make_recess(length, end_type, nut_trap_d);
-    }
+    make_recess(length, end_type, M_DIM[bolt_d][1]);
 
 }
 
@@ -133,13 +139,7 @@ module make_recess(height, end_type, trap_d){
 // TODO rewrite as hole_w_end m_recess
 module m5_recess(height, end_type) {
     // nut/bolt capture hole
-    rotate([0, 0,90]){
-        if (end_type == "hex"){
-            cylinder(h=height, d=nut_trap_d, $fn=6);
-        } else if (end_type == "round"){
-            cylinder(h=height, d=nut_trap_d, $fn=20);
-        }
-    }
+    m_recess(height, end_type, 5);
 }
 
 

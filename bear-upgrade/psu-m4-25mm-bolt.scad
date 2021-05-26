@@ -20,4 +20,5 @@ difference(){
         hole_w_end(thick+2, 2, "round", 5, flip=true);
 }
 
-cube([20, 22, 15])
+translate([18, 0,0])
+    cube([20, 22, 15]);
