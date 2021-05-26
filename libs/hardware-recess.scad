@@ -30,9 +30,34 @@ M_DIM = [
     [], // M1
     [], // M2
     [3.2, 5.6, 3.2, 6.7, 2.4, 3], // M3
-    [4.1, 6.5, 4.05, 9.0, 3.9, 4], // M4
+    [4.1, 7.1, 4.05, 9.0, 3.9, 4], // M4
     [5.2, 8.6, 4.90, 9.7, 4, 5]  // M5
 ];
+
+module m_recess(length, end_type, bolt_d) {
+    /*
+    Create nut or bolt capture hole
+
+    :height: length of a mounting hole, including end-mounting hardware
+    :end_type: type of the head hole: 'none', 'hex', 'round
+    :bolt_d: bolt diameter, i.e. 3, 5 mm
+    */
+    make_recess(length, end_type, M_DIM[bolt_d][1]);
+
+}
+
+module make_recess(height, end_type, trap_d){
+    /*
+    Make recess to capture
+    */
+    rotate([0, 0,90]){
+        if (end_type == "hex"){
+            cylinder(h=height, d=trap_d, $fn=6);
+        } else if (end_type == "round"){
+            cylinder(h=height, d=trap_d, $fn=20);
+        }
+    }
+}
 
 
 
@@ -47,13 +72,13 @@ module hole_w_end(hole_len, trap_height, type, bolt_d, flip=false){
     if (type != "none"){
         cylinder(h=hole_len-trap_height, d=M_DIM[bolt_d][0], $fn=20);
         if (flip){
-            m_recess(trap_height, type, M_DIM[bolt_d][0]);
+            make_recess(trap_height, type, M_DIM[bolt_d][0]);
             translate([0,0,trap_height])
                 cylinder(h=hole_len-trap_height, d=M_DIM[bolt_d][0], $fn=20);
 
         } else {
                 translate([0,0, hole_len - trap_height])
-                    m_recess(trap_height, type, M_DIM[bolt_d][0]);
+                    make_recess(trap_height, type, M_DIM[bolt_d][0]);
         }
     } else {
         cylinder(h=hole_len, d=bolt_d);
@@ -90,37 +115,13 @@ module bolt_nut(hole_len, bolt_d, flip=false){
 
 
 
-module m_recess(length, end_type, bolt_d) {
-    /*
-    Create nut or bolt capture hole
-
-    :height: length of a mounting hole, including end-mounting hardware
-    :end_type: type of the head hole: 'none', 'hex', 'round
-    :bolt_d: bolt diameter, i.e. 3, 5 mm
-    */
-    make_recess(length, end_type, M_DIM[bolt_d][1]);
-
-}
-
-module make_recess(height, end_type, trap_d){
-    /*
-    Make recess to capture
-    */
-    rotate([0, 0,90]){
-        if (end_type == "hex"){
-            cylinder(h=height, d=trap_d, $fn=6);
-        } else if (end_type == "round"){
-            cylinder(h=height, d=trap_d, $fn=20);
-        }
-    }
-}
 
 
 //Functions specific to M5 size,
 // TODO rewrite as hole_w_end m_recess
 module m5_recess(height, end_type) {
     // nut/bolt capture hole
-    m_recess(height, end_type, 5);
+    make_recess(height, end_type, M_DIM[5][0]);
 }
 
 
@@ -166,8 +167,7 @@ module m3_square_nut(depth, height){
     translate([0,0,1])
         cylinder(h=height, d=M_DIM[3][0], center=true, $fn=16);
 
-    m_recess(M_DIM[3][4], "hex", 3);
-    m_recess(m3_nut_thick, "hex", 3);
+    make_recess(M_DIM[3][4], "hex", M_DIM[3][0]);
     translate([0,0,-1])
         cylinder(h=depth, d=M_DIM[3][0], center=true, $fn=16);
 }
@@ -233,7 +233,7 @@ module mounting_holes(fastener_len, nut_height, end_type){
 
 module alu_connector(face_len, thickness){
 
-    face_w = 18;
+    face_w = 20;
     flat_gap = 5;
     alu_2020_base = 8;
 

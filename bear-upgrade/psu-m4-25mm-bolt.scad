@@ -10,14 +10,22 @@
 include <../libs/hardware-recess.scad>;
 $fn=30;
 
+alu_2020_w = 20;
+
 
 module make_connector(){
     difference(){
         thick = 6;
         part_len = 20;
         alu_connector(part_len, thick);
-        translate([18/2, part_len/2, 0])
+        translate([alu_2020_w/2, part_len/2, 0]){
             hole_w_end(thick+2, 2, "round", 5, flip=true);
+            hull() {
+                cylinder(h=1.2, d=M_DIM[5][3] + 1.2);
+                translate([0, 10, 0])
+                cylinder(h=1.2, d=M_DIM[5][3] + 1.2);
+            }
+        }
     }
 }
 
@@ -31,7 +39,6 @@ module make_psu_mount(){
         translate([buff_len, buff_w/2, 10])
             rotate([0,270, 0])
                 hole_w_end(buff_len, M_DIM[4][2], "round", 4);
-        
         //Shave off angle
         
         translate([buff_len+5, 0, 15])
@@ -46,10 +53,8 @@ module make_psu_mount(){
 }
 
 
-
-
-
 make_connector();
-translate([18, 0,0]){
+translate([alu_2020_w, 0,0]){
     make_psu_mount();
 }
+
