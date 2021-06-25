@@ -16,6 +16,7 @@ NOTE:
 This parts are designed to fit the RepRapDiscount Full Graphic Smart Controller and won't fit any other!
 
 Updated lcdbox_top_switch_r to fit through the whole knob without disassembly. - Alex Volkov.
+Original url -- https://www.thingiverse.com/thing:861091
 */
 
 // #####################################################################################################################################
