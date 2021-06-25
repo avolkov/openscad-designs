@@ -59,8 +59,8 @@ module pedestal(x, y){
     difference(){
         mountcube(x=x, y=y);
         translate([0,2,0]){
-            translate([10, 7.5, 0]) hole_w_end(mat_thick, 1, "hex", M_DIM[3][0], flip=true);
-            translate([10, 7.5*3, 0]) hole_w_end(mat_thick, 1, "hex", M_DIM[3][0], flip=true);
+            translate([10, 7.5, 0]) hole_w_end(mat_thick, 2, "hex", M_DIM[3][0], flip=true);
+            translate([10, 7.5*3, 0]) hole_w_end(mat_thick, 2, "hex", M_DIM[3][0], flip=true);
         }
     }
 }
