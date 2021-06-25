@@ -249,6 +249,7 @@ module alu_connector(face_len, thickness){
 
     face_w = 20;
     flat_gap = 5;
+    //TODO: Base can still be slightly increased 2020-06-24
     alu_2020_base = 8.2;
 
     union(){
