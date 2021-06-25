@@ -22,6 +22,8 @@ total_len = stacked_len + screw_mount_space*2;
 mounting_diff = 8;
 
 
+ALU_PROFILE_H = 6.5;
+
 // Dimensional info for metric capscrew hardware
 //             [0,      1,            2,     3,          4,     5        ]
 // List values [bolt_d, bolt_head_d, bolt_h, nut_trap_d, nut_h, locknut_h]
@@ -247,13 +249,13 @@ module alu_connector(face_len, thickness){
 
     face_w = 20;
     flat_gap = 5;
-    alu_2020_base = 8;
+    alu_2020_base = 8.2;
 
     union(){
         cube([face_w, face_len, thickness]);
         translate([face_w/2 + alu_2020_base/2, face_len, thickness])
             rotate([0,270,90])
                 linear_extrude(face_len)
-                    polygon(points=[[0,0], [2,1.5], [2,6.5], [0,alu_2020_base]]);
+                    polygon(points=[[0,0], [2,1.5], [2,ALU_PROFILE_H], [0,alu_2020_base]]);
     }
 }

@@ -19,9 +19,9 @@ include <../libs/hardware-recess.scad>;
 
 
 FOOT_BASE = 40;
-ALU_MOUNT = true;
-ALU_EXTRA_THICK = 6;
 
+//If bottom of the peg should have aluminium profile notch
+ALU_MOUNT = true;
 
 mat_thick = 5;
 top_shave=27;
@@ -41,8 +41,8 @@ module mount_foot(alu_mount){
             }
         }
         if (alu_mount){
-            translate([10, 7, 0 - ALU_EXTRA_THICK])
-                cylinder(h=mat_thick + ALU_EXTRA_THICK , d=M_DIM[5][0], $fn=50);
+            translate([10, 7, 0 - ALU_PROFILE_H])
+                cylinder(h=mat_thick + ALU_PROFILE_H , d=M_DIM[5][0], $fn=50);
         } else {
             translate([10, 7, 0])cylinder(h=mat_thick, d=M_DIM[5][0]);
         }

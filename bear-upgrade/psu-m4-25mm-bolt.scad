@@ -13,13 +13,12 @@
 include <../libs/hardware-recess.scad>;
 $fn=30;
 
-alu_2020_w = 20;
 
 
-module make_connector(){
+
+module make_connector(thick, part_len){
+    alu_2020_w = 20;
     difference(){
-        thick = 6;
-        part_len = 20;
         alu_connector(part_len, thick);
         translate([alu_2020_w/2, part_len/2, 0]){
             hole_w_end(thick+2, 2, "round", 5, flip=true);
@@ -56,7 +55,7 @@ module make_psu_mount(){
 }
 
 
-make_connector();
+make_connector(thick=6, part_len=20);
 translate([alu_2020_w, 0,0]){
     make_psu_mount();
 }
