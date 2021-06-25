@@ -17,6 +17,12 @@
 
 include <../libs/hardware-recess.scad>;
 
+
+FOOT_BASE = 40;
+ALU_MOUNT = true;
+ALU_EXTRA_THICK = 6;
+
+
 mat_thick = 5;
 top_shave=27;
 module mountcube(x=22, y=30, z=mat_thick){
@@ -24,10 +30,22 @@ module mountcube(x=22, y=30, z=mat_thick){
 }
 
 
-module mount_foot(){
+module mount_foot(alu_mount){
     difference(){
-        mountcube(y=40);
-        translate([10, 7, 0])cylinder( h=mat_thick, d=M_DIM[5][0]);
+        union(){
+            mountcube(y=40);
+            if(alu_mount){
+                translate([0, FOOT_BASE, 0])
+                    rotate([180, 0,0 ])
+                        alu_connector(FOOT_BASE, 0);
+            }
+        }
+        if (alu_mount){
+            translate([10, 7, 0 - ALU_EXTRA_THICK])
+                cylinder(h=mat_thick + ALU_EXTRA_THICK , d=M_DIM[5][0], $fn=50);
+        } else {
+            translate([10, 7, 0])cylinder(h=mat_thick, d=M_DIM[5][0]);
+        }
     }
 }
 module connector(){
@@ -49,25 +67,28 @@ module pedestal(x, y){
 
 difference(){
     union(){
-        mount_foot();
-        
+        mount_foot(alu_mount=ALU_MOUNT);
         difference(){
             union(){
+                
                 translate([0,30,0])connector();
                 translate([0, 25, top_shave])rotate([0, 30, 0])pedestal(x=22,y=35);
                 // fill in gap between podium and base
                 translate([0, 25, top_shave])cube([10, 35, 10]);
             }
-            //shave of f the top
-            translate([0, 20, top_shave+mat_thick+0.7])rotate([0, 30, 0])mountcube(x=25, y=40, z=10);
+            //shave off the top
+            translate([0, 20, top_shave+mat_thick+0.7])
+                rotate([0, 30, 0])
+                    mountcube(x=25, y=FOOT_BASE, z=10);
         }
         
     }
+    
     //Shaving off front to simplify printing
     translate([20, 0, 0])
         cube([30, 60, 30]);
     //Shaving off top to simplify printing
     translate([0, 0, 30])
         cube([30, 60, 30]);
-
+    
 }
