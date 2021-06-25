@@ -58,7 +58,7 @@ module make_recess(height, end_type, head_d){
     local_fn = 60;
     rotate([0, 0,90]){
         if (end_type == "hex"){
-            cylinder(h=height, d=trap_d, $fn=6);
+            cylinder(h=height, d=head_d, $fn=6);
         } else if (end_type == "round"){
             cylinder(h=height/2, d=head_d + outer_chamfer, $fn=local_fn);
             translate([0,0, height/2])
