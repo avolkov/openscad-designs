@@ -65,11 +65,12 @@ translate([20,60.5,50])cube([73,10,10]); // Vent cutout
 translate([20,67.5,50])rotate(45,0,0)cube([10,10,10]);
 translate([93,67,50])rotate(45,0,0)cube([10,10,10]);
 
+SOCKET_OFFSET = 25;
 
 translate([5.5,0,0]){
-    translate([15,5,50])cube([47.5,27.5,10]); // socket cutout
-    translate([40,4,50])cube([15,29.5,2.8]);
-    translate([72.5,4,50])cube([15,29.5,2.8]);
+    translate([40 - SOCKET_OFFSET,5,50])cube([47.5,27.5,10]); // socket cutout
+    translate([40 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
+    translate([72.5 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
 }
 
 translate([7-0.5-0.5+18+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  right back mounthole cutout
