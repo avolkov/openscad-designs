@@ -21,7 +21,7 @@ include <../libs/hardware-recess.scad>;
 FOOT_BASE = 40;
 
 //If bottom of the peg should have aluminium profile notch
-ALU_MOUNT = false;
+ALU_MOUNT = true;
 
 mat_thick = 5;
 top_shave=27;
