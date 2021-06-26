@@ -93,7 +93,7 @@ translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
 for(i=[0:9]){
-    translate([7+i,8.5,-10])cylinder(r=6,h=50); //  left back power wire cutout
+    translate([92+i,8.5,-10])cylinder(r=6,h=50); //  left back power wire cutout
 }
 
 }
@@ -110,20 +110,14 @@ difference()
         }
     union ()    // cutouts
         {
-            
-            
             // corner cuts
             translate([ 87.5, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
             translate([ 52.5, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
-            
             // angled vertical support
             translate([ 68.5, 20, -34 ]) rotate([ 45, 0, 0 ]) cube([ 15, 23, 20 ]);  //vertical reinf cutout
-            
             // bottom surface cuts
             translate([ 66.2, -0.2, -5])cube([23.6, 0.4, 5.6]);
             translate([ 68 + 1.8 +2.6, -0.2, -7.7 -5.6])cube([11.2, 0.4, 5.6]);
-            
-            
             translate([ 88, 8, -11.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
             translate([ 68, 8, -11.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
             
