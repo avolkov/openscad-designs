@@ -19,24 +19,17 @@ module CubeAdjust(Xdim, Zdim){
 module PSU_COVER()
 {
 difference(){
-union(){
+    union(){
     
-translate([0,0,-0.46])cube([116,50+15+5,54.25]); // Base
-
-translate([23.5,0,-3.5])cube([14-0.5,50+15+5,5]); // Back pillar 1
-
-translate([66-0.5+8,0,-3.5])cube([14,50+15+5,5]); // Back pillar 2
-
-translate([91+4,0,-0.46])cube([6,50+15,54.25]); // Base for bracket
-
-translate([-2,45.4-4,19])cube([2,2.6,15]); // nipple on the right
-
-translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
-translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
-translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
-  
+        translate([0,0,-0.46])cube([116,50+15+5,54.25]); // Base
+        translate([23.5,0,-3.5])cube([14-0.5,50+15+5,5]); // Back pillar 1
+        translate([66-0.5+8,0,-3.5])cube([14,50+15+5,5]); // Back pillar 2
+        translate([91+4,0,-0.46])cube([6,50+15,54.25]); // Base for bracket
+        translate([-2,45.4-4,19])cube([2,2.6,15]); // nipple on the right
+        translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
+        translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
+        translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
 }
-
 
 //pretty corners
 translate([-11,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
@@ -92,10 +85,10 @@ translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
 translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
 
-translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
+//translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
 for(i=[0:9]){
-    translate([92+i,8.5,-10])cylinder(r=6,h=50); //  left back power wire cutout
+    translate([92+i,8.5,-10])cylinder(r=6,h=50); //back power wire cutout
 }
 
 }
@@ -125,19 +118,15 @@ difference()
             // angled vertical support
             translate([ 68.5 - PLACEMENT_DIFF, 20, -34 + Z_DIFF ]) rotate([ 45, 0, 0 ]) cube([ 15, 23, 20 ]);  //vertical reinf cutout
             // bottom surface cuts
-            translate([ 66.2 - PLACEMENT_DIFF, -0.2, -5])cube([23.6, 0.4, 5.6]);
-            translate([ 68 + 1.8 +2.6 - PLACEMENT_DIFF, -0.2, -7.7 -5.6])cube([11.2, 0.4, 5.6]);
+            //translate([ 66.2 - PLACEMENT_DIFF, -0.2, -5])cube([23.6, 0.4, 5.6]);
+            //translate([ 68 + 1.8 +2.6 - PLACEMENT_DIFF, -0.2, -7.7 -5.6])cube([11.2, 0.4, 5.6]);
             translate([ 88 - PLACEMENT_DIFF, 8, -11.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
             translate([ 68 - PLACEMENT_DIFF, 8, -11.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
-            
             translate([ 88 - PLACEMENT_DIFF, 8, -9.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
             translate([ 68 - PLACEMENT_DIFF, 8, -9.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
             
             translate([ 86.2 - PLACEMENT_DIFF, -10, -11.5 ]) cube([ 3.6, 20, 2 ]);  // hole cut extension
             translate([ 66.2 - PLACEMENT_DIFF, -10, -11.5 ]) cube([ 3.6, 20, 2 ]);  // hole cut extension
-            
-            
-            
         }
 }
 }
