@@ -101,12 +101,19 @@ for(i=[0:9]){
 
 module PSU_Y_REINFORCEMENT()
 {
+    
+    PLACEMENT_DIFF = 41.5;
+    Z_DIFF = 1;
+    
 difference()
 {
     union()     // base shape
-        {
-            translate([ 59.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
-            translate([ 73.5, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement    
+        {   
+            // Distance from the corner
+            //translate([ 83, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
+            translate([ 59.5 - PLACEMENT_DIFF, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
+            //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
+            translate([ 73.5 - PLACEMENT_DIFF, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement
         }
     union ()    // cutouts
         {
@@ -114,18 +121,18 @@ difference()
             translate([ 87.5, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
             translate([ 52.5, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
             // angled vertical support
-            translate([ 68.5, 20, -34 ]) rotate([ 45, 0, 0 ]) cube([ 15, 23, 20 ]);  //vertical reinf cutout
+            translate([ 68.5 - PLACEMENT_DIFF, 20, -34 + Z_DIFF ]) rotate([ 45, 0, 0 ]) cube([ 15, 23, 20 ]);  //vertical reinf cutout
             // bottom surface cuts
-            translate([ 66.2, -0.2, -5])cube([23.6, 0.4, 5.6]);
-            translate([ 68 + 1.8 +2.6, -0.2, -7.7 -5.6])cube([11.2, 0.4, 5.6]);
-            translate([ 88, 8, -11.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
-            translate([ 68, 8, -11.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
+            translate([ 66.2 - PLACEMENT_DIFF, -0.2, -5])cube([23.6, 0.4, 5.6]);
+            translate([ 68 + 1.8 +2.6 - PLACEMENT_DIFF, -0.2, -7.7 -5.6])cube([11.2, 0.4, 5.6]);
+            translate([ 88 - PLACEMENT_DIFF, 8, -11.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
+            translate([ 68 - PLACEMENT_DIFF, 8, -11.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
             
-            translate([ 88, 8, -9.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
-            translate([ 68, 8, -9.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
+            translate([ 88 - PLACEMENT_DIFF, 8, -9.5 ]) rotate([ 90, 0, 0]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole A
+            translate([ 68 - PLACEMENT_DIFF, 8, -9.5 ]) rotate([ 90, 0, 0 ]) cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
             
-            translate([ 86.2, -10, -11.5 ]) cube([ 3.6, 20, 2 ]);  // hole cut extension
-            translate([ 66.2, -10, -11.5 ]) cube([ 3.6, 20, 2 ]);  // hole cut extension
+            translate([ 86.2 - PLACEMENT_DIFF, -10, -11.5 ]) cube([ 3.6, 20, 2 ]);  // hole cut extension
+            translate([ 66.2 - PLACEMENT_DIFF, -10, -11.5 ]) cube([ 3.6, 20, 2 ]);  // hole cut extension
             
             
             
