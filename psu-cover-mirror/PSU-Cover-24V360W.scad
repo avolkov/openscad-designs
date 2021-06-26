@@ -5,6 +5,8 @@
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://prusamendel.org
 
+PLACEMENT_DIFF = 41.5;
+
 module CubeAdjust(Xdim, Zdim){
     for (x =[6:12.2:Xdim-12]){
         for (z =[4.5:12:Zdim-12]){
@@ -102,7 +104,7 @@ for(i=[0:9]){
 module PSU_Y_REINFORCEMENT()
 {
     
-    PLACEMENT_DIFF = 41.5;
+    
     Z_DIFF = 1;
     
 difference()
@@ -118,8 +120,8 @@ difference()
     union ()    // cutouts
         {
             // corner cuts
-            translate([ 87.5, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
-            translate([ 52.5, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
+            translate([ 87.5 - PLACEMENT_DIFF - 2, -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
+            translate([ 52.5 - PLACEMENT_DIFF , -8, -20 ]) rotate([ 0, 45, 0 ]) cube([ 10, 20, 10 ]);  //corner cut
             // angled vertical support
             translate([ 68.5 - PLACEMENT_DIFF, 20, -34 + Z_DIFF ]) rotate([ 45, 0, 0 ]) cube([ 15, 23, 20 ]);  //vertical reinf cutout
             // bottom surface cuts
