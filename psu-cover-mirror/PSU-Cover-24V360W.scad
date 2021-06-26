@@ -87,8 +87,8 @@ translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
-for(i=[0:9]){
-    translate([92+i,8.5,-10])cylinder(r=6,h=50); //back power wire cutout
+for(i=[0:7]){
+    translate([93.5+i,9,-10])cylinder(r=6,h=50); //back power wire cutout
 }
 
 }
@@ -107,7 +107,7 @@ difference()
     union()     // base shape
         {   
             // Distance from the corner
-            translate([ 93, 0, -18 ]) cube([ 8, 3, 19 ]);  // reinforcement plate
+            translate([ 93, 0, -10 ]) cube([ 8, 3, 10 ]);  //Wiring ledge
             translate([59.5 - PLACEMENT_DIFF - X_MOUNT_OFFSET, 0, -18 ])
                 cube([ 33, 6, 19 ]);  // reinforcement plate
             //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
