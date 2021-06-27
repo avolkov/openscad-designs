@@ -88,8 +88,8 @@ translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
-for(i=[0:7]){
-    translate([93.5+i,9,-10])cylinder(r=6,h=50); //back power wire cutout
+for(i=[0:4]){
+    translate([94.75+i,10,-10])cylinder(r=7,h=50); //back power wire cutout
 }
 
 }
