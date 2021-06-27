@@ -46,7 +46,7 @@ translate([113-3,70+5,-2])rotate([0,0,-45])cube([10,10,58]); // top left edge
 
 translate([111,0-10,-20])rotate([0,-45,-45])cube([20,20,20]); // back left bottom corner
 translate([111,0-10,45])rotate([0,-45,-45])cube([20,20,20]); // front left bottom corner
-translate([111,60,-10])rotate([-35,-45,-45])cube([20,20,20]); // back left top corner
+//translate([111,60,-10])rotate([-35,-45,-45])cube([20,20,20]); // back left top corner
 translate([111,60,64])rotate([-55,48,-48])cube([20,20,20]); // front left top corner
 
 translate([79+13.5,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front left line
@@ -89,7 +89,17 @@ translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 //translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
 //translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
 //Gap for power adapter
-        translate([113,44,1])cube([5, 26, 25]);
+        translate([113,45,2]){
+            difference(){
+                cube([5, 25, 25]);
+                translate([0,0,-4])
+                    rotate([45,0,0])
+                        cube([5,5,5]);
+                translate([0,0,22])
+                    rotate([45,0,0])
+                        cube([5,5,5]);
+            }
+        }
 
         //cylinder(r=20,h=50,$fn=35); 
 
