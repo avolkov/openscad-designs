@@ -52,9 +52,14 @@ translate([111,0-10,45])rotate([0,-45,-45])cube([20,20,20]); // front left botto
 //translate([111,60,-10])rotate([-35,-45,-45])cube([20,20,20]); // back left top corner
 translate([111,60,64])rotate([-55,48,-48])cube([20,20,20]); // front left top corner
 
+//right corners
+//translate([-9,-20,-20])rotate([0,45,45])cube([20,20,20]); // back left bottom corner
+translate([-9,-20,60]) rotate([0,45,45])cube([20,20,20]); // front right bottom corner
+translate([-7,-17,-11])rotate([0,45,45])cube([20,20,20]); // back right bottom corner
+
 translate([79+13.5,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front left line
 translate([79+13.5,-5,-13.96])rotate([0,45,0])cube([20,90,20]); // back left line
-translate([-7,-5,67.28])rotate([0,45,0])cube([20,90,20]); // froNt right line
+translate([-7,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front right line
 
 translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); // main cutout
 translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
@@ -68,8 +73,8 @@ translate([101+2,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
 translate([-3,50-16.4-17.6+15+0.9-2.5,2])cube([100,100,10]); //  bottom cutout
 
 translate([20,60.5,50])cube([73,10,10]); // Vent cutout
-translate([20,67.5,50])rotate(45,0,0)cube([10,10,10]);
-translate([93,67,50])rotate(45,0,0)cube([10,10,10]);
+translate([20,67.5,50])rotate([45,0,0])cube([10,10,10]);
+translate([93,67,50])rotate([45,0,0])cube([10,10,10]);
 
 SOCKET_OFFSET = 10;
 
