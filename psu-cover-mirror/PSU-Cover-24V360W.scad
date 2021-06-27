@@ -29,6 +29,8 @@ difference(){
         translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
         translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
         translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
+        
+
 }
 
 //pretty corners
@@ -83,8 +85,16 @@ translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-3.7])cylinder(r2=2, r1=3.7,h=3,$f
 translate([130+16,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole L
 translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
 
-translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
-translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
+//Old version
+//translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
+//translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
+//Gap for power adapter
+        translate([113,44,1])cube([5, 26, 25]);
+
+        //cylinder(r=20,h=50,$fn=35); 
+
+
+
 
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
