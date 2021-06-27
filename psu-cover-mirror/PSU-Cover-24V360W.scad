@@ -88,34 +88,41 @@ translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
-for(i=[0:4]){
-    translate([94.75+i,10,-10])cylinder(r=7,h=50); //back power wire cutout
+    for(i=[0:4]){
+        translate([94.75+i,10,-10])cylinder(r=7,h=50); //back power wire cutout
+        }
+    }
 }
 
+module bottom_reinf(placement_diff, x_mount_offset, x_reinf_offset){
+    union(){
+        // Distance from the corner
+        translate([ 93, 0, -10 ]) cube([ 8, 3, 10 ]);  //Wiring ledge
+        translate([59.5 - placement_diff - x_mount_offset, 0, -18 ])
+            cube([ 33, 6, 19 ]);  // reinforcement plate
+        //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
+        translate([ 73.5 - placement_diff, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement right
+        translate([ 73.5 - placement_diff - x_reinf_offset, 5, -18 ])
+            cube([ 5, 16, 19 ]);  // vertical_reinforcement left
+    }
+
 }
-}
+
 
 module PSU_Y_REINFORCEMENT()
 {
     
-    PLACEMENT_DIFF = 41.5;
+    PLACEMENT_DIFF = 21.5;
     Z_DIFF = 1;
     X_MOUNT_OFFSET = 14;
     REINF_OFFSET = 28;
     
+    
+  
 difference()
 {
-    union()     // base shape
-        {   
-            // Distance from the corner
-            translate([ 93, 0, -10 ]) cube([ 8, 3, 10 ]);  //Wiring ledge
-            translate([59.5 - PLACEMENT_DIFF - X_MOUNT_OFFSET, 0, -18 ])
-                cube([ 33, 6, 19 ]);  // reinforcement plate
-            //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
-            translate([ 73.5 - PLACEMENT_DIFF, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement right
-            translate([ 73.5 - PLACEMENT_DIFF - REINF_OFFSET, 5, -18 ])
-                cube([ 5, 16, 19 ]);  // vertical_reinforcement left
-        }
+   // base shape
+    bottom_reinf(PLACEMENT_DIFF, X_MOUNT_OFFSET, REINF_OFFSET);
     union (){// cutouts
             // corner cuts
             // angled vertical support
