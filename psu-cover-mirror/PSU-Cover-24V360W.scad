@@ -24,16 +24,20 @@ difference(){
         translate([66-0.5+8,0,-3.5])cube([14,50+15+5,5]); // Back pillar 2
         translate([91+4,0,-0.46])cube([6,50+15,54.25]); // Base for bracket
         // weird stuff on the right
+        *translate([-2,45.4-4,19])cube([2,2.6,15]); // nipple on the right
+        *translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
+        *translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
+        *translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
         
-        translate([-2,45.4-4,19])cube([2,2.6,15]); // nipple on the right
-        translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
-        translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
-        translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
+        //my customization of the complete hull
+        translate([-6,0,0])cube([6,70,53.78]); // Frame skirt 3
         
         }
 
+// Cut up old mount spot
+translate([-3,2,2])cube([6,70 - 2,53.78 -5]);
 //pretty corners
-translate([-11,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
+translate([-11 - 3,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
 translate([95+21-5,-2,-2])rotate([0,0,-45])cube([10,10,58]); // left botton
 translate([-3,-9,-4.46])rotate([-45,0,0])cube([130,10,10]); // back bottom
 
@@ -102,8 +106,13 @@ translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
         }
 
         //cylinder(r=20,h=50,$fn=35); 
-
-
+// New screw holes on the right
+    translate([15, 32+26+4.5,55-4-25-11.5])
+        rotate([0,-90,0])
+            cylinder(r=2,h=50,$fn=35);
+    translate([-4,32+26+4.5,55-4-25-11.5])
+        rotate([0,-90,0])
+            cylinder(r2=4.1, r1=2,h=3,$fn=15);
 
 
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
