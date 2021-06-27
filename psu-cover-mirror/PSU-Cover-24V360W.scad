@@ -10,28 +10,27 @@
 module CubeAdjust(Xdim, Zdim){
     for (x =[6:12.2:Xdim-12]){
         for (z =[4.5:12:Zdim-12]){
-        
         translate([x,-0.2,z])cube([10.3,0.4,10]);
         }
-        }
+    }
 }
 
 module PSU_COVER()
 {
 difference(){
     union(){
-    
         translate([0,0,-0.46])cube([116,50+15+5,54.25]); // Base
         translate([23.5,0,-3.5])cube([14-0.5,50+15+5,5]); // Back pillar 1
         translate([66-0.5+8,0,-3.5])cube([14,50+15+5,5]); // Back pillar 2
         translate([91+4,0,-0.46])cube([6,50+15,54.25]); // Base for bracket
+        // weird stuff on the right
+        
         translate([-2,45.4-4,19])cube([2,2.6,15]); // nipple on the right
         translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
         translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
         translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
         
-
-}
+        }
 
 //pretty corners
 translate([-11,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
@@ -57,6 +56,7 @@ translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); // main cutout
 translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
 translate([-3,50-16.4-15.6+15,2])cube([10,100,17]); // right bottom cutout
 
+
 translate([101+2,50-16.4-17.6+15+0.9-2.5,2])cube([10,100,50-0.7]); // shelf top cutout
 translate([101+2,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]); // shelf angle cutout
 translate([101+2,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
@@ -67,7 +67,7 @@ translate([20,60.5,50])cube([73,10,10]); // Vent cutout
 translate([20,67.5,50])rotate(45,0,0)cube([10,10,10]);
 translate([93,67,50])rotate(45,0,0)cube([10,10,10]);
 
-SOCKET_OFFSET = 25;
+SOCKET_OFFSET = 10;
 
 translate([5.5,0,0]){
     translate([40 - SOCKET_OFFSET,5,50])cube([47.5,27.5,10]); // socket cutout
@@ -109,21 +109,45 @@ translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
 
     for(i=[0:4]){
-        translate([94.75+i,10,-10])cylinder(r=7,h=50); //back power wire cutout
+        translate([10 + i,10,-10])cylinder(r=7,h=50); //back power wire cutout
         }
     }
 }
 
 module bottom_reinf(placement_diff, x_mount_offset, x_reinf_offset){
-    union(){
-        // Distance from the corner
-        translate([ 93, 0, -10 ]) cube([ 8, 3, 10 ]);  //Wiring ledge
-        translate([59.5 - placement_diff - x_mount_offset, 0, -18 ])
-            cube([ 33, 6, 19 ]);  // reinforcement plate
-        //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
-        translate([ 73.5 - placement_diff, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement right
-        translate([ 73.5 - placement_diff - x_reinf_offset, 5, -18 ])
-            cube([ 5, 16, 19 ]);  // vertical_reinforcement left
+    Z_DIFF = 1;
+    difference(){
+        union(){
+            // Distance from the corner
+            translate([59.5 - placement_diff - x_mount_offset, 0, -18 ])
+                cube([ 33, 6, 19 ]);  // reinforcement plate
+            //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
+            translate([ 73.5 - placement_diff, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement right
+            translate([ 73.5 - placement_diff - x_reinf_offset, 5, -18 ])
+                cube([ 5, 16, 19 ]);  // vertical_reinforcement left
+        }
+        
+        union (){// cutouts
+            // corner cuts
+            // angled vertical support
+        
+            translate([ 68.5 - placement_diff, 20, -34 + Z_DIFF ])
+                rotate([ 45, 0, 0 ])
+                    cube([ 15, 23, 20 ]);//vertical reinf cutout right
+            translate([ 68.5 - placement_diff - x_reinf_offset, 20, -34 + Z_DIFF ])
+                rotate([ 45, 0, 0 ])
+                    cube([ 15, 23, 20 ]); //vertical reinf cutout left
+            mount_hole_angle = 90;
+            // 
+            hull(){
+                translate([71.5 - placement_diff, 8, -11.5 ])
+                    rotate([mount_hole_angle, 0, 0 ])
+                        cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
+                translate([52.5 - placement_diff, 8, -11.5 ])
+                    rotate([mount_hole_angle, 0, 0 ])
+                        cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
+            }
+        }
     }
 
 }
@@ -133,7 +157,7 @@ module PSU_Y_REINFORCEMENT()
 {
     
     PLACEMENT_DIFF = 21.5;
-    Z_DIFF = 1;
+    
     X_MOUNT_OFFSET = 14;
     REINF_OFFSET = 28;
     
@@ -142,27 +166,12 @@ module PSU_Y_REINFORCEMENT()
 difference()
 {
    // base shape
-    bottom_reinf(PLACEMENT_DIFF, X_MOUNT_OFFSET, REINF_OFFSET);
-    union (){// cutouts
-            // corner cuts
-            // angled vertical support
-            translate([ 68.5 - PLACEMENT_DIFF, 20, -34 + Z_DIFF ])
-                rotate([ 45, 0, 0 ])
-                    cube([ 15, 23, 20 ]);//vertical reinf cutout right
-            translate([ 68.5 - PLACEMENT_DIFF - REINF_OFFSET, 20, -34 + Z_DIFF ])
-                rotate([ 45, 0, 0 ])
-                    cube([ 15, 23, 20 ]); //vertical reinf cutout left
-            mount_hole_angle = 90;
-            hull(){
-                translate([71.5 - PLACEMENT_DIFF, 8, -11.5 ])
-                    rotate([mount_hole_angle, 0, 0 ])
-                        cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
-                translate([52.5 - PLACEMENT_DIFF, 8, -11.5 ])
-                    rotate([mount_hole_angle, 0, 0 ])
-                        cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
-                
-            }
-        }
+    union(){
+        bottom_reinf(PLACEMENT_DIFF, X_MOUNT_OFFSET, REINF_OFFSET);
+        //translate([8,0,-9 ]) cube([ 8, 3, 10 ]);  //Wiring ledge
+    }
+    
+    
 }
 }
 
