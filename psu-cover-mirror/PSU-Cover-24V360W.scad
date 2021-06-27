@@ -15,6 +15,18 @@ module CubeAdjust(Xdim, Zdim){
     }
 }
 
+module left_shelf_cutout(){
+    translate([101+2,50-16.4-17.6+15+0.9-2.5,2])cube([10,100,50-0.7]); // shelf top cutout
+    translate([101+2,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]); // shelf angle cutout
+    translate([101+2,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
+}
+
+module right_shelf_cutout(){
+    translate([0,50-16.4-17.6+15+0.9-2.5,2])cube([10,70-2,70-5]); // shelf top cutout
+    //translate([0,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]); // shelf angle cutout
+    translate([0,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
+}
+
 module PSU_COVER()
 {
 difference(){
@@ -31,74 +43,70 @@ difference(){
         
         //my customization of the complete hull
         translate([-6,0,0])cube([6,70,53.78]); // Frame skirt 3
-        
+        //right_shelf_cutout();
         }
 
-// Cut up old mount spot
-translate([-3,2,2])cube([6,70 - 2,53.78 -5]);
-//pretty corners
-translate([-11 - 3,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
-translate([95+21-5,-2,-2])rotate([0,0,-45])cube([10,10,58]); // left botton
-translate([-3,-9,-4.46])rotate([-45,0,0])cube([130,10,10]); // back bottom
+    //Right shelf and more bits cut out
+    translate([-3.4,50-16.4-17.6+15+0.9-2.5,2])cube([6.4,70 - 2,53.78 -5]);//top cutout
+    translate([2.6,14,2])rotate([0,0,45]) cube([6*sqrt(2),6*sqrt(2),53.78 -5]); // shelf angle cutout
+    translate([-3.4,2,2])cube([6.4,18,53.78 -5]);//bottom cutout
+    
+    //pretty corners
+    translate([-11 - 3,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
+    translate([95+21-5,-2,-2])rotate([0,0,-45])cube([10,10,58]); // left botton
+    translate([-3,-9,-4.46])rotate([-45,0,0])cube([130,10,10]); // back bottom
 
-translate([-3,-12,54.9])rotate([-45,0,0])cube([130,10,10]); // bottom front edge
-translate([-3,45+15+5,-4.46])rotate([-45,0,0])cube([130,10,10]); // bottom edge
-translate([-3,48+15+5,54.78])rotate([-45,0,0])cube([130,10,10]); // top front edge
+    translate([-3,-12,54.9])rotate([-45,0,0])cube([130,10,10]); // bottom front edge
+    translate([-3,45+15+5,-4.46])rotate([-45,0,0])cube([130,10,10]); // bottom edge
+    translate([-3,48+15+5,54.78])rotate([-45,0,0])cube([130,10,10]); // top front edge
 
-translate([113-3,70+5,-2])rotate([0,0,-45])cube([10,10,58]); // top left edge
+    translate([113-3,70+5,-2])rotate([0,0,-45])cube([10,10,58]); // top left edge
 
-translate([111,0-10,-20])rotate([0,-45,-45])cube([20,20,20]); // back left bottom corner
-translate([111,0-10,45])rotate([0,-45,-45])cube([20,20,20]); // front left bottom corner
-//translate([111,60,-10])rotate([-35,-45,-45])cube([20,20,20]); // back left top corner
-translate([111,60,64])rotate([-55,48,-48])cube([20,20,20]); // front left top corner
+    translate([111,0-10,-20])rotate([0,-45,-45])cube([20,20,20]); // back left bottom corner
+    translate([111,0-10,45])rotate([0,-45,-45])cube([20,20,20]); // front left bottom corner
+    translate([-9,-20,60]) rotate([0,45,45])cube([20,20,20]); // front right bottom corner
+    translate([-7,-17,-11])rotate([0,45,45])cube([20,20,20]); // back right bottom corner
 
-//right corners
-//translate([-9,-20,-20])rotate([0,45,45])cube([20,20,20]); // back left bottom corner
-translate([-9,-20,60]) rotate([0,45,45])cube([20,20,20]); // front right bottom corner
-translate([-7,-17,-11])rotate([0,45,45])cube([20,20,20]); // back right bottom corner
+    translate([79+13.5,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front left line
+    translate([79+13.5,-5,-13.96])rotate([0,45,0])cube([20,90,20]); // back left line
+    translate([-7,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front right line
 
-translate([79+13.5,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front left line
-translate([79+13.5,-5,-13.96])rotate([0,45,0])cube([20,90,20]); // back left line
-translate([-7,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front right line
-
-translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); // main cutout
-translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
-translate([-3,50-16.4-15.6+15,2])cube([10,100,17]); // right bottom cutout
+    translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); // main cutout
+    translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
+    translate([-3,50-16.4-15.6+15,2])cube([10,100,17]); // right bottom cutout
 
 
-translate([101+2,50-16.4-17.6+15+0.9-2.5,2])cube([10,100,50-0.7]); // shelf top cutout
-translate([101+2,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]); // shelf angle cutout
-translate([101+2,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
+    left_shelf_cutout();
 
-translate([-3,50-16.4-17.6+15+0.9-2.5,2])cube([100,100,10]); //  bottom cutout
+    translate([-3,50-16.4-17.6+15+0.9-2.5,2])cube([100,100,10]); //  bottom cutout
 
-translate([20,60.5,50])cube([73,10,10]); // Vent cutout
-translate([20,67.5,50])rotate([45,0,0])cube([10,10,10]);
-translate([93,67,50])rotate([45,0,0])cube([10,10,10]);
+    translate([20,60.5,50])cube([73,10,10]); // Vent cutout
+    translate([20,67.5,50])rotate([45,0,0])cube([10,10,10]);
+    translate([93,67,50])rotate([45,0,0])cube([10,10,10]);
 
-SOCKET_OFFSET = 10;
+    SOCKET_OFFSET = 10;
 
-translate([5.5,0,0]){
-    translate([40 - SOCKET_OFFSET,5,50])cube([47.5,27.5,10]); // socket cutout
-    translate([40 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
-    translate([72.5 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
-}
+    translate([5.5,0,0]){
+        translate([40 - SOCKET_OFFSET,5,50])cube([47.5,27.5,10]); // socket cutout
+        translate([40 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
+        translate([72.5 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
+    }
 
-translate([7-0.5-0.5+18+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  right back mounthole cutout
-translate([7-0.5-0.5+18+6,43.5-1+15+0.+4.5,-3.7])cylinder(r2=2, r1=3.7,h=2,$fn=15);
+    translate([7-0.5-0.5+18+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  right back mounthole cutout
+    translate([7-0.5-0.5+18+6,43.5-1+15+0.+4.5,-3.7])cylinder(r2=2, r1=3.7,h=2,$fn=15);
 
-translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  left back mounthole cutout
-translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-3.7])cylinder(r2=2, r1=3.7,h=3,$fn=15);
+    translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  left back mounthole cutout
+    translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-3.7])cylinder(r2=2, r1=3.7,h=3,$fn=15);
 
 
-translate([130+16,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole L
-translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
+    translate([130+16,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole L
+    translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
 
-//Old version
-//translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
-//translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
-//Gap for power adapter
-        translate([113,45,2]){
+    //Old version
+    //translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
+    //translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
+    //Gap for power adapter
+    translate([113,45,2]){
             difference(){
                 cube([5, 25, 25]);
                 translate([0,0,-4])
@@ -110,8 +118,7 @@ translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
             }
         }
 
-        //cylinder(r=20,h=50,$fn=35); 
-// New screw holes on the right
+    // New screw holes on the right
     translate([15, 32+26+4.5,55-4-25-11.5])
         rotate([0,-90,0])
             cylinder(r=2,h=50,$fn=35);
@@ -121,7 +128,6 @@ translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=
 
 
 //translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
-
     for(i=[0:4]){
         translate([10 + i,10,-10])cylinder(r=7,h=50); //back power wire cutout
         }
@@ -199,4 +205,3 @@ module FINAL_PART(){
 }
 
 FINAL_PART();
-
