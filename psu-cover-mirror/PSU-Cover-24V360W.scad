@@ -16,11 +16,11 @@ module left_shelf_cutout(){
 
 module right_shelf_cutout(){
     //top cutout
-    translate([-1.4,50-16.4-17.6+15+0.9-2.5,2])cube([6.4,70 - 2,53.78 -5]);
+    translate([-1.4, 50-16.4-17.6+15+0.9-2.5,2])cube([6.4,70 - 2,53.78 - 4.5]);
     //angle cutout
-    translate([4.6,14,2])rotate([0,0,45]) cube([6*sqrt(2),6*sqrt(2),53.78 -5]);
+    translate([4.6,14,2])rotate([0,0,45]) cube([6*sqrt(2),6*sqrt(2),53.78 - 4.5]);
     //bottom cutout
-    translate([-1.4,2,2])cube([6.4,18,53.78 -5]);
+    translate([-1.4,2,2])cube([6.4,18,53.78 - 4.5]);
 }
 
 module PSU_COVER(){
