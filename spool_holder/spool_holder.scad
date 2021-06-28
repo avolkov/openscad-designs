@@ -4,10 +4,12 @@ spool_d = 25;
 m8_bolt_len = 47;
 arm_thick = 10;
 
-DISPLAY_SPOOL = true;
+DISPLAY_SPOOL = false;
+SPOOL_ANGLE = 30;
+ARM_LEN = 150;
 
 module base(){
-    cube([10, 20, 40]);
+    cube([20, 36, 40]);
 }
 
 module spool(){
@@ -30,30 +32,37 @@ module spool(){
 }
 
 module arm(display_spool=DISPLAY_SPOOL){
+    SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);;
     difference(){
         union(){
             hull(){
                 cube([20, 10, 40]);
-                translate([0, 0, 150])
-                    rotate([90, 0,0])
+                translate([SPOOL_X_ADJUST, 0, ARM_LEN])
+                    rotate([90, 0, 0])
                         cylinder(d=spool_d, h=10, center=true);
             }
             if (display_spool){
-                translate([0,0, 150]) spool();
+                translate([SPOOL_X_ADJUST,0, ARM_LEN]) spool();
             }
         }
     // hardware for mating spool to an arm
-    translate([0, arm_thick, 150])
+    translate([SPOOL_X_ADJUST, arm_thick, ARM_LEN])
         rotate([90, 0, 0])
-            bolt_nut(m8_bolt_len, 8, flip=true);
+            bolt_nut(m8_bolt_len, M8, flip=true);
     }
 }
 
 
 
-base();
-translate([0,0, 40]) rotate([0, 15, 0]) arm();
+
+//translate([0,0, 40]) rotate([0, 15, 0]) arm();
 //translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
-
-//arm();
-
+difference(){
+    union(){
+        translate([0,10,0]) base();
+        arm();
+    }
+    //using joining hardware
+    translate([10, -1, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len, M8, flip=true);
+    translate([10, -1, 30]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len, M8, flip=true);
+}

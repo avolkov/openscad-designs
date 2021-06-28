@@ -24,6 +24,12 @@ mounting_diff = 8;
 
 ALU_PROFILE_H = 6.5;
 
+// List defined hardware
+M3 = 3;
+M4 = 4;
+M5 = 5;
+M8 = 8;
+
 // Dimensional info for metric capscrew hardware
 //             [0,      1,            2,     3,          4,     5        ]
 // List values [bolt_d, bolt_head_d, bolt_h, nut_trap_d, nut_h, locknut_h]
