@@ -15,14 +15,18 @@
 include <../libs/hardware-recess.scad>;
 
 spool_d = 25;
+//Total lenght of a 40mm M8 capscrew bolt (including the head)
 m8_bolt_len = 47;
 
 ARM_LEN = 150;
 ARM_BASE_W = 15;
 ARM_TOP_W = 12;
 
+// some of this value is due to bug in hole_w_end function that doesn't calculate
+// bolt trap/nut trap offset correctly
+SPOOL_BOLT_OFFSET = 4.7;
 
-DISPLAY_SPOOL = false;
+DISPLAY_SPOOL = true;
 
 SPOOL_ANGLE = 30;
 SPOOL_LEN = 100;
@@ -75,19 +79,24 @@ module base(){
 }
 
 module spool(){
-    
+    fn=50;
     rotate([90, 0,0]){
         difference(){
             union(){
-                cylinder(d=spool_d, h=SPOOL_LEN);
+                cylinder(d=spool_d, h=SPOOL_LEN, $fn=fn);
                 translate([0,0,90]){
-                    cylinder(d1=spool_d, d2=spool_d + 10, h=5);
+                    cylinder(d1=spool_d, d2=spool_d + 10, h=5, $fn=fn);
                     translate([0,0,5])
-                    cylinder(d=spool_d + 10, h=5);
+                    cylinder(d=spool_d + 10, h=5, $fn=fn);
                 }
             }
-            translate([0,0, m8_bolt_len - ARM_TOP_W])
-                cylinder(d=M_DIM[8][3], h=ARM_LEN );
+            // hole for the bolt
+            translate([0,0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET])
+                cylinder(
+                    d1=M_DIM[8][3] + 0.2,
+                    d2=M_DIM[8][3] + 5,
+                    h=ARM_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET),
+                    $fn=fn);
        }
     }
 }
@@ -105,11 +114,12 @@ module arm(display_spool=DISPLAY_SPOOL){
             if (display_spool){
                 translate([SPOOL_X_ADJUST,0, ARM_LEN]) spool();
             }
+            
         }
     // hardware for mating spool to an arm
-    translate([SPOOL_X_ADJUST, ARM_TOP_W, ARM_LEN])
-        rotate([90, 0, 0])
-            bolt_nut(m8_bolt_len, M8, flip=true);
+        translate([SPOOL_X_ADJUST, ARM_TOP_W - SPOOL_BOLT_OFFSET, ARM_LEN])
+            rotate([90, 0, 0])
+                bolt_nut(m8_bolt_len, M8, flip=true);
     }
 }
 
