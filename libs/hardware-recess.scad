@@ -82,7 +82,7 @@ module make_recess(height, end_type, head_d){
 }
 
 
-
+// There's a bug in this function when it comes to calculation trap len /bolt len
 module hole_w_end(hole_len, trap_height, type, bolt_d, flip=false){
     /*
     Make a hole with an end for bolt or a nut.
