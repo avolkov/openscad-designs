@@ -12,12 +12,6 @@
  * http://prusamendel.org
  *
  */
-PRUSA iteration3
-// PSU Cover
-// GNU GPL v3
-// Josef Průša <iam@josefprusa.cz> and contributors
-// http://www.reprap.org/wiki/Prusa_Mendel
-// http://prusamendel.org
 
 module left_shelf_cutout(){
     //top cutout
