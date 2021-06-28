@@ -31,14 +31,16 @@ module jaw_strain_relief(){
 module jaw() {
     cube([24, BASE_LEN, 4]);
     translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
-    translate([22, 0, 0]) cube([29, BASE_LEN, 10]);
+    translate([22, 0, 0]) cube([29, BASE_LEN, 14]);
     translate([20.4, 0, 4])jaw_strain_relief();
 }
 
 module base_imp(){
     // joining part
-    translate([0, 0, 2])
-        cube([20, BASE_LEN, 38]);
+    // TODO: possibly bring things closer by a mm
+    tolerance_offset = 0;
+    translate([0, 0, 2 - tolerance_offset])
+        cube([20, BASE_LEN, 38 - tolerance_offset]);
     // overhead_part
     translate([0, 0, 40]){
         cube([20, BASE_LEN, 4]);
@@ -46,10 +48,11 @@ module base_imp(){
             alu_connector(BASE_LEN, 4, flip=true);
     }
     // Jaw connector
-    translate([20, 0, 40 - 6])
-        cube([29, BASE_LEN, 10]);
-    // Strain relief
-    translate([17, 0, 40 - 6]) jaw_strain_relief();
+    translate([20, 0, 40 - 10]){
+        cube([29, BASE_LEN, 14]);
+        // Strain relief
+        translate([-3, 0, 0]) jaw_strain_relief();
+    }
 }
 
 
@@ -60,6 +63,8 @@ module base(){
             // bottom part -> jaw
             translate([0, 0, -3]) jaw();
         }
+        translate([36, 27, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
+        translate([36, 9, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
     }
 }
 
@@ -111,8 +116,10 @@ difference(){
     union(){
         translate([0,10,0]) base();
         arm();
+        rotate([0, 270, 0]) alu_connector(m8_bolt_len - 1 , 0);
+        translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(m8_bolt_len - 1 , 0);
     }
     //using joining hardware
-    translate([10, -1, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len, M8, flip=true);
-    translate([10, -1, 30]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len, M8, flip=true);
+    translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
+    translate([10, -2, 30]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
 }
