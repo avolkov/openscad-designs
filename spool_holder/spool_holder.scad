@@ -1,3 +1,17 @@
+/*
+ * Ultimate customizable spool holder for 2040 frame (bear upgrade)
+ * 
+ * Project URL
+ * https://github.com/avolkov/openscad-designs/spool-holder
+ *
+ * Copyright 2021 Alex Volkov <alex@flamy.ca>
+ * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
+ * https://creativecommons.org/licenses/by-sa/4.0/
+ *
+ * Version 0.1 2021-06-28 Initial work started WIP
+ */
+
+
 include <../libs/hardware-recess.scad>;
 
 spool_d = 25;
