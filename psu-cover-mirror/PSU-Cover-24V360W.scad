@@ -5,52 +5,36 @@
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://prusamendel.org
 
-
-
-module CubeAdjust(Xdim, Zdim){
-    for (x =[6:12.2:Xdim-12]){
-        for (z =[4.5:12:Zdim-12]){
-        translate([x,-0.2,z])cube([10.3,0.4,10]);
-        }
-    }
-}
-
 module left_shelf_cutout(){
-    translate([101+2,50-16.4-17.6+15+0.9-2.5,2])cube([10,100,50-0.7]); // shelf top cutout
-    translate([101+2,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]); // shelf angle cutout
-    translate([101+2,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
+    // shelf top cutout
+    translate([101+2,50-16.4-17.6+15+0.9-2.5,2])cube([10,100,50-0.7]);
+    // shelf angle cutout
+    translate([101+2,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]);
+    // shelf bottom cutout
+    translate([101+2,2,2]) cube([10,18,50-0.7]);
 }
 
 module right_shelf_cutout(){
-    translate([0,50-16.4-17.6+15+0.9-2.5,2])cube([10,70-2,70-5]); // shelf top cutout
-    //translate([0,10,2])rotate([0,0,45]) cube([10*sqrt(2),10*sqrt(2),50-0.7]); // shelf angle cutout
-    translate([0,2,2]) cube([10,18,50-0.7]); // shelf bottom cutout
+    //top cutout
+    translate([-1.4,50-16.4-17.6+15+0.9-2.5,2])cube([6.4,70 - 2,53.78 -5]);
+    // shelf angle cutout
+    translate([4.6,14,2])rotate([0,0,45]) cube([6*sqrt(2),6*sqrt(2),53.78 -5]);
+    //bottom cutout
+    translate([-1.4,2,2])cube([6.4,18,53.78 -5]);
 }
 
-module PSU_COVER()
-{
+module PSU_COVER(){
 difference(){
     union(){
         translate([0,0,-0.46])cube([116,50+15+5,54.25]); // Base
         translate([23.5,0,-3.5])cube([14-0.5,50+15+5,5]); // Back pillar 1
         translate([66-0.5+8,0,-3.5])cube([14,50+15+5,5]); // Back pillar 2
         translate([91+4,0,-0.46])cube([6,50+15,54.25]); // Base for bracket
-        // weird stuff on the right
-        *translate([-2,45.4-4,19])cube([2,2.6,15]); // nipple on the right
-        *translate([-1.6,0,-0.5])cube([1.65,70,2.5]); // Frame skirt 1
-        *translate([-1.6,0,0])cube([1.65,29,53.78]); // Frame skirt 2
-        *translate([-1.6,0,51.32])cube([1.65,70,2.46]); // Frame skirt 3
-        
         //my customization of the complete hull
-        translate([-6,0,0])cube([6,70,53.78]); // Frame skirt 3
-        //right_shelf_cutout();
+        translate([-4.5,0,0])cube([6,70,53.78]); // Frame skirt 3
         }
+    right_shelf_cutout()
 
-    //Right shelf and more bits cut out
-    translate([-3.4,50-16.4-17.6+15+0.9-2.5,2])cube([6.4,70 - 2,53.78 -5]);//top cutout
-    translate([2.6,14,2])rotate([0,0,45]) cube([6*sqrt(2),6*sqrt(2),53.78 -5]); // shelf angle cutout
-    translate([-3.4,2,2])cube([6.4,18,53.78 -5]);//bottom cutout
-    
     //pretty corners
     translate([-11 - 3,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
     translate([95+21-5,-2,-2])rotate([0,0,-45])cube([10,10,58]); // left botton
@@ -72,15 +56,14 @@ difference(){
     translate([-7,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front right line
 
     translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); // main cutout
-    translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
-    translate([-3,50-16.4-15.6+15,2])cube([10,100,17]); // right bottom cutout
-
+    //NO LONGER USED insert TO DELETE 
+    //translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
+    //translate([-3,50-16.4-15.6+15,2])cube([10,100,17]); // right bottom cutout
+    //translate([-3,50-16.4-17.6+15+0.9-2.5,2])cube([100,100,10]); //  bottom cutout
 
     left_shelf_cutout();
-
-    translate([-3,50-16.4-17.6+15+0.9-2.5,2])cube([100,100,10]); //  bottom cutout
-
-    translate([20,60.5,50])cube([73,10,10]); // Vent cutout
+    // Front Vent cutout
+    translate([20,60.5,50])cube([73,10,10]); 
     translate([20,67.5,50])rotate([45,0,0])cube([10,10,10]);
     translate([93,67,50])rotate([45,0,0])cube([10,10,10]);
 
@@ -91,11 +74,11 @@ difference(){
         translate([40 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
         translate([72.5 - SOCKET_OFFSET,4,50])cube([15,29.5,2.8]);
     }
-
-    translate([7-0.5-0.5+18+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  right back mounthole cutout
+    //  right back mounthole cutout
+    translate([7-0.5-0.5+18+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); 
     translate([7-0.5-0.5+18+6,43.5-1+15+0.+4.5,-3.7])cylinder(r2=2, r1=3.7,h=2,$fn=15);
-
-    translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); //  left back mounthole cutout
+    //  left back mounthole cutout
+    translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-10])cylinder(r=2,h=50,$fn=15); 
     translate([67.5-0.7-0.5+8+6,43.5-1+15+0.5+4.5,-3.7])cylinder(r2=2, r1=3.7,h=3,$fn=15);
 
 
@@ -103,8 +86,6 @@ difference(){
     translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
 
     //Old version
-    //translate([130+16,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole R
-    //translate([117,32+26+4.5,55-4-25-11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
     //Gap for power adapter
     translate([113,45,2]){
             difference(){
@@ -122,14 +103,14 @@ difference(){
     translate([15, 32+26+4.5,55-4-25-11.5])
         rotate([0,-90,0])
             cylinder(r=2,h=50,$fn=35);
-    translate([-4,32+26+4.5,55-4-25-11.5])
+    translate([-2,32+26+4.5,55-4-25-11.5])
         rotate([0,-90,0])
             cylinder(r2=4.1, r1=2,h=3,$fn=15);
 
-
-//translate([-2,0,-1])CubeAdjust(116,54.25); // bottom squares cutout
-    for(i=[0:4]){
-        translate([10 + i,10,-10])cylinder(r=7,h=50); //back power wire cutout
+    //back power wire cutout
+    hull(){
+        translate([10,10,-10]) cylinder(r=7,h=50);
+        translate([10 + 4,10,-10]) cylinder(r=7,h=50);
         }
     }
 }
@@ -139,69 +120,58 @@ module bottom_reinf(placement_diff, x_mount_offset, x_reinf_offset){
     difference(){
         union(){
             // Distance from the corner
+            // reinforcement plate
             translate([59.5 - placement_diff - x_mount_offset, 0, -18 ])
-                cube([ 33, 6, 19 ]);  // reinforcement plate
-            //translate([19.5, 0, -18 ]) cube([ 33, 6, 19 ]);  // reinforcement plate
-            translate([ 73.5 - placement_diff, 5, -18 ]) cube([ 5, 16, 19 ]);  // vertical_reinforcement right
+                cube([ 33, 6, 19 ]);
+            // vertical_reinforcement right
+            translate([ 73.5 - placement_diff, 5, -18 ]) cube([ 5, 16, 19 ]);
+            // vertical_reinforcement left
             translate([ 73.5 - placement_diff - x_reinf_offset, 5, -18 ])
-                cube([ 5, 16, 19 ]);  // vertical_reinforcement left
+                cube([ 5, 16, 19 ]);
         }
-        
-        union (){// cutouts
-            // corner cuts
-            // angled vertical support
-        
+        // cutouts
+        union (){
+            //vertical reinf cutout right
             translate([ 68.5 - placement_diff, 20, -34 + Z_DIFF ])
                 rotate([ 45, 0, 0 ])
-                    cube([ 15, 23, 20 ]);//vertical reinf cutout right
+                    cube([ 15, 23, 20 ]);
+            //vertical reinf cutout left
             translate([ 68.5 - placement_diff - x_reinf_offset, 20, -34 + Z_DIFF ])
                 rotate([ 45, 0, 0 ])
-                    cube([ 15, 23, 20 ]); //vertical reinf cutout left
+                    cube([ 15, 23, 20 ]);
             mount_hole_angle = 90;
-            // 
+            // Redesigned mount for Bear Upgrade bottom PS mount
             hull(){
                 translate([71.5 - placement_diff, 8, -11.5 ])
                     rotate([mount_hole_angle, 0, 0 ])
-                        cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
+                        cylinder( h = 10, r = 1.8, $fn=30 );
                 translate([52.5 - placement_diff, 8, -11.5 ])
                     rotate([mount_hole_angle, 0, 0 ])
-                        cylinder( h = 10, r = 1.8, $fn=30 );  //hole B
+                        cylinder( h = 10, r = 1.8, $fn=30 );
             }
         }
     }
-
 }
 
 
-module PSU_Y_REINFORCEMENT()
-{
-    
+module PSU_Y_REINFORCEMENT(){
     PLACEMENT_DIFF = 21.5;
-    
     X_MOUNT_OFFSET = 14;
     REINF_OFFSET = 28;
-    
-    
-  
-difference()
-{
-   // base shape
-    union(){
-        bottom_reinf(PLACEMENT_DIFF, X_MOUNT_OFFSET, REINF_OFFSET);
-        //translate([8,0,-9 ]) cube([ 8, 3, 10 ]);  //Wiring ledge
+    difference(){
+        // base shape
+        union(){
+            bottom_reinf(PLACEMENT_DIFF, X_MOUNT_OFFSET, REINF_OFFSET);
+        }
     }
-    
-    
-}
 }
 
 
 module FINAL_PART(){
-    union()
-        {
-            PSU_COVER();
-            PSU_Y_REINFORCEMENT();
-        }   
+    union(){
+        PSU_COVER();
+        PSU_Y_REINFORCEMENT();
+    }
 }
 
 FINAL_PART();
