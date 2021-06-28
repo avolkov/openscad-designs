@@ -12,6 +12,23 @@
  */
 
 
+
+/*
+ * TODOs:
+ * Add connector ridges for the part when spool holder mates with the arm
+ * Add teeth that go in between base and jaw (5-8mm long or so) to add vertical rigidity
+ * Make arm thicker, not enough meat holding m8 bolts to the base
+ * Add 'cups' that hold m8 threads for jaw and base bolts
+ * Figure out how to cut the edges (45 degree cubes?)
+ */
+
+/*
+ * Testing
+ * 1) create a simplified model of base and jaws to fix fitting
+ * 2) Try fixing ALU tolerances in the library
+ *
+ *
+ */
 include <../libs/hardware-recess.scad>;
 
 spool_d = 25;
@@ -100,7 +117,7 @@ module spool(){
        }
     }
 }
-//TODO: make arm thicker, not enough meat holding m8 bolts to the base
+
 module arm(display_spool=DISPLAY_SPOOL){
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
     difference(){
