@@ -254,15 +254,19 @@ module mounting_holes(fastener_len, nut_height, end_type){
 
 // Aluminium profile connectors
 
-module alu_connector(face_len, thickness){
+module alu_connector(face_len, thickness, flip=false){
 
     face_w = 20;
     flat_gap = 5;
     //TODO: Base can still be slightly increased 2020-06-24
     alu_2020_base = 8;
-
-    union(){
-        cube([face_w, face_len, thickness]);
+    cube([face_w, face_len, thickness]);
+    if (flip) {
+        translate([face_w/2 + alu_2020_base/2, 0, 0])
+            rotate([0,90,90])
+                linear_extrude(face_len)
+                    polygon(points=[[0,0], [2,1.5], [2,ALU_PROFILE_H], [0,alu_2020_base]]);
+    } else {
         translate([face_w/2 + alu_2020_base/2, face_len, thickness])
             rotate([0,270,90])
                 linear_extrude(face_len)
