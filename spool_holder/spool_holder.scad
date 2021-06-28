@@ -7,16 +7,45 @@ arm_thick = 10;
 DISPLAY_SPOOL = false;
 SPOOL_ANGLE = 30;
 ARM_LEN = 150;
+BASE_LEN = 36;
 
-module base(){
+module jaw_strain_relief(){
+    rotate([0, 45, 0])cube([4, BASE_LEN, 4]);
+}
+
+
+module jaw() {
+    cube([24, BASE_LEN, 4]);
+    translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
+    translate([22, 0, 0]) cube([29, BASE_LEN, 10]);
+    translate([20.4, 0, 4])jaw_strain_relief();
+}
+
+module base_imp(){
     // joining part
     translate([0, 0, 2])
-        cube([20, 36, 38]);
+        cube([20, BASE_LEN, 38]);
     // overhead_part
     translate([0, 0, 40]){
-        cube([20, 36, 4]);
+        cube([20, BASE_LEN, 4]);
         translate([-20, 0, 0])
-            alu_connector(36, 4, flip=true);
+            alu_connector(BASE_LEN, 4, flip=true);
+    }
+    // Jaw connector
+    translate([20, 0, 40 - 6])
+        cube([29, BASE_LEN, 10]);
+    // Strain relief
+    translate([17, 0, 40 - 6]) jaw_strain_relief();
+}
+
+
+module base(){
+    difference() {
+        union(){
+            base_imp();
+            // bottom part -> jaw
+            translate([0, 0, -3]) jaw();
+        }
     }
 }
 
@@ -37,7 +66,7 @@ module spool(){
        }
     }
 }
-
+//TODO: make arm thicker, not enough meat holding m8 bolts to the base
 module arm(display_spool=DISPLAY_SPOOL){
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);;
     difference(){
