@@ -3,7 +3,7 @@
  * This should work for in place of any aluminium short rack adapter.
  * 
  * Project URL
- * https://github.com/avolkov/openscad-designs/tomato-can-saucer
+ * https://github.com/avolkov/openscad-designs/bike-rack-holder
  *
  * Copyright 2021 Alex Volkov <alex@flamy.ca>
  * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
