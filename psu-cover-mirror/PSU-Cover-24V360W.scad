@@ -33,11 +33,11 @@ difference(){
         //my customization of the complete hull
         translate([-4.5,0,0])cube([6,70,53.78]); // Frame skirt 3
         }
-    right_shelf_cutout()
+    right_shelf_cutout();
 
     //pretty corners
-    translate([-11 - 3,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
-    translate([95+21-5,-2,-2])rotate([0,0,-45])cube([10,10,58]); // left botton
+    translate([-12 - 3,-2,-3.6])rotate([0,0,-45])cube([10,10,59]); // right bottom
+    translate([95+21-5,-2,-2])rotate([0,0,-45])cube([10,10,58]); // left bottom
     translate([-3,-9,-4.46])rotate([-45,0,0])cube([130,10,10]); // back bottom
 
     translate([-3,-12,54.9])rotate([-45,0,0])cube([130,10,10]); // bottom front edge
@@ -48,7 +48,7 @@ difference(){
 
     translate([111,0-10,-20])rotate([0,-45,-45])cube([20,20,20]); // back left bottom corner
     translate([111,0-10,45])rotate([0,-45,-45])cube([20,20,20]); // front left bottom corner
-    translate([-9,-20,60]) rotate([0,45,45])cube([20,20,20]); // front right bottom corner
+    translate([-11,-20,60]) rotate([0,45,45])cube([20,20,20]); // front right bottom corner
     translate([-7,-17,-11])rotate([0,45,45])cube([20,20,20]); // back right bottom corner
 
     translate([79+13.5,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front left line
@@ -90,11 +90,12 @@ difference(){
                 translate([0,0,22]) rotate([45,0,0]) cube([5,5,5]);
             }
         }
-
-    // New screw holes on the right
+    //New screw hole on the right
+    //Thread
     translate([15, 32+26+4.5,55-4-25-11.5])
         rotate([0,-90,0])
             cylinder(r=2,h=50,$fn=35);
+    //Flat top
     translate([-2,32+26+4.5,55-4-25-11.5])
         rotate([0,-90,0])
             cylinder(r2=4.1, r1=2,h=3,$fn=15);
