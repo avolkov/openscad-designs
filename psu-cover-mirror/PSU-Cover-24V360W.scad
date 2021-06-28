@@ -54,12 +54,9 @@ difference(){
     translate([79+13.5,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front left line
     translate([79+13.5,-5,-13.96])rotate([0,45,0])cube([20,90,20]); // back left line
     translate([-7,-5,67.28])rotate([0,45,0])cube([20,90,20]); // front right line
-
-    translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); // main cutout
-    //NO LONGER USED insert TO DELETE 
-    //translate([-3,50-16.4+15,2])cube([100,16.5+5,50-0.7]); // insert cutout
-    //translate([-3,50-16.4-15.6+15,2])cube([10,100,17]); // right bottom cutout
-    //translate([-3,50-16.4-17.6+15+0.9-2.5,2])cube([100,100,10]); //  bottom cutout
+    
+    // main cutout
+    translate([3,2,2])cube([106.02,50.02+15+5,50.02-0.7]); 
 
     left_shelf_cutout();
     // Front Vent cutout
@@ -84,18 +81,13 @@ difference(){
 
     translate([130+16,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r=2,h=50,$fn=35); // Left side bracket screw hole L
     translate([117,32+26+4.5,55-4-25+11.5])rotate([0,-90,0])cylinder(r2=2, r1=4.1,h=3,$fn=15);
-
-    //Old version
     //Gap for power adapter
     translate([113,45,2]){
+            translate([0,24,22]) rotate([45,0,0]) cube([5,5,5]);
             difference(){
                 cube([5, 25, 25]);
-                translate([0,0,-4])
-                    rotate([45,0,0])
-                        cube([5,5,5]);
-                translate([0,0,22])
-                    rotate([45,0,0])
-                        cube([5,5,5]);
+                translate([0,0,-4]) rotate([45,0,0]) cube([5,5,5]);
+                translate([0,0,22]) rotate([45,0,0]) cube([5,5,5]);
             }
         }
 
