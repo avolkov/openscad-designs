@@ -16,11 +16,17 @@ include <../libs/hardware-recess.scad>;
 
 spool_d = 25;
 m8_bolt_len = 47;
-arm_thick = 10;
+
+ARM_LEN = 150;
+ARM_BASE_W = 15;
+ARM_TOP_W = 12;
+
 
 DISPLAY_SPOOL = false;
+
 SPOOL_ANGLE = 30;
-ARM_LEN = 150;
+SPOOL_LEN = 100;
+
 BASE_LEN = 36;
 
 module jaw_strain_relief(){
@@ -69,39 +75,39 @@ module base(){
 }
 
 module spool(){
-    ARM_LEN = 100;
+    
     rotate([90, 0,0]){
         difference(){
             union(){
-                cylinder(d=spool_d, h=ARM_LEN);
+                cylinder(d=spool_d, h=SPOOL_LEN);
                 translate([0,0,90]){
                     cylinder(d1=spool_d, d2=spool_d + 10, h=5);
                     translate([0,0,5])
                     cylinder(d=spool_d + 10, h=5);
                 }
             }
-            translate([0,0, m8_bolt_len - arm_thick])
+            translate([0,0, m8_bolt_len - ARM_TOP_W])
                 cylinder(d=M_DIM[8][3], h=ARM_LEN );
        }
     }
 }
 //TODO: make arm thicker, not enough meat holding m8 bolts to the base
 module arm(display_spool=DISPLAY_SPOOL){
-    SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);;
+    SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
     difference(){
         union(){
             hull(){
-                cube([20, 10, 40]);
+                cube([20, ARM_BASE_W, 40]);
                 translate([SPOOL_X_ADJUST, 0, ARM_LEN])
                     rotate([90, 0, 0])
-                        cylinder(d=spool_d, h=10, center=true);
+                        cylinder(d=spool_d, h=ARM_TOP_W, center=true);
             }
             if (display_spool){
                 translate([SPOOL_X_ADJUST,0, ARM_LEN]) spool();
             }
         }
     // hardware for mating spool to an arm
-    translate([SPOOL_X_ADJUST, arm_thick, ARM_LEN])
+    translate([SPOOL_X_ADJUST, ARM_TOP_W, ARM_LEN])
         rotate([90, 0, 0])
             bolt_nut(m8_bolt_len, M8, flip=true);
     }
@@ -114,10 +120,10 @@ module arm(display_spool=DISPLAY_SPOOL){
 //translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
 difference(){
     union(){
-        translate([0,10,0]) base();
+        translate([0,ARM_BASE_W,0]) base();
         arm();
-        rotate([0, 270, 0]) alu_connector(m8_bolt_len - 1 , 0);
-        translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(m8_bolt_len - 1 , 0);
+        rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
+        translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
     }
     //using joining hardware
     translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
