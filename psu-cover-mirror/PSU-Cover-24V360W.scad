@@ -1,4 +1,18 @@
-// PRUSA iteration3
+/*
+ * Modifications for mounting on the left side of the printer,
+ * and adjustments for Bear Upgrade mounts
+ * GNU GPL v3
+ * Alex Volkov <alex@flamy.ca> 2021-06-27
+ *
+ * PRUSA iteration3
+ * PSU Cover
+ * GNU GPL v3
+ * Josef Průša <iam@josefprusa.cz> and contributors
+ * http://www.reprap.org/wiki/Prusa_Mendel
+ * http://prusamendel.org
+ *
+ */
+PRUSA iteration3
 // PSU Cover
 // GNU GPL v3
 // Josef Průša <iam@josefprusa.cz> and contributors
