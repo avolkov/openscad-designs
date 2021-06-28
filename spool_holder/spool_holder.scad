@@ -19,7 +19,8 @@
  * Add teeth that go in between base and jaw (5-8mm long or so) to add vertical rigidity
  * Make arm thicker, not enough meat holding m8 bolts to the base
  * Add 'cups' that hold m8 threads for jaw and base bolts
- * Figure out how to cut the edges (45 degree cubes?)
+ * Figure out how to cut the edges (45 degree cubes?) 
+ * - check out https://github.com/rcolyer/smooth-prim
  */
 
 /*
