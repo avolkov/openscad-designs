@@ -9,12 +9,19 @@ SPOOL_ANGLE = 30;
 ARM_LEN = 150;
 
 module base(){
-    cube([20, 36, 40]);
+    // joining part
+    translate([0, 0, 2])
+        cube([20, 36, 38]);
+    // overhead_part
+    translate([0, 0, 40]){
+        cube([20, 36, 4]);
+        translate([-20, 0, 0])
+            alu_connector(36, 4, flip=true);
+    }
 }
 
 module spool(){
     ARM_LEN = 100;
-    
     rotate([90, 0,0]){
         difference(){
             union(){
