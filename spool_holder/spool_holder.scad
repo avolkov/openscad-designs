@@ -39,6 +39,7 @@ m8_bolt_len = 47;
 ARM_LEN = 150;
 ARM_BASE_W = 15;
 ARM_TOP_W = 12;
+ARM_BASE_MEAT=3;
 
 // some of this value is due to bug in hole_w_end function that doesn't calculate
 // bolt trap/nut trap offset correctly
@@ -122,9 +123,18 @@ module base(){
             base_imp();
             // bottom part -> jaw
             *translate([0, 0, -3]) jaw();
+            
         }
-        translate([36, 27, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
-        translate([36, 9, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
+        //Jaw mounting hardware
+        for (i = [9, 27]) {
+            translate([36, i, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
+        }
+        
+        
+        
+        //extra meat compensator
+            //translate([10, -ARM_BASE_MEAT, 10]) rotate([270, 0, 0])
+            //translate([10, -ARM_BASE_MEAT, 30]) rotate([270, 0, 0]) 
     }
 }
 
@@ -184,7 +194,7 @@ module arm(display_spool=DISPLAY_SPOOL){
             rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
             translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
         }
-    // hardware for mating spool to an arm
+        //hardware for mating spool to an arm
         translate([SPOOL_X_ADJUST, ARM_TOP_W - SPOOL_BOLT_OFFSET, ARM_LEN])
             rotate([90, 0, 0])
                 bolt_nut(m8_bolt_len, M8, flip=true);
@@ -199,11 +209,14 @@ module arm(display_spool=DISPLAY_SPOOL){
 difference(){
     union(){
         translate([0,ARM_BASE_W,0]) base();
-        *arm();
+        arm();
         // connectors to the 2020 extrusion
         
     }
     //using joining hardware
-    translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
-    translate([10, -2, 30]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
+    for (i=[0, 20, 20]){
+        translate([10, -ARM_BASE_MEAT, 10 + i])
+            rotate([270, 0, 0])
+                bolt_nut(m8_bolt_len + 1, M8, flip=true);
+    }
 }
