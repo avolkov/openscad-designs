@@ -102,18 +102,31 @@ module spool(){
         difference(){
             union(){
                 cylinder(d=spool_d, h=SPOOL_LEN, $fn=fn);
-                translate([0,0,90]){
+                translate([0,0,SPOOL_LEN - 10]){
                     cylinder(d1=spool_d, d2=spool_d + 10, h=5, $fn=fn);
                     translate([0,0,5])
                     cylinder(d=spool_d + 10, h=5, $fn=fn);
                 }
             }
             // hole for the bolt
-            translate([0,0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET])
+            translate([0,0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET - 1]){
+                hull(){
+                    rotate([0,0,30])
+                        cylinder(d=M_DIM[8][3], h=1, $fn=6);
+                    translate([
+                        0,
+                        0,
+                            SPOOL_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET -2)])
+                        cylinder(d=M_DIM[8][3], h=1);
+                }
+                
+            }
+            
+            *translate([0,0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET])
                 cylinder(
                     d1=M_DIM[8][3] + 0.2,
                     d2=M_DIM[8][3] + 5,
-                    h=ARM_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET),
+                    h=SPOOL_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET),
                     $fn=fn);
        }
     }
@@ -148,10 +161,10 @@ module arm(display_spool=DISPLAY_SPOOL){
 //translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
 difference(){
     union(){
-        translate([0,ARM_BASE_W,0]) base();
+        *translate([0,ARM_BASE_W,0]) base();
         arm();
-        rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
-        translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
+        *rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
+        *translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
     }
     //using joining hardware
     translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
