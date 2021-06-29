@@ -48,8 +48,37 @@ DISPLAY_SPOOL = true;
 
 SPOOL_ANGLE = 30;
 SPOOL_LEN = 75;
+SPOOL_Y_OFFSET = 6; // from the arm, this is probably calculation error coming from somewhere
 
 BASE_LEN = 36;
+
+//TODO: to be moved in common library
+
+module tooth(tooth_len, tooth_width){
+    blade_w = 0.2;
+    tooth_depth = 2;
+
+    hull(){
+        cube([tooth_len, blade_w, blade_w]);
+        translate([0, tooth_width - 1, 0])
+            cube([tooth_len, 1, tooth_depth]);
+            
+    }
+}
+
+
+module rotate_teeth(count, tooth_len, tooth_width, r){
+    // Post here solves rotation
+    // http://forum.openscad.org/Re-Rotate-relative-or-make-spokes-td14882.html
+    for (i=[0:count]){
+        rotate([0,0, 360/count*i])
+            translate([r, -tooth_width/2, 0])
+                tooth(tooth_len, tooth_width);
+    }
+}
+
+//Implementation
+
 
 module jaw_strain_relief(){
     rotate([0, 45, 0])cube([4, BASE_LEN, 4]);
@@ -109,31 +138,27 @@ module spool(){
                 }
             }
             // hole for the bolt
-            translate([0,0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET - 1]){
-                hull(){
+            translate([0, 0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET -  SPOOL_Y_OFFSET]){
+                hull($fn=50){
                     rotate([0,0,30])
                         cylinder(d=M_DIM[8][3], h=1, $fn=6);
                     translate([
                         0,
                         0,
-                            SPOOL_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET -2)])
-                        cylinder(d=M_DIM[8][3], h=1);
+                        SPOOL_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET - SPOOL_Y_OFFSET + 16)])
+                        cylinder(d=M_DIM[8][3] + 3, h=20, $fn=40);
                 }
                 
             }
-            
-            *translate([0,0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET])
-                cylinder(
-                    d1=M_DIM[8][3] + 0.2,
-                    d2=M_DIM[8][3] + 5,
-                    h=SPOOL_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET),
-                    $fn=fn);
+            //Add teeth here
+            rotate_teeth(6, 5, 3, 5);
        }
     }
 }
 
 module arm(display_spool=DISPLAY_SPOOL){
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
+    
     difference(){
         union(){
             hull(){
@@ -143,7 +168,7 @@ module arm(display_spool=DISPLAY_SPOOL){
                         cylinder(d=spool_d, h=ARM_TOP_W, center=true);
             }
             if (display_spool){
-                translate([SPOOL_X_ADJUST,0, ARM_LEN]) spool();
+                translate([SPOOL_X_ADJUST,-SPOOL_Y_OFFSET, ARM_LEN]) spool();
             }
             
         }
@@ -170,3 +195,4 @@ difference(){
     translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
     translate([10, -2, 30]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
 }
+*spool();
