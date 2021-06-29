@@ -105,9 +105,9 @@ module base_imp(){
         translate([-20, 0, 0])
             alu_connector(BASE_LEN, 4, flip=true);
     }
-    
-    rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
-    translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
+    for (i=[0, 20]){
+        translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
+    }
     // Jaw connector
     translate([20, 0, 40 - 10]){
         cube([29, BASE_LEN, 14]);
@@ -129,10 +129,9 @@ module base(){
         for (i = [9, 27]) {
             translate([36, i, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
         }
-        
-        
-        
+
         //extra meat compensator
+        
             //translate([10, -ARM_BASE_MEAT, 10]) rotate([270, 0, 0])
             //translate([10, -ARM_BASE_MEAT, 30]) rotate([270, 0, 0]) 
     }
@@ -191,8 +190,9 @@ module arm(display_spool=DISPLAY_SPOOL){
             if (display_spool){
                 translate([SPOOL_X_ADJUST,-SPOOL_Y_OFFSET, ARM_LEN]) spool();
             }
-            rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
-            translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
+            for (i=[0, 20]){
+                translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
+            }
         }
         //hardware for mating spool to an arm
         translate([SPOOL_X_ADJUST, ARM_TOP_W - SPOOL_BOLT_OFFSET, ARM_LEN])
@@ -214,8 +214,8 @@ difference(){
         
     }
     //using joining hardware
-    for (i=[0, 20, 20]){
-        translate([10, -ARM_BASE_MEAT, 10 + i])
+    for (i=[10, 30]){
+        translate([10, -ARM_BASE_MEAT, i])
             rotate([270, 0, 0])
                 bolt_nut(m8_bolt_len + 1, M8, flip=true);
     }
