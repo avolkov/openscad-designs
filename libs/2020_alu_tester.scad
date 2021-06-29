@@ -5,14 +5,14 @@
 
 
 gap_thick = 1.8;
-gap_cover = 5.5;
-gap_len = 6.25;
+gap_wide = 7.22;
+gap_narrow = 6.25;
 
-offset = (gap_cover * 2 - gap_len)/2;
+gap_offset = (gap_wide  - gap_narrow)/2;
 polygon(points=[
         [0,0],
-        [gap_thick,offset],
-        [gap_thick, gap_len],
-        [0, gap_len + offset]
+        [gap_thick, gap_offset],
+        [gap_thick, gap_narrow + gap_offset],
+        [0, gap_wide]
     ]
 );
