@@ -15,9 +15,9 @@
 
 /*
  * TODOs:
- * Add connector ridges for the part when spool holder mates with the arm
+ * DONE. Add connector ridges for the part when spool holder mates with the arm
  * Add teeth that go in between base and jaw (5-8mm long or so) to add vertical rigidity
- * Make arm thicker, not enough meat holding m8 bolts to the base
+ * NOPE. Make arm thicker, not enough meat holding m8 bolts to the base
  * Add 'cups' that hold m8 threads for jaw and base bolts
  * Figure out how to cut the edges (45 degree cubes?) 
  * - check out https://github.com/rcolyer/smooth-prim
@@ -150,7 +150,6 @@ module spool(){
                 }
                 
             }
-            //Add teeth here
             rotate_teeth(6, 5, 3, 5);
        }
     }
@@ -164,9 +163,18 @@ module arm(display_spool=DISPLAY_SPOOL){
             hull(){
                 cube([20, ARM_BASE_W, 40]);
                 translate([SPOOL_X_ADJUST, 0, ARM_LEN])
-                    rotate([90, 0, 0])
+                    rotate([90, 0, 0]){
                         cylinder(d=spool_d, h=ARM_TOP_W, center=true);
+                        
+                    }
             }
+            translate([
+                SPOOL_X_ADJUST,
+                -SPOOL_Y_OFFSET + 0.2, // Adjusting tolerances for mating teeth
+                ARM_LEN
+                ])
+                rotate([90, 0, 0])
+                    rotate_teeth(6, 5, 3, 5);
             if (display_spool){
                 translate([SPOOL_X_ADJUST,-SPOOL_Y_OFFSET, ARM_LEN]) spool();
             }
@@ -195,4 +203,3 @@ difference(){
     translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
     translate([10, -2, 30]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
 }
-*spool();
