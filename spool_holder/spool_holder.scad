@@ -53,6 +53,8 @@ SPOOL_Y_OFFSET = 6; // from the arm, this is probably calculation error coming f
 
 BASE_LEN = 36;
 
+DISPLAY_JAW = true;
+
 //TODO: to be moved in common library
 
 module tooth(tooth_len, tooth_width){
@@ -122,8 +124,9 @@ module base(){
         union(){
             base_imp();
             // bottom part -> jaw
-            *translate([0, 0, -3]) jaw();
-            
+            if (DISPLAY_JAW){
+                translate([0, 0, -3]) jaw();
+            }
         }
         //Jaw mounting hardware
         for (i = [9, 27]) {
@@ -132,15 +135,9 @@ module base(){
     
         //extra meat compensator
         for (i=[10, 30]){
-            translate([10, 30, i]){
-               rotate([270, 30, 0]){
-                   hull(){
-                        cylinder(d=M_DIM[8][3], h=1, $fn=6);
-                        translate([0, 0, 6])
-                            cylinder(d=M_DIM[8][3] + 2, h=0.1);
-                   }
-                }
-            }
+            translate([10, 30, i])
+               rotate([270, 30, 0])
+                    cylinder(d=M_DIM[8][3], h=20, $fn=6);
         }
     }
 }
@@ -217,9 +214,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 difference(){
     union(){
         translate([0,ARM_BASE_W,0]) base();
-        arm();
-        // connectors to the 2020 extrusion
-        
+        *arm();
     }
     //using joining hardware
     for (i=[10, 30]){
