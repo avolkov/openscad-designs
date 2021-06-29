@@ -104,6 +104,9 @@ module base_imp(){
         translate([-20, 0, 0])
             alu_connector(BASE_LEN, 4, flip=true);
     }
+    
+    rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
+    translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
     // Jaw connector
     translate([20, 0, 40 - 10]){
         cube([29, BASE_LEN, 14]);
@@ -118,7 +121,7 @@ module base(){
         union(){
             base_imp();
             // bottom part -> jaw
-            translate([0, 0, -3]) jaw();
+            *translate([0, 0, -3]) jaw();
         }
         translate([36, 27, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
         translate([36, 9, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
@@ -178,7 +181,8 @@ module arm(display_spool=DISPLAY_SPOOL){
             if (display_spool){
                 translate([SPOOL_X_ADJUST,-SPOOL_Y_OFFSET, ARM_LEN]) spool();
             }
-            
+            rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
+            translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
         }
     // hardware for mating spool to an arm
         translate([SPOOL_X_ADJUST, ARM_TOP_W - SPOOL_BOLT_OFFSET, ARM_LEN])
@@ -194,10 +198,10 @@ module arm(display_spool=DISPLAY_SPOOL){
 //translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
 difference(){
     union(){
-        *translate([0,ARM_BASE_W,0]) base();
-        arm();
-        *rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
-        *translate([0,0, 20]) rotate([0, 270, 0]) alu_connector(BASE_LEN + ARM_BASE_W, 0);
+        translate([0,ARM_BASE_W,0]) base();
+        *arm();
+        // connectors to the 2020 extrusion
+        
     }
     //using joining hardware
     translate([10, -2, 10]) rotate([270, 0, 0]) bolt_nut(m8_bolt_len + 1, M8, flip=true);
