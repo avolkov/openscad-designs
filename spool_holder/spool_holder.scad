@@ -129,11 +129,19 @@ module base(){
         for (i = [9, 27]) {
             translate([36, i, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
         }
-
+    
         //extra meat compensator
-        
-            //translate([10, -ARM_BASE_MEAT, 10]) rotate([270, 0, 0])
-            //translate([10, -ARM_BASE_MEAT, 30]) rotate([270, 0, 0]) 
+        for (i=[10, 30]){
+            translate([10, 30, i]){
+               rotate([270, 30, 0]){
+                   hull(){
+                        cylinder(d=M_DIM[8][3], h=1, $fn=6);
+                        translate([0, 0, 6])
+                            cylinder(d=M_DIM[8][3] + 2, h=0.1);
+                   }
+                }
+            }
+        }
     }
 }
 
