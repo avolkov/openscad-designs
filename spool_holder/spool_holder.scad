@@ -87,32 +87,65 @@ module jaw_strain_relief(){
     rotate([0, 45, 0])cube([4, BASE_LEN, 4]);
 }
 
+module journal_key(k_len, tolerance=0){
+    //Journal and key for jaw/base alignment
+    translate([0, tolerance/2, 0])
+    linear_extrude(k_len){
+        polygon(points=[
+            [0 ,0 - tolerance],
+            [6 + tolerance , 2 - tolerance],
+            [6 + tolerance, 6 + tolerance],
+            [0, 8 + tolerance]
+        ]);
+    }
+}
 
 module jaw() {
+    tolerance = 0.8;
+    journal_width = 6 + tolerance;
     cube([24, BASE_LEN, 4]);
     translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
-    translate([22, 0, 0]) cube([29, BASE_LEN, 14]);
-    translate([20.4, 0, 4])jaw_strain_relief();
+    
+    // Extra stuff
+    difference(){
+        union(){
+            translate([22, 0, 0]) cube([29, BASE_LEN, 14]);
+            translate([20.4, 0, 4])jaw_strain_relief();
+        }
+        translate([20, BASE_LEN/2 - journal_width/2 , 4])
+            //cube([8 + 0.5, journal_width, 10 ]);
+            journal_key(14, tolerance=tolerance);
+    }
+    
 }
 
 module base_imp(){
     // joining part
     // TODO: possibly bring things closer by a mm
     tolerance_offset = 0;
+    base_w = 38 - tolerance_offset;
+    JAW_MOUNT_BIT_H = 14;
     translate([0, 0, 2 - tolerance_offset])
-        cube([20, BASE_LEN, 38 - tolerance_offset]);
+        union(){
+            cube([20, BASE_LEN, base_w]);
+            //bit to align jaw
+            translate([20, BASE_LEN/2 - 6/2 ,0])
+                journal_key(base_w);
+        }
+    
     // overhead_part
     translate([0, 0, 40]){
         cube([20, BASE_LEN, 4]);
         translate([-20, 0, 0])
             alu_connector(BASE_LEN, 4, flip=true);
     }
+    // 2040 connectors
     for (i=[0, 20]){
         translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
     }
     // Jaw connector
     translate([20, 0, 40 - 10]){
-        cube([29, BASE_LEN, 14]);
+        cube([29, BASE_LEN, JAW_MOUNT_BIT_H]);
         // Strain relief
         translate([-3, 0, 0]) jaw_strain_relief();
     }
@@ -209,8 +242,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 
-//translate([0,0, 40]) rotate([0, 15, 0]) arm();
-//translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
+
 difference(){
     union(){
         translate([0,ARM_BASE_W,0]) base();
@@ -223,3 +255,8 @@ difference(){
                 bolt_nut(m8_bolt_len + 1, M8, flip=true);
     }
 }
+
+/* Separate parts */
+*jaw();
+//translate([0,0, 40]) rotate([0, 15, 0]) arm();
+//translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
