@@ -227,7 +227,7 @@ module arm(display_spool=DISPLAY_SPOOL){
                 ARM_LEN
                 ])
                 rotate([90, 0, 0])
-                    rotate_teeth(6, 5, 3, 5);
+                    rotate_teeth(6, 4, 3, 5.5);
             if (display_spool){
                 translate([SPOOL_X_ADJUST,-SPOOL_Y_OFFSET, ARM_LEN]) spool();
             }
