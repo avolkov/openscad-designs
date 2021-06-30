@@ -1,6 +1,7 @@
 include <spool_holder.scad>;
 
 //Checking fittings.
+DISPLAY_JAW = false;
 
 module 001_test_fitting_base(){
     difference(){
@@ -17,7 +18,7 @@ module 001_test_fitting_base(){
         translate([-20, 0, -10]) cube([100, 48.8, 60]);
     }
 }
-*001_test_fitting_base();
+001_test_fitting_base();
 
 module 002_test_fitting_spool_arm(){
     *difference(){
@@ -27,11 +28,11 @@ module 002_test_fitting_spool_arm(){
     rotate([180,0,0]){
         translate([0, 3, 40]){
             rotate([90, 0, 0]){
-                cylinder(d=spool_d, h=3);
-                translate([0,0, 3 - 0.2])
+                cylinder(d=spool_d, h=1);
+                translate([0,0, 1 - 0.4])
                     rotate_teeth(6, 4, 3, 5.5);
             }
         }
     }
 }
-002_test_fitting_spool_arm();
+*002_test_fitting_spool_arm();
