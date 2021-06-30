@@ -219,7 +219,6 @@ module arm(display_spool=DISPLAY_SPOOL){
                 translate([SPOOL_X_ADJUST, 0, ARM_LEN])
                     rotate([90, 0, 0]){
                         cylinder(d=spool_d, h=ARM_TOP_W, center=true);
-                        
                     }
             }
             translate([
@@ -248,19 +247,3 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 
-module 001_test_fitting_base(){
-    difference(){
-        union(){
-            translate([0,ARM_BASE_W,0]) base();
-            *arm();
-        }
-        //using joining hardware
-        for (i=[10, 30]){
-            translate([10, -ARM_BASE_MEAT, i])
-                rotate([270, 30, 0])
-                    bolt_nut(m8_bolt_len + 1, M8, flip=true);
-        }
-        translate([-20, 0, -10]) cube([100, 48.8, 60]);
-    }
-}
-001_test_fitting_base();
