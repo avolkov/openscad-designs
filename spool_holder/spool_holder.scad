@@ -116,6 +116,10 @@ module jaw() {
             //cube([8 + 0.5, journal_width, 10 ]);
             journal_key(14, tolerance=tolerance);
     }
+    // cups for the bolts
+    for (i = [9, 27]) {
+        translate([36, i, 14]) cylinder(d=M_DIM[M8][1], h=6);
+    }
     
 }
 
@@ -243,20 +247,20 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 
-difference(){
-    union(){
-        translate([0,ARM_BASE_W,0]) base();
-        *arm();
-    }
-    //using joining hardware
-    for (i=[10, 30]){
-        translate([10, -ARM_BASE_MEAT, i])
-            rotate([270, 30, 0])
-                bolt_nut(m8_bolt_len + 1, M8, flip=true);
+
+module 001_test_fitting_base(){
+    difference(){
+        union(){
+            translate([0,ARM_BASE_W,0]) base();
+            *arm();
+        }
+        //using joining hardware
+        for (i=[10, 30]){
+            translate([10, -ARM_BASE_MEAT, i])
+                rotate([270, 30, 0])
+                    bolt_nut(m8_bolt_len + 1, M8, flip=true);
+        }
+        translate([-20, 0, -10]) cube([100, 48.8, 60]);
     }
 }
-
-/* Separate parts */
-*jaw();
-//translate([0,0, 40]) rotate([0, 15, 0]) arm();
-//translate([39, 0, 160 + 20 + 5]) rotate([90, 0,0]) spool();
+001_test_fitting_base();
