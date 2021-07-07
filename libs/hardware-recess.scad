@@ -25,6 +25,7 @@ mounting_diff = 8;
 ALU_PROFILE_H = 6.5;
 
 // List defined hardware
+M2 = 2;
 M3 = 3;
 M4 = 4;
 M5 = 5;
