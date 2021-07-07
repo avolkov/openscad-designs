@@ -10,9 +10,9 @@ module endstop_mount(){
 }
 
 module endstop_nut(){
-    translate([-4.75,0,0])hole_w_end(4, 1.4, "hex", M2);
+    translate([-4.75,0,-2])hole_w_end(4, 1.4, "hex", M2, flip=true);
     // Front screw hole for endstop
-    translate([4.75,0,0])hole_w_end(4, 1.4, "hex", M2);
+    translate([4.75,0,-2])hole_w_end(4, 1.4, "hex", M2, flip=true);
 }
 
 
