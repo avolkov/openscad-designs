@@ -17,8 +17,17 @@ module endstop_nut(){
 
 
 difference(){
-    translate([-4.75 - extra_width/2, 0, 0]) 
-        cube([4.75*2 + extra_width , endstop_offset, 4]);
+    translate([-4.75 - extra_width/2, 0, -2]) 
+        cube([4.75*2 + extra_width , endstop_offset, 6]);
+    translate([-4.75 - extra_width/2, 0, -2]) 
+            cube([4.75*2 + extra_width , endstop_offset/2, 2]);
+    hull(){
+        translate([-4.75 - extra_width/2, endstop_offset /2, 2]) 
+            cube([4.75*2 + extra_width , endstop_offset, 2]);
+        translate([-4.75 - extra_width/2, 3, 4]) 
+            cube([4.75*2 + extra_width , endstop_offset, 0.5]);
+    }
+    
     translate([0, 3, 0])
         endstop_mount();
     translate([0, endstop_offset - 3, 0])
