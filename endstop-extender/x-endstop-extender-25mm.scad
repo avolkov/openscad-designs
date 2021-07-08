@@ -1,3 +1,8 @@
+/* Copyright 2021 Alex Volkov <alex@flamy.ca>
+ * GNU GPL v3
+ */
+ 
+// Using measurements from x-end mototr with the following license
 // PRUSA iteration4
 // X end motor
 // GNU GPL v3
