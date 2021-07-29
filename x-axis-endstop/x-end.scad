@@ -52,7 +52,6 @@ module x_end_holes()
         {
         
         translate(v=[-5.5-10+1.5,-10,30]) cube(size = [10,46,28], center = true);
-
         // Nice edges
         translate(v=[-5.5-10+1.5-5,-10,30+23])
             rotate([0,20,0])
@@ -71,19 +70,19 @@ module x_end_holes()
     }
 
 
-// Bottom pushfit rod
+    // Bottom pushfit rod
     translate(v=[-15,-41,6]) rotate(a=[-90,0,0]) pushfit_rod(7.8,50);
 
-// Top pushfit rod
+    // Top pushfit rod
     translate(v=[-15,-41.5,rod_distance+6]) rotate(a=[-90,0,0]) pushfit_rod(7.8,50);
 
-// TR Nut trap
+    // TR Nut trap
    // Hole for the nut
     //#translate(v=[0,-17, -1]) poly_cylinder(h = 9.01, r = 6.7, $fn = 60);
     translate(v=[0,-17, -1]) cylinder(h = 14.51, r = 6.7, $fn = 60);
     translate(v=[0,-17, -0.1]) cylinder(h = 1, r1 = 7.2,r2 = 6.7, $fn = 60);
 
-// Screw holes for TR nut
+    // Screw holes for TR nut
     translate(v=[0,-17, 0]) rotate([0, 0, -135]) translate([0, 9.5, -4]) cylinder(h = 19, r = 1.65, $fn=50);
     translate(v=[0,-17, 0]) rotate([0, 0, -135]) translate([0, -9.5, -4]) cylinder(h = 19, r = 1.65, $fn=50);
 
@@ -91,20 +90,45 @@ module x_end_holes()
     translate(v=[0,-17,0]) rotate([0,0,-135]) translate([0,-9.5,-1]) cylinder(h=2, r1=2.2,r2=1.65,, $fn=50);
 
 
-// Nut traps for TR nut screws
-    translate(v=[0,-17, 0]) rotate([0, 0, -135]) translate([0, 9.5, 11]) rotate([0, 0, 0])cylinder(h = 6, r = 3.15, $fn=6);
-
-    translate(v=[0,-17, 0]) rotate([0,0,-135]) translate([0,-9.5,10]) rotate([0,0,30])cylinder(h = 3, r = 3.1, $fn=6);
-    translate([-5.5,-17.2,10]) rotate([0,0,30]) cube([5,5,3]);
-    translate([-0,-17.2,10]) rotate([0,0,60]) cube([5,10,3]);
-    
+    // Nut traps for TR nut screws
+    //Nut on round standoff
+    translate(v=[0,-17, 0])
+        rotate([0, 0, -135])
+            translate([0, 9.5, 11])
+                rotate([0, 0, 0])
+                    cylinder(h = 6, d = 6.6, $fn=6);
+    // nut inside body
+    translate(v=[0,-17, 0])
+    rotate([0,0,-135])
+        translate([0,-9.5,10])
+            rotate([0,0,-90])
+            linear_extrude(height=3) polygon(points=[
+                [1.7, 3],
+                [3.4, 0], 
+                [1.7, -3],
+                [-5, -3],
+                [-5, 3]
+            ])
+    // hollow bit for inside nut
+    *translate(v=[2,-19, 0])
+        rotate([0,0,-135])
+            translate([0,-9.5,10])
+                rotate([0,0,30])
+                    cylinder(h = 3, d = 6.3, $fn=6);
+    *translate([-5.5,-17.2,10]) rotate([0,0,30]) cube([5,5,3]);
+     //translate([-1.5,-17,10]) rotate([0,0,60]) cube([6,7,3]);
+    *translate([-2,-17,10]) rotate([0,0,60]) cube([6,6.5,3]);
     translate([0,0,6.5])
-    difference()
-    {
-        translate(v=[0,-17, 0]) rotate([0,0,-135]) translate([0,-9.5,5.8]) rotate([0,0,30])cylinder(h = 1, r = 3.1, $fn=6);
-        translate([-11,-12.0,4.5]) rotate([0,0,45]) cube([8,3,3]);
-        translate([-6.5,-16.85,4.5]) rotate([0,0,45]) cube([8,3,3]);
+        difference(){
+            translate(v=[0,-17, 0])
+                rotate([0,0,-135])
+                    translate([0,-9.5,5.8])
+                        rotate([0,0,30])
+                            cylinder(h = 1, r = 3.1, $fn=6);
+            translate([-11,-12.0,4.5]) rotate([0,0,45]) cube([8,3,3]);
+            translate([-6.5,-16.85,4.5]) rotate([0,0,45]) cube([8,3,3]);
     }
+    
 }
 
 
