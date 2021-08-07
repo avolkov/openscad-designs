@@ -15,5 +15,7 @@ translate([0,0,TOTAL_LEN/2]){
     cube([12,2, TOTAL_LEN], center=true);
     cube([2,12, TOTAL_LEN], center=true);
 }
-translate([0,0,TOTAL_LEN-4])
-    cylinder(h=4, d=BEARING_D);
+translate([0,0,TOTAL_LEN-6])
+    cylinder(h=4, d1=1, d=BEARING_D);
+translate([0,0,TOTAL_LEN-2])
+    cylinder(h=2, d=BEARING_D);
