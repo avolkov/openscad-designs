@@ -31,7 +31,7 @@ module cube_holder(){
 }
 
 module mount_base(){
-    linear_extrude(BLOCK_H+1)
+    linear_extrude(BLOCK_H+0.5)
         polygon(points=[
             [0,0],
             [LM8UU[1]-2,0],
