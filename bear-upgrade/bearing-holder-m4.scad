@@ -31,7 +31,7 @@ module cube_holder(){
 }
 
 module mount_base(){
-    linear_extrude(BLOCK_H-8)
+    linear_extrude(BLOCK_H+1)
         polygon(points=[
             [0,0],
             [LM8UU[1]-2,0],
@@ -39,7 +39,7 @@ module mount_base(){
             [(LM8UU[1]-2) - (LM8UU[1]-2)*0.2, 9],
             [(LM8UU[1]-2)*0.2, 9],
             [0, 6]
-        ]);
+        ]); 
 }
 
 module fastener_poly(){
@@ -67,11 +67,11 @@ module extruded_holder(){
          mirror([0,1,0]){
             translate([0,13,0]){
                 mount_base();
-                *fastener_poly();
+                //fastener_poly();
             }
         }
         mount_base();
-        *fastener_poly();
+        //fastener_poly();
     }
     translate([0, -13/2, BLOCK_H/2 -2])
         rotate([90, 0, 90])
