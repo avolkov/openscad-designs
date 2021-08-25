@@ -43,13 +43,23 @@ module mount_base(){
 }
 
 module fastener_poly(){
-    linear_extrude(BLOCK_H)
-       polygon(points=[
-            [(LM8UU[1]-2)*0.2,0],
-            [(LM8UU[1]-2)*0.8,0],
-            [(LM8UU[1]-2)*0.8, 9],
-            [(LM8UU[1]-2)*0.2, 9],
-        ]);
+    cubeshave=8;
+    difference(){
+        linear_extrude(BLOCK_H+0.5)
+           polygon(points=[
+                [(LM8UU[1]-2)*0.2,0],
+                [(LM8UU[1]-2)*0.8 ,0],
+                [(LM8UU[1]-2)*0.8 - 2, 9],
+                [(LM8UU[1]-2)*0.2 + 2, 9],
+            ]);
+        *translate([2, 4.5, BLOCK_H])
+            rotate([30, 45, 65])
+                cube([cubeshave,cubeshave, cubeshave]);
+        *mirror([-1,0,0])
+            translate([-(LM8UU[1]-2)*0.8 - 2.4, 4.5, BLOCK_H])
+                rotate([30, 45, 60])
+                    cube([cubeshave,cubeshave, cubeshave]);
+    }
 }
 
 module extruded_holder(){
@@ -61,7 +71,7 @@ module extruded_holder(){
             }
         }
         mount_base();
-        fastener_poly();
+        *fastener_poly();
     }
     translate([0, -13/2, BLOCK_H/2 -2])
         rotate([90, 0, 90])
@@ -108,3 +118,5 @@ difference(){
     //scs_screw(SCS8LUU);
     
 }
+
+*fastener_poly();
