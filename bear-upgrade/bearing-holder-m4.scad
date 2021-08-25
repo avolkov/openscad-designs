@@ -90,13 +90,13 @@ module extruded_holder(){
 
 module fasteners(){
     SCREW_LEN = 25;
-    translate([(LM8UU[1])/2, 4,0]){
-        translate([0,0,BLOCK_H])
-            nut_trap(M4_cap_screw, M4_nut);
+    translate([(LM8UU[1])/2, 4, BLOCK_H]){
+            rotate([0,0,90])
+                nut_trap(M4_cap_screw, M4_nut, horizontal=true);
     }
-    translate([(LM8UU[1])/2, 4 + 24, 0]){
-        translate([0,0,BLOCK_H])
-            nut_trap(M4_cap_screw, M4_nut);
+    translate([(LM8UU[1])/2, 4 + 24, BLOCK_H]){
+            rotate([0,0,90])
+            nut_trap(M4_cap_screw, M4_nut, horizontal=true);
 
         
     }
