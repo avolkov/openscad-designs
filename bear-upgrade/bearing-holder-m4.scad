@@ -9,11 +9,6 @@
  * Version 1.0 2021-08-24 Initial draft
  */
 
-
-// TODO: Add 0.2mm to the diameter of linear bearing cutout to increase tolerance
-// Now the bearing inside is way too tight
-// TODO: M4 Nuts do not fit
-// Done: decrease bearing Z position by 1.5mm
 include <NopSCADlib/lib.scad>
 include <NopSCADlib/utils/core/core.scad>
 use <NopSCADlib/utils/layout.scad>
@@ -27,11 +22,7 @@ use <NopSCADlib/vitamins/bearing_blocks.scad>
 
 BLOCK_W = 32;
 BLOCK_H = 14.5;
-M4_nut_d = 9.0;
-M4_nut_h = 3.9;
 LM8UU_tolerance =  ["LM8UU",   24, 15 +0.2,  8, 0.9, 14.3, 17.3];
-
-
 
 
 module cube_holder(){
@@ -98,22 +89,26 @@ module extruded_holder(){
 }
 
 module fasteners(){
-    translate([(LM8UU[1])/2, 4, BLOCK_H - 3])
-            screw(M4_hex_screw, BLOCK_H);
-    translate([(LM8UU[1])/2, 4 + 24, BLOCK_H - 3])
-            screw(M4_hex_screw, BLOCK_H);
+    SCREW_LEN = 25;
+    translate([(LM8UU[1])/2, 4,0]){
+        translate([0,0,BLOCK_H])
+            nut_trap(M4_cap_screw, M4_nut);
+    }
+    translate([(LM8UU[1])/2, 4 + 24, 0]){
+        translate([0,0,BLOCK_H])
+            nut_trap(M4_cap_screw, M4_nut);
+
+        
+    }
 }
 
-/*
-translate([(LM8UU[1]-2)/2,30/7, 17.5])
-            screw(M4_hex_screw, bolt_len)
-*/
 difference(){
     translate([1, 22.5, -2])
         extruded_holder();
     translate([LM8UU[1]/2, BLOCK_W/2, 5.25])
         rotate([0, 90, 0])
             linear_bearing(LM8UU_tolerance);
+    fasteners();
     translate([0,0,-2])
         hull(){
             translate([-1, BLOCK_W/2, 5.25])
@@ -123,9 +118,8 @@ difference(){
                 rotate([0, 90, 0])
                     cylinder(h=LM8UU[1] + 2, d=LM8UU[2]-2);
         }
-    fasteners();
-    //scs_screw(SCS8LUU);
     
 }
+
 
 *fastener_poly();
