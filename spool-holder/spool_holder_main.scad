@@ -2,8 +2,10 @@ include <spool_holder.scad>;
 
 difference(){
     union(){
-        translate([0,ARM_BASE_W,0]) base();
-        arm();
+        translate([0,ARM_BASE_W,0]) base(display_jaw=true);
+        translate([0,ARM_BASE_W,0]) base(display_base=true);
+        arm(display_spool=false);
+        spool();
     }
     //using joining hardware
     for (i=[10, 30]){
@@ -13,4 +15,3 @@ difference(){
     }
 }
 
-arm();

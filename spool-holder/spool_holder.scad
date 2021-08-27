@@ -156,12 +156,14 @@ module base_imp(){
 }
 
 
-module base(){
+module base(display_jaw, display_base){
     difference() {
         union(){
-            base_imp();
+            if (display_base){
+                base_imp();
+            }
             // bottom part -> jaw
-            if (DISPLAY_JAW){
+            if (display_jaw){
                 translate([0, 0, -3]) jaw();
             }
         }
@@ -275,7 +277,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 *arm(display_spool=false);
-*base();
+*base(display_jaw=true);
 
 
 
