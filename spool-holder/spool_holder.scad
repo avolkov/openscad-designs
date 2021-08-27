@@ -211,9 +211,9 @@ module spool(){
 
 module arm(display_spool=DISPLAY_SPOOL){
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
-    
     difference(){
         union(){
+            
             hull(){
                 cube([20, ARM_BASE_W, 40]);
                 translate([SPOOL_X_ADJUST, 0, ARM_LEN])
@@ -239,11 +239,18 @@ module arm(display_spool=DISPLAY_SPOOL){
         translate([SPOOL_X_ADJUST, ARM_TOP_W - SPOOL_BOLT_OFFSET, ARM_LEN])
             rotate([90, 0, 0])
                 bolt_nut(m8_bolt_len, M8, flip=true);
+        // Cutting holes
+        for(i= [0.4:0.16:1]){
+            translate([ARM_LEN*cos(90-SPOOL_ANGLE) *i, 18,   ARM_LEN * sin(90 - SPOOL_ANGLE)*i])
+                rotate([90, 0, 0])
+                    cylinder(h=ARM_BASE_W+10, d=20 - i*3);
+        }
+            
     }
 }
 
 
-
+*arm();
 
 
 

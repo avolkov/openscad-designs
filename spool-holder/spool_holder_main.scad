@@ -12,3 +12,5 @@ difference(){
                 bolt_nut(m8_bolt_len + 1, M8, flip=true);
     }
 }
+
+arm();
