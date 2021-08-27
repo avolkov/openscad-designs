@@ -51,7 +51,7 @@ SPOOL_ANGLE = 30;
 SPOOL_LEN = 75;
 SPOOL_Y_OFFSET = ARM_TOP_W - 3; // from the arm, this is probably calculation error coming from somewhere
 
-BASE_LEN = 36;
+BASE_LEN = 30;
 
 DISPLAY_JAW = true;
 
@@ -101,57 +101,42 @@ module journal_key(k_len, tolerance=0){
 }
 
 module jaw() {
-    tolerance = 0.8;
-    journal_width = 6 + tolerance;
+    base_w = 40;
     translate([-20, 0, 0])
-        cube([54, BASE_LEN, 4]);
-    translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
-    
-    // Extra stuff
-    difference(){
-        union(){
-            translate([22, 0, 0]) cube([29, BASE_LEN, 14]);
-            translate([20.4, 0, 4])jaw_strain_relief();
+        cube([40, BASE_LEN, 4]);
+    translate([0, BASE_LEN/2, ]){
+        cube([20, BASE_LEN/2, base_w]);
+        for (i=[0, 20]){
+            translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
         }
-        translate([20, BASE_LEN/2 - journal_width/2 , 4])
-            journal_key(14, tolerance=tolerance);
     }
-    // cups for the bolts
-    for (i = [9, 27]) {
-        translate([36, i, 14]) cylinder(d=M_DIM[M8][1], h=6);
-    }
-    
+    translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
 }
 
 module base_imp(){
     // joining part
     // TODO: possibly bring things closer by a mm
-    tolerance_offset = 0;
-    base_w = 38 - tolerance_offset;
+    base_w = 40;
     JAW_MOUNT_BIT_H = 14;
-    translate([0, 0, 2 - tolerance_offset])
-        union(){
-            cube([20, BASE_LEN, base_w]);
-            //bit to align jaw
-            translate([20, BASE_LEN/2 - 6/2 ,0])
-                journal_key(base_w);
-        }
+    cube([20, BASE_LEN/2, base_w]);
     
     // overhead_part
     translate([-20, 0, 40]){
         cube([40, BASE_LEN, 4]);
         alu_connector(BASE_LEN, 4, flip=true);
     }
-    
+    hull(){
+        translate([-15, BASE_LEN/2, 44]){
+            cylinder(h=0.2, r=5);
+        }
+        translate([14, BASE_LEN/2, 44]){
+            scale([1, 2.5, 1])
+                cylinder(h=3, r=5);
+        }
+    }
     // 2040 connectors
     for (i=[0, 20]){
-        translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
-    }
-    // Jaw connector
-    translate([20, 0, 40 - 10]){
-        cube([29, BASE_LEN, JAW_MOUNT_BIT_H]);
-        // Strain relief
-        translate([-3, 0, 0]) jaw_strain_relief();
+        translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
     }
 }
 
@@ -164,7 +149,7 @@ module base(display_jaw, display_base){
             }
             // bottom part -> jaw
             if (display_jaw){
-                translate([0, 0, -3]) jaw();
+                translate([0, 0, 0]) jaw();
             }
         }
         //Jaw mounting hardware
@@ -249,7 +234,7 @@ module arm(display_spool=DISPLAY_SPOOL){
                 
                 *translate([0, ARM_BASE_W,0])
                     cube([200, ARM_BASE_W, ARM_LEN+140]);
-            }
+            } 
                 if (display_spool){
                     translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool();
                 }
@@ -277,7 +262,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 *arm(display_spool=false);
-*base(display_jaw=true);
+base(display_jaw=false, display_base=true);
 
 
 
