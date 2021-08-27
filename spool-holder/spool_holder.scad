@@ -43,7 +43,7 @@ ARM_BASE_MEAT=3;
 
 // some of this value is due to bug in hole_w_end function that doesn't calculate
 // bolt trap/nut trap offset correctly
-SPOOL_BOLT_OFFSET = 4.7;
+SPOOL_BOLT_OFFSET = 8;
 
 DISPLAY_SPOOL = true;
 
@@ -192,7 +192,7 @@ module spool(){
                 }
             }
             // hole for the bolt
-            translate([0, 0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET -  SPOOL_Y_OFFSET]){
+            translate([0, 0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET - SPOOL_Y_OFFSET -1]){
                 hull($fn=50){
                     rotate([0,0,30])
                         cylinder(d=M_DIM[8][3], h=1, $fn=6);
@@ -209,27 +209,47 @@ module spool(){
     }
 }
 
+
+module reinforcement_holes(base_d=17, chamfer_extra=4){
+    for(i= [0.4:0.16:1]){
+        translate([
+            ARM_LEN*cos(90-SPOOL_ANGLE) *i  - 1.5 ,
+            ARM_BASE_W,
+            ARM_LEN * sin(90 - SPOOL_ANGLE)*i])
+            rotate([90, 0, 0]){
+                cylinder(h=ARM_BASE_W/3, d1=base_d + chamfer_extra, d2=base_d);
+                cylinder(h=ARM_BASE_W, d=base_d);
+                translate([0, 0, ARM_BASE_W - ARM_BASE_W/3])
+                    cylinder(h=ARM_BASE_W/3, d1=base_d, d2=base_d + chamfer_extra);
+            }
+    }
+}
+
 module arm(display_spool=DISPLAY_SPOOL){
     
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
-    
+    //reinforcement_holes();
     difference(){
         union(){
             difference(){
                 hull(){
                     cube([20, ARM_BASE_W, 40]);
-                    translate([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
+                    echo([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
+                    translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
                         rotate([90, 0, 0]){
-                            cylinder(d=spool_d, h=ARM_TOP_W, center=true);
+                            cylinder(d=spool_d, h=ARM_BASE_W, center=true);
                         }
                 }
                 // Flat area for spool holder mating
-                translate([SPOOL_X_ADJUST, ARM_BASE_W-ARM_TOP_W, ARM_LEN])
+                translate([SPOOL_X_ADJUST, ARM_BASE_W/2-ARM_TOP_W, ARM_LEN])
                     rotate([90, 0, 0])
                         cylinder(d=spool_d+2, h=ARM_TOP_W, center=true);
+                
+                *translate([0, ARM_BASE_W,0])
+                    cube([200, ARM_BASE_W, ARM_LEN+140]);
             }
                 if (display_spool){
-                    translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET, ARM_LEN]) spool();
+                    translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool();
                 }
                 for (i=[0, 20]){
                     translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
@@ -237,30 +257,16 @@ module arm(display_spool=DISPLAY_SPOOL){
         }
 
         //hardware for mating spool to an arm
-        translate([SPOOL_X_ADJUST, ARM_BASE_W + SPOOL_BOLT_OFFSET+1.5, ARM_LEN])
+        translate([SPOOL_X_ADJUST, ARM_BASE_W/2 + SPOOL_BOLT_OFFSET, ARM_LEN])
             rotate([90, 0, 0])
                 bolt_nut(m8_bolt_len, M8, flip=true);
-        
-        
-        
+
         // Cutting reinforcement holes
-        chamfer_coeff = 6.5;
-        for(i= [0.4:0.16:1]){
-            translate([
-                ARM_LEN*cos(90-SPOOL_ANGLE) *i,
-                17 - i*chamfer_coeff,
-                ARM_LEN * sin(90 - SPOOL_ANGLE)*i])
-                rotate([90, 0, 0]){
-                    cylinder(h=ARM_BASE_W/3, d1=20 - i*3 + 5, d2=20 - i*3);
-                    cylinder(h=ARM_BASE_W+3, d=20 - i*3);
-                    translate([0, 0, (ARM_BASE_W+3) - i*chamfer_coeff])
-                        cylinder(h=ARM_BASE_W/3, d1=20 - i*3, d2=20 - i*3 + 5);
-                }
-        }
+        reinforcement_holes();
     }
     // Spool mating teeth
     translate([SPOOL_X_ADJUST,
-        10 + 0.2, // Adjusting tolerances for mating teeth
+        SPOOL_Y_OFFSET-ARM_BASE_W/2 + 0.2, // Adjusting tolerances for mating teeth
         ARM_LEN
         ])
         rotate([90, 0, 0])
@@ -268,7 +274,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 }
 
 
-arm(display_spool=true);
+arm(display_spool=false);
 
 
 
