@@ -211,7 +211,7 @@ module spool(){
 
 
 module reinforcement_holes(base_d=17, chamfer_extra=4){
-    for(i= [0.4:0.16:1]){
+    for(i= [0.42:0.16:1]){
         translate([
             ARM_LEN*cos(90-SPOOL_ANGLE) *i  - 1.5 ,
             ARM_BASE_W,
@@ -274,7 +274,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 }
 
 
-arm(display_spool=false);
+*arm(display_spool=false);
 
 
 
