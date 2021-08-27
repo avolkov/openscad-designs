@@ -103,7 +103,8 @@ module journal_key(k_len, tolerance=0){
 module jaw() {
     tolerance = 0.8;
     journal_width = 6 + tolerance;
-    cube([24, BASE_LEN, 4]);
+    translate([-20, 0, 0])
+        cube([54, BASE_LEN, 4]);
     translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
     
     // Extra stuff
@@ -113,7 +114,6 @@ module jaw() {
             translate([20.4, 0, 4])jaw_strain_relief();
         }
         translate([20, BASE_LEN/2 - journal_width/2 , 4])
-            //cube([8 + 0.5, journal_width, 10 ]);
             journal_key(14, tolerance=tolerance);
     }
     // cups for the bolts
@@ -138,11 +138,11 @@ module base_imp(){
         }
     
     // overhead_part
-    translate([0, 0, 40]){
-        cube([20, BASE_LEN, 4]);
-        translate([-20, 0, 0])
-            alu_connector(BASE_LEN, 4, flip=true);
+    translate([-20, 0, 40]){
+        cube([40, BASE_LEN, 4]);
+        alu_connector(BASE_LEN, 4, flip=true);
     }
+    
     // 2040 connectors
     for (i=[0, 20]){
         translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN, 0);
@@ -210,8 +210,8 @@ module spool(){
 }
 
 
-module reinforcement_holes(base_d=17, chamfer_extra=4){
-    for(i= [0.42:0.16:1]){
+module reinforcement_holes(base_d=14, chamfer_extra=3){
+    for(i= [0.42:0.14:1]){
         translate([
             ARM_LEN*cos(90-SPOOL_ANGLE) *i  - 1.5 ,
             ARM_BASE_W,
@@ -275,6 +275,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 *arm(display_spool=false);
+*base();
 
 
 
