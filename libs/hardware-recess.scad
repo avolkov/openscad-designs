@@ -286,7 +286,7 @@ module alu_profile(){
      * is 7.22mm
      */
     gap_thick = 1.8;
-    gap_wide = 7.22;
+    gap_wide = 7.5;
     gap_narrow = 6.25;
 
     gap_offset = (gap_wide  - gap_narrow)/2;
@@ -306,7 +306,7 @@ module alu_connector(face_len, thickness, flip=false){
     flat_gap = 5;
     //TODO: Base can still be slightly increased 2020-06-24
     alu_2020_base = 7.22;
-    cube([face_w, face_len, thickness]);
+    *cube([face_w, face_len, thickness]);
     if (flip) {
         translate([face_w/2 + alu_2020_base/2, 0, 0])
             rotate([0,90,90])
