@@ -100,10 +100,30 @@ module journal_key(k_len, tolerance=0){
     }
 }
 
+module outer_holder(){
+    linear_extrude(BASE_LEN){
+                polygon(points=[
+                    [0, 0],
+                    [0, 2.5],
+                    [4.6, 2.5],
+                    [5.5, 1.5],
+                    [5.5, 0]
+                ]);
+            }
+}
+
+
 module jaw() {
+    
     base_w = 40;
     translate([-20, 0, 0])
         cube([40, BASE_LEN, 4]);
+    // lip that goes around 2020 bit
+    translate([-22, 0, 0]){
+        rotate([270, 270, 0])
+            outer_holder
+        //cube([2, BASE_LEN, 5.5]);
+    }
     translate([0, BASE_LEN/2, ]){
         cube([20, BASE_LEN/2, base_w]);
         for (i=[0, 20]){
@@ -126,9 +146,8 @@ module base_imp(){
         alu_connector(BASE_LEN, 4, flip=true);
     }
     // lip that goes around 2020 bit
-    translate([-22, 0, 38.5]){
+    translate([-22, 0, 38.5])
         cube([2, BASE_LEN, 9.5]);
-    }
     // 2040 connectors
     for (i=[0, 20]){
         translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
@@ -257,7 +276,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 *arm(display_spool=false);
-*base(display_jaw=false, display_base=true);
+base(display_jaw=true, display_base=false);
 
-base_imp();
+*base_imp();
 
