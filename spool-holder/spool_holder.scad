@@ -284,5 +284,5 @@ module arm(display_spool=DISPLAY_SPOOL){
 *arm(display_spool=false);
 *base(display_jaw=true, display_base=false);
 
-base_imp();
+*base_imp();
 
