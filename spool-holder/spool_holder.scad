@@ -121,7 +121,7 @@ module jaw() {
     // lip that goes around 2020 bit
     translate([-22, 0, 0]){
         rotate([270, 270, 0])
-            outer_holder
+            outer_holder();
         //cube([2, BASE_LEN, 5.5]);
     }
     translate([0, BASE_LEN/2, ]){
@@ -145,9 +145,15 @@ module base_imp(){
         cube([40, BASE_LEN, 8]);
         alu_connector(BASE_LEN, 4, flip=true);
     }
+    
     // lip that goes around 2020 bit
-    translate([-22, 0, 38.5])
-        cube([2, BASE_LEN, 9.5]);
+    translate([-22.5, 0, 44])
+        rotate([270, 90, 0])
+            mirror([0, 1, 0])
+            outer_holder();
+    // fill out bit of space
+    translate([-22.5, 0, 44])
+        cube([3, BASE_LEN, 4]);
     // 2040 connectors
     for (i=[0, 20]){
         translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
@@ -276,7 +282,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 *arm(display_spool=false);
-base(display_jaw=true, display_base=false);
+*base(display_jaw=true, display_base=false);
 
-*base_imp();
+base_imp();
 
