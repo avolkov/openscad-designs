@@ -204,10 +204,10 @@ module reinforcement_holes(base_d=14, chamfer_extra=3){
             ARM_BASE_W,
             ARM_LEN * sin(90 - SPOOL_ANGLE)*i])
             rotate([90, 0, 0]){
-                cylinder(h=ARM_BASE_W/3, d1=base_d + chamfer_extra, d2=base_d);
-                cylinder(h=ARM_BASE_W, d=base_d);
+                cylinder(h=ARM_BASE_W/3, d1=base_d + chamfer_extra, d2=base_d, $fn=30);
+                cylinder(h=ARM_BASE_W, d=base_d, $fn=30);
                 translate([0, 0, ARM_BASE_W - ARM_BASE_W/3])
-                    cylinder(h=ARM_BASE_W/3, d1=base_d, d2=base_d + chamfer_extra);
+                    cylinder(h=ARM_BASE_W/3, d1=base_d, d2=base_d + chamfer_extra, $fn=30);
             }
     }
 }
@@ -262,7 +262,7 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 
 *arm(display_spool=false);
-base(display_jaw=false, display_base=true);
+*base(display_jaw=false, display_base=true);
 
 
 
