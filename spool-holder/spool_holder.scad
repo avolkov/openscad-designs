@@ -125,13 +125,14 @@ module base_imp(){
         cube([40, BASE_LEN, 4]);
         alu_connector(BASE_LEN, 4, flip=true);
     }
+    //top reinforcement
     hull(){
-        translate([-15, BASE_LEN/2, 44]){
-            cylinder(h=0.2, r=5);
+        translate([-14, BASE_LEN/2, 43.8]){
+            cylinder(h=0.2, r=6);
         }
-        translate([14, BASE_LEN/2, 44]){
-            scale([1, 2.5, 1])
-                cylinder(h=3, r=5);
+        translate([14, BASE_LEN/2, 43.8]){
+            scale([1, 3, 0.4])
+               sphere(r=5, $fn=50);
         }
     }
     // 2040 connectors
