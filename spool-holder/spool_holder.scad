@@ -39,7 +39,7 @@ m8_bolt_len = 47;
 ARM_LEN = 150;
 ARM_BASE_W = 15;
 ARM_TOP_W = 12;
-ARM_BASE_MEAT=3;
+
 
 // some of this value is due to bug in hole_w_end function that doesn't calculate
 // bolt trap/nut trap offset correctly
@@ -51,7 +51,7 @@ SPOOL_ANGLE = 30;
 SPOOL_LEN = 75;
 SPOOL_Y_OFFSET = ARM_TOP_W - 3; // from the arm, this is probably calculation error coming from somewhere
 
-BASE_LEN = 30;
+BASE_LEN = 28;
 
 DISPLAY_JAW = true;
 
@@ -122,18 +122,12 @@ module base_imp(){
     
     // overhead_part
     translate([-20, 0, 40]){
-        cube([40, BASE_LEN, 4]);
+        cube([40, BASE_LEN, 8]);
         alu_connector(BASE_LEN, 4, flip=true);
     }
-    //top reinforcement
-    hull(){
-        translate([-14, BASE_LEN/2, 43.8]){
-            cylinder(h=0.2, r=6);
-        }
-        translate([14, BASE_LEN/2, 43.8]){
-            scale([1, 3, 0.4])
-               sphere(r=5, $fn=50);
-        }
+    // lip that goes around 2020 bit
+    translate([-22, 0, 38.5]){
+        cube([2, BASE_LEN, 9.5]);
     }
     // 2040 connectors
     for (i=[0, 20]){
@@ -265,5 +259,5 @@ module arm(display_spool=DISPLAY_SPOOL){
 *arm(display_spool=false);
 *base(display_jaw=false, display_base=true);
 
-
+base_imp();
 

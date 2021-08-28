@@ -9,9 +9,9 @@ difference(){
     }
     //using joining hardware
     for (i=[10, 30]){
-        translate([10, -ARM_BASE_MEAT - 2, i])
+        translate([10, -1, i])
             rotate([270, 30, 0])
-                bolt_nut(m8_bolt_len + 3, M8, flip=true);
+                bolt_nut(m8_bolt_len , M8, flip=false);
     }
 }
 
