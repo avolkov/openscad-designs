@@ -35,7 +35,7 @@ include <../libs/hardware-recess.scad>;
 spool_d = 25;
 //Total lenght of a 40mm M8 capscrew bolt (including the head)
 CONN_BOLT_LEN = 47;
-BOLT_SIZE = M8
+BOLT_SIZE = M5;
 
 ARM_LEN = 150;
 ARM_BASE_W = 15;
@@ -189,12 +189,12 @@ module base(display_jaw, display_base){
         for (i=[10, 30]){
             translate([10, 30, i])
                rotate([270, 0, 0])
-                    cylinder(d=M_DIM[8][3], h=20, $fn=6);
+                    cylinder(d=M_DIM[BOLT_SIZE][3], h=20, $fn=6);
         }
     }
 }
 
-module spool(type, mating){
+module spool(){
     fn=50;
     rotate([90, 0,0]){
         difference(){
@@ -213,17 +213,17 @@ module spool(type, mating){
             }
             // hole for the bolt
             
-            
+            echo("Bolt size", BOLT_SIZE);
             hull($fn=50){
                 translate([0, 0, SPOOL_LEN - CONN_BOLT_LEN - SPOOL_BOLT_OFFSET + ARM_TOP_W])
                     rotate([0,0,30])
-                        cylinder(d=M_DIM[8][3], h=1, $fn=6);
+                        cylinder(d=M_DIM[BOLT_SIZE][3], h=1, $fn=6);
                 translate([
                     0,
                     0,
-                    SPOOL_LEN - SPOOL_BOLT_OFFSET])
+                    SPOOL_LEN])
                     cylinder(
-                        d=M_DIM[8][3] + 3,
+                        d=M_DIM[BOLT_SIZE][3] + 3,
                         h=10,
                         $fn=40);
             }
@@ -307,4 +307,4 @@ module arm(display_spool=DISPLAY_SPOOL, type){
 *base_imp();
 
 *spool();
-arm(display_spool=true);
+*arm(display_spool=true);
