@@ -34,7 +34,8 @@ include <../libs/hardware-recess.scad>;
 
 spool_d = 25;
 //Total lenght of a 40mm M8 capscrew bolt (including the head)
-m8_bolt_len = 47;
+CONN_BOLT_LEN = 47;
+BOLT_SIZE = M8
 
 ARM_LEN = 150;
 ARM_BASE_W = 15;
@@ -43,7 +44,7 @@ ARM_TOP_W = 12;
 
 // some of this value is due to bug in hole_w_end function that doesn't calculate
 // bolt trap/nut trap offset correctly
-SPOOL_BOLT_OFFSET = 8;
+SPOOL_BOLT_OFFSET = 16;
 
 DISPLAY_SPOOL = true;
 
@@ -114,23 +115,26 @@ module outer_holder(){
 
 
 module jaw() {
-    
+    bottom_offset = 4;
     base_w = 40;
-    translate([-20, 0, 0])
+    
+    // Jaw
+    translate([-20, 0, -bottom_offset])
         cube([40, BASE_LEN, 4]);
     // lip that goes around 2020 bit
-    translate([-22, 0, 0]){
+    translate([-22, 0, -bottom_offset]){
         rotate([270, 270, 0])
             outer_holder();
-        //cube([2, BASE_LEN, 5.5]);
     }
-    translate([0, BASE_LEN/2, ]){
-        cube([20, BASE_LEN/2, base_w]);
+    // Jaw body implementation
+    translate([0, BASE_LEN/2, 0]){
+        cube([20, BASE_LEN/2, 40 - 0.2]);
         for (i=[0, 20]){
             translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
         }
     }
-    translate([-20, 0, 0]) alu_connector(BASE_LEN, 4);
+    translate([-20, 0, -bottom_offset]) alu_connector(BASE_LEN, 4);
+    
 }
 
 module base_imp(){
@@ -138,7 +142,9 @@ module base_imp(){
     // TODO: possibly bring things closer by a mm
     base_w = 40;
     JAW_MOUNT_BIT_H = 14;
-    cube([20, BASE_LEN/2, base_w]);
+    // body
+    translate([0,0, 0.2])
+        cube([20, BASE_LEN/2, 40 - 0.2]);
     
     // overhead_part
     translate([-20, 0, 40]){
@@ -156,7 +162,9 @@ module base_imp(){
         cube([3, BASE_LEN, 4]);
     // 2040 connectors
     for (i=[0, 20]){
-        translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
+        translate([0,0, i])
+            rotate([0, 270, 0])
+                alu_connector(BASE_LEN/2, 0);
     }
 }
 
@@ -169,12 +177,12 @@ module base(display_jaw, display_base){
             }
             // bottom part -> jaw
             if (display_jaw){
-                translate([0, 0, 0]) jaw();
+                jaw();
             }
         }
         //Jaw mounting hardware
         for (i = [9, 27]) {
-            translate([36, i, -3]) bolt_nut(m8_bolt_len + 2, M8, flip=true);
+            translate([36, i, -3]) bolt_nut(CONN_BOLT_LEN + 2, BOLT_SIZE, flip=true);
         }
     
         //extra meat compensator
@@ -186,7 +194,7 @@ module base(display_jaw, display_base){
     }
 }
 
-module spool(){
+module spool(type, mating){
     fn=50;
     rotate([90, 0,0]){
         difference(){
@@ -197,21 +205,28 @@ module spool(){
                     translate([0,0,5])
                     cylinder(d=spool_d + 10, h=5, $fn=fn);
                 }
+                /*
+                // This currently doesn't work
+                // disable teeth for now. I'm not certain this feature is needed
+                    rotate_teeth(6, 4, 3, 5.5);
+                */
             }
             // hole for the bolt
-            translate([0, 0, m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET - SPOOL_Y_OFFSET -1]){
-                hull($fn=50){
+            
+            
+            hull($fn=50){
+                translate([0, 0, SPOOL_LEN - CONN_BOLT_LEN - SPOOL_BOLT_OFFSET + ARM_TOP_W])
                     rotate([0,0,30])
                         cylinder(d=M_DIM[8][3], h=1, $fn=6);
-                    translate([
-                        0,
-                        0,
-                        SPOOL_LEN - (m8_bolt_len - ARM_TOP_W + SPOOL_BOLT_OFFSET - SPOOL_Y_OFFSET + 16)])
-                        cylinder(d=M_DIM[8][3] + 3, h=20, $fn=40);
-                }
-                
+                translate([
+                    0,
+                    0,
+                    SPOOL_LEN - SPOOL_BOLT_OFFSET])
+                    cylinder(
+                        d=M_DIM[8][3] + 3,
+                        h=10,
+                        $fn=40);
             }
-            rotate_teeth(6, 5, 3, 5);
        }
     }
 }
@@ -232,7 +247,7 @@ module reinforcement_holes(base_d=14, chamfer_extra=3){
     }
 }
 
-module arm(display_spool=DISPLAY_SPOOL){
+module arm(display_spool=DISPLAY_SPOOL, type){
     
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
     //reinforcement_holes();
@@ -264,20 +279,25 @@ module arm(display_spool=DISPLAY_SPOOL){
         }
 
         //hardware for mating spool to an arm
-        translate([SPOOL_X_ADJUST, ARM_BASE_W/2 + SPOOL_BOLT_OFFSET, ARM_LEN])
+        translate([SPOOL_X_ADJUST, ARM_BASE_W/2 + SPOOL_BOLT_OFFSET , ARM_LEN])
             rotate([90, 0, 0])
-                bolt_nut(m8_bolt_len, M8, flip=true);
+                bolt_nut(CONN_BOLT_LEN, BOLT_SIZE, flip=true);
 
         // Cutting reinforcement holes
         reinforcement_holes();
+        /*
+        // disable teeth for now. I'm not certain this feature is needed
+        translate([SPOOL_X_ADJUST,
+            SPOOL_Y_OFFSET - ARM_BASE_W/2, // Adjusting tolerances for mating teeth
+            ARM_LEN
+            ])
+            mirror([0,1,0])
+                rotate([90, 0, 0])
+                rotate_teeth(6, 5, 3, 5);
+        */
     }
     // Spool mating teeth
-    translate([SPOOL_X_ADJUST,
-        SPOOL_Y_OFFSET-ARM_BASE_W/2 + 0.2, // Adjusting tolerances for mating teeth
-        ARM_LEN
-        ])
-        rotate([90, 0, 0])
-            rotate_teeth(6, 4, 3, 5.5);
+    
 }
 
 
@@ -286,3 +306,5 @@ module arm(display_spool=DISPLAY_SPOOL){
 
 *base_imp();
 
+*spool();
+arm(display_spool=true);
