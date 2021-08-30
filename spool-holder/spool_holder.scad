@@ -194,7 +194,7 @@ module base(display_jaw, display_base){
     }
 }
 
-module spool(){
+module spool(bolt_len){
     fn=50;
     rotate([90, 0,0]){
         difference(){
@@ -213,9 +213,8 @@ module spool(){
             }
             // hole for the bolt
             
-            echo("Bolt size", BOLT_SIZE);
             hull($fn=50){
-                translate([0, 0, SPOOL_LEN - CONN_BOLT_LEN - SPOOL_BOLT_OFFSET + ARM_TOP_W])
+                translate([0, 0, SPOOL_LEN - bolt_len - SPOOL_BOLT_OFFSET + ARM_TOP_W])
                     rotate([0,0,30])
                         cylinder(d=M_DIM[BOLT_SIZE][3], h=1, $fn=6);
                 translate([
@@ -247,7 +246,11 @@ module reinforcement_holes(base_d=14, chamfer_extra=3){
     }
 }
 
-module arm(display_spool=DISPLAY_SPOOL, type){
+module arm(
+    display_spool=DISPLAY_SPOOL,
+    dual_spool=false,
+    spool_bolt_size=BOLT_SIZE,
+    spool_bolt_len=CONN_BOLT_LEN){
     
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
     //reinforcement_holes();
@@ -269,19 +272,34 @@ module arm(display_spool=DISPLAY_SPOOL, type){
                 
                 *translate([0, ARM_BASE_W,0])
                     cube([200, ARM_BASE_W, ARM_LEN+140]);
-            } 
-                if (display_spool){
-                    translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool();
-                }
+                } 
                 for (i=[0, 20]){
                     translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
                 }
+                if (display_spool){
+                    if (dual_spool){
+                        translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool(spool_bolt_len/2);
+                        mirror([0, 1, 0])
+                            translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2 - ARM_BASE_W - 2, ARM_LEN]) spool(spool_bolt_len/2);
+                    } else {
+                        translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool(spool_bolt_len);
+                    }
+                    
+                }
+                
         }
 
         //hardware for mating spool to an arm
-        translate([SPOOL_X_ADJUST, ARM_BASE_W/2 + SPOOL_BOLT_OFFSET , ARM_LEN])
-            rotate([90, 0, 0])
-                bolt_nut(CONN_BOLT_LEN, BOLT_SIZE, flip=true);
+        if (dual_spool){
+            translate([SPOOL_X_ADJUST, spool_bolt_len/2 , ARM_LEN])
+                rotate([90, 0, 0])
+                    bolt_nut(spool_bolt_len, spool_bolt_size, flip=true);
+        } else {
+            translate([SPOOL_X_ADJUST, ARM_BASE_W/2 + SPOOL_BOLT_OFFSET , ARM_LEN])
+                rotate([90, 0, 0])
+                    bolt_nut(spool_bolt_len, spool_bolt_size, flip=true);
+        }
+    
 
         // Cutting reinforcement holes
         reinforcement_holes();

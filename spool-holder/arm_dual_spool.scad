@@ -1,5 +1,8 @@
 include <spool_holder.scad>;
 
+//Minimum bolt len -> 47mm
+
+
 difference(){
     union(){
         translate([0,ARM_BASE_W,0]) base(display_jaw=true);
@@ -9,7 +12,7 @@ difference(){
         *translate([0,-4, 0])arm(display_spool=true );
         */
         translate([0,ARM_BASE_W,0]) base(display_base=true);
-        arm(display_spool=true );
+        arm(display_spool=true, dual_spool=true, spool_bolt_len=74);
         
     }
     //using joining hardware
