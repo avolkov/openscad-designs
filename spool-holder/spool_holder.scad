@@ -55,40 +55,6 @@ BASE_LEN = 28;
 
 DISPLAY_JAW = true;
 
-//TODO: to be moved in common library
-
-module tooth(tooth_len, tooth_width){
-    blade_w = 0.2;
-    tooth_depth = 2;
-
-    hull(){
-        cube([tooth_len, blade_w, blade_w]);
-        translate([0, tooth_width - 1, 0])
-            cube([tooth_len, 1, tooth_depth]);
-            
-    }
-}
-
-//Implementation
-
-
-module jaw_strain_relief(){
-    rotate([0, 45, 0])cube([4, BASE_LEN, 4]);
-}
-
-module journal_key(k_len, tolerance=0){
-    //Journal and key for jaw/base alignment
-    translate([0, tolerance/2, 0])
-    linear_extrude(k_len){
-        polygon(points=[
-            [0 ,0 - tolerance],
-            [6 + tolerance , 2 - tolerance],
-            [6 + tolerance, 6 + tolerance],
-            [0, 8 + tolerance]
-        ]);
-    }
-}
-
 module outer_holder(){
     linear_extrude(BASE_LEN){
                 polygon(points=[
