@@ -35,7 +35,7 @@ include <../libs/hardware-recess.scad>;
 spool_d = 25;
 //Total lenght of a 40mm M8 capscrew bolt (including the head)
 CONN_BOLT_LEN = 47;
-BOLT_SIZE = M5;
+BOLT_SIZE = M8;
 
 ARM_LEN = 150;
 ARM_BASE_W = 15;
@@ -194,7 +194,7 @@ module base(display_jaw, display_base){
     }
 }
 
-module spool(bolt_len){
+module spool(bolt_len, bolt_size, cutout_type, custom_offset=SPOOL_BOLT_OFFSET){
     fn=50;
     rotate([90, 0,0]){
         difference(){
@@ -202,8 +202,7 @@ module spool(bolt_len){
                 cylinder(d=spool_d, h=SPOOL_LEN, $fn=fn);
                 translate([0,0,SPOOL_LEN - 10]){
                     cylinder(d1=spool_d, d2=spool_d + 10, h=5, $fn=fn);
-                    translate([0,0,5])
-                    cylinder(d=spool_d + 10, h=5, $fn=fn);
+                    translate([0, 0, 5]) cylinder(d=spool_d + 10, h=5, $fn=fn);
                 }
                 /*
                 // This currently doesn't work
@@ -211,22 +210,30 @@ module spool(bolt_len){
                     rotate_teeth(6, 4, 3, 5.5);
                 */
             }
-            // hole for the bolt
-            
-            hull($fn=50){
-                translate([0, 0, SPOOL_LEN - bolt_len - SPOOL_BOLT_OFFSET + ARM_TOP_W])
-                    rotate([0,0,30])
-                        cylinder(d=M_DIM[BOLT_SIZE][3], h=1, $fn=6);
-                translate([
-                    0,
-                    0,
-                    SPOOL_LEN])
-                    cylinder(
-                        d=M_DIM[BOLT_SIZE][3] + 3,
-                        h=10,
-                        $fn=40);
-            }
+            // hole to pass through the head or bolt.
+            spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type);
        }
+    }
+}
+
+module spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type){
+    hull($fn=50){
+        translate([0, 0, custom_offset ])
+            rotate([0,0,30]){
+                if (cutout_type == "hex"){
+                    cylinder(d=M_DIM[bolt_size][3]+1, h=1, $fn=6);
+                } else {
+                    cylinder(d=M_DIM[bolt_size][3]+1, h=1);
+                }
+            }
+        translate([
+            0,
+            0,
+            SPOOL_LEN])
+            cylinder(
+                d=M_DIM[bolt_size][3] + 3,
+                h=10,
+                $fn=40);
     }
 }
 
@@ -247,51 +254,65 @@ module reinforcement_holes(base_d=14, chamfer_extra=3){
 }
 
 module arm(
-    display_spool=DISPLAY_SPOOL,
     dual_spool=false,
     spool_bolt_size=BOLT_SIZE,
-    spool_bolt_len=CONN_BOLT_LEN){
+    spool_bolt_len=CONN_BOLT_LEN,
+    display){
     
     SPOOL_X_ADJUST = 10 + ARM_LEN * cos(90 - SPOOL_ANGLE);
     //reinforcement_holes();
     difference(){
         union(){
-            difference(){
-                hull(){
-                    cube([20, ARM_BASE_W, 40]);
-                    echo([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
-                    translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
-                        rotate([90, 0, 0]){
-                            cylinder(d=spool_d, h=ARM_BASE_W, center=true);
-                        }
-                }
-                // Flat area for spool holder mating
-                translate([SPOOL_X_ADJUST, ARM_BASE_W/2-ARM_TOP_W, ARM_LEN])
-                    rotate([90, 0, 0])
-                        cylinder(d=spool_d+2, h=ARM_TOP_W, center=true);
-                
-                *translate([0, ARM_BASE_W,0])
-                    cube([200, ARM_BASE_W, ARM_LEN+140]);
-                } 
-                for (i=[0, 20]){
-                    translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
-                }
-                if (display_spool){
-                    if (dual_spool){
-                        translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool(spool_bolt_len/2);
-                        mirror([0, 1, 0])
-                            translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2 - ARM_BASE_W - 2, ARM_LEN]) spool(spool_bolt_len/2);
-                    } else {
-                        translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN]) spool(spool_bolt_len);
+                    hull(){
+                        cube([20, ARM_BASE_W, 40]);
+                        echo([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
+                        translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
+                            rotate([90, 0, 0]){
+                                cylinder(d=spool_d, h=ARM_BASE_W, center=true);
+                            }
                     }
+                    // Flat area for spool holder mating
+                    translate([SPOOL_X_ADJUST, ARM_BASE_W/2-ARM_TOP_W, ARM_LEN])
+                        rotate([90, 0, 0])
+                            cylinder(d=spool_d+2, h=ARM_TOP_W, center=true);
                     
-                }
+                    for (i=[0, 20]){
+                        translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
+                    }
+                    if (dual_spool){
+                        if ( display == "left" || display == "all") {
+                            translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN])
+                                spool(
+                                    spool_bolt_len/2 + 6,
+                                    spool_bolt_size,
+                                    custom_offset=spool_bolt_len/2 - ARM_TOP_W/2 - 2,
+                                    cutout_type="hex");
+                        }
+                        if ( display == "right" || display == "all") {
+                            mirror([0, 1, 0])
+                                translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2 - ARM_BASE_W - 2, ARM_LEN])
+                                    spool(
+                                        spool_bolt_len/2 + 8,
+                                        spool_bolt_size,
+                                        custom_offset=spool_bolt_len/2 - ARM_TOP_W/2 - 1,
+                                        cutout_type="round");
+                        }
+                    } else {
+                        if (spool_bolt_len >= 47){
+                            if (display == "all" || display == "single_spool"){
+                                translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN])
+                                    spool(spool_bolt_len, spool_bolt_size, cutout_type="hex");
+                            }
+                        } else {
+                            echo("Minimum bolt length required is 47mm");
+                        }
+                    }
                 
         }
 
         //hardware for mating spool to an arm
         if (dual_spool){
-            translate([SPOOL_X_ADJUST, spool_bolt_len/2 , ARM_LEN])
+            translate([SPOOL_X_ADJUST, spool_bolt_len/2 + SPOOL_Y_OFFSET , ARM_LEN])
                 rotate([90, 0, 0])
                     bolt_nut(spool_bolt_len, spool_bolt_size, flip=true);
         } else {

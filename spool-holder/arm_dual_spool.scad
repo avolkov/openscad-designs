@@ -12,7 +12,7 @@ difference(){
         *translate([0,-4, 0])arm(display_spool=true );
         */
         translate([0,ARM_BASE_W,0]) base(display_base=true);
-        arm(display_spool=true, dual_spool=true, spool_bolt_len=74);
+        arm(dual_spool=true, display="all", spool_bolt_len=47);
         
     }
     //using joining hardware
