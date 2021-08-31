@@ -104,8 +104,8 @@ module base_imp(){
         rotate([270, 90, 0])
             mirror([0, 1, 0])
             outer_holder();
-    // fill out bit of space
-    translate([-21.5, 0, 44])
+    // fill out bit of space above the lip
+    translate([-21.5, 0, 43.8])
         cube([3, BASE_LEN, 4]);
     // 2040 connectors
     for (i=[0, 20]){
