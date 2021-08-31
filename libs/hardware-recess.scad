@@ -287,7 +287,7 @@ module alu_profile(){
      */
     gap_thick = 1.8;
     gap_wide = 7.5;
-    gap_narrow = 6.25;
+    gap_narrow = 6.0;
 
     gap_offset = (gap_wide  - gap_narrow)/2;
     polygon(points=[

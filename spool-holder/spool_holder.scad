@@ -56,9 +56,9 @@ module outer_holder(){
     linear_extrude(BASE_LEN){
         polygon(points=[
             [0, 0],
-            [0, 2.5],
-            [4.6, 2.5],
-            [5.5, 1.5],
+            [0, 1],
+            [4.2, 1],
+            [5.5, 0.5],
             [5.5, 0]
         ]);
     }
@@ -72,13 +72,13 @@ module jaw() {
     translate([-21, 0, -bottom_offset])
         cube([41, BASE_LEN, 4]);
     // lip that goes around 2020 bit
-    translate([-23, 0, -bottom_offset]){
+    translate([-21.5, 0, -bottom_offset]){
         rotate([270, 270, 0])
             outer_holder();
     }
     // Jaw body implementation
     translate([0, BASE_LEN/2, 0]){
-        cube([20, BASE_LEN/2, 40 - 0.2]);
+        cube([20, BASE_LEN/2, 40 - 0.4]);
         for (i=[0, 20]){
             translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
         }
@@ -96,16 +96,16 @@ module base_imp(){
         cube([20, BASE_LEN/2, 40 - 0.2]);
     
     // overhead_part
-    translate([-21, 0, 40]) cube([41, BASE_LEN, 8]);
-    translate([-20, 0, 40]) alu_connector(BASE_LEN, 4, flip=true);
+    translate([-20.5, 0, 39.8]) cube([40.5, BASE_LEN, 8]);
+    translate([-20, 0, 39.8]) alu_connector(BASE_LEN, 4, flip=true);
     
     // lip that goes around 2020 bit
-    translate([-23, 0, 44])
+    translate([-21.5, 0, 44])
         rotate([270, 90, 0])
             mirror([0, 1, 0])
             outer_holder();
     // fill out bit of space
-    translate([-23, 0, 44])
+    translate([-21.5, 0, 44])
         cube([3, BASE_LEN, 4]);
     // 2040 connectors
     for (i=[0, 20]){
@@ -272,3 +272,5 @@ module arm(
         }
     }
 }
+
+
