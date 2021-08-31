@@ -257,20 +257,21 @@ module arm(
                                     cylinder(d=spool_d, h=ARM_BASE_W, center=true);
                                 }
                         }
-                        // Cutting reinforcement holes
+                        // Cut reinforcement holes
                         reinforcement_holes();
+                        // Cut area for spool holder mating
+                        translate([SPOOL_X_ADJUST, ARM_BASE_W/2-ARM_TOP_W, ARM_LEN])
+                            rotate([90, 0, 0])
+                                cylinder(d=spool_d+2, h=ARM_TOP_W, center=true);
                     }
-                    // Flat area for spool holder mating
-                    translate([SPOOL_X_ADJUST, ARM_BASE_W/2-ARM_TOP_W, ARM_LEN])
-                        rotate([90, 0, 0])
-                            cylinder(d=spool_d+2, h=ARM_TOP_W, center=true);
+                    
                     
                     for (i=[0, 20]){
                         translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
                     }
                 }
                     if (dual_spool){
-                        if ( display == "left" || display == "all") {
+                        if ( display == "right" || display == "all") {
                             translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN])
                                 spool(
                                     spool_bolt_len/2 + 6,
@@ -278,7 +279,7 @@ module arm(
                                     custom_offset=spool_bolt_len/2 - ARM_TOP_W/2 - 2,
                                     cutout_type="hex");
                         }
-                        if ( display == "right" || display == "all") {
+                        if ( display == "left" || display == "all") {
                             mirror([0, 1, 0])
                                 translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2 - ARM_BASE_W - 2, ARM_LEN])
                                     spool(
@@ -299,7 +300,6 @@ module arm(
                     }
                 
         }
-
         //hardware for mating spool to an arm
         if (dual_spool){
             translate([SPOOL_X_ADJUST, spool_bolt_len/2 + SPOOL_Y_OFFSET , ARM_LEN])
@@ -312,12 +312,3 @@ module arm(
         }
     }
 }
-
-
-*arm(display_spool=false);
-*base(display_jaw=true, display_base=false);
-
-*base_imp();
-
-*spool();
-*arm(display_spool=true);
