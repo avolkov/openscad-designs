@@ -2,7 +2,7 @@ include <spool_holder.scad>;
 use <spool_holder.scad>;
 
 
-SPOOL_MOUNT_HW = M8;
+SPOOL_MOUNT_HW = M5;
 SPOOL_MOUNT_HW_LEN = 47;
 
 BOLT_SIZE=M8;
@@ -10,9 +10,9 @@ BOLT_SIZE=M8;
 difference(){
     union(){
             // jaw model (lower part)
-            translate([0,ARM_BASE_W,0]) base(display_jaw=true);
+            *translate([0,ARM_BASE_W,0]) base(display_jaw=true);
             // base model(upper part)
-            translate([0,ARM_BASE_W,0]) base(display_base=true);
+            *translate([0,ARM_BASE_W,0]) base(display_base=true);
             // arm model
             arm(
                 dual_spool=false,
@@ -20,7 +20,7 @@ difference(){
                 spool_bolt_size=SPOOL_MOUNT_HW,
                 spool_bolt_len=SPOOL_MOUNT_HW_LEN);
             // spool model
-            arm(
+            *arm(
                 dual_spool=false,
                 display="single_spool",
                 spool_bolt_size=SPOOL_MOUNT_HW,

@@ -204,9 +204,9 @@ module spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type){
         translate([0, 0, custom_offset ])
             rotate([0,0,30]){
                 if (cutout_type == "hex"){
-                    cylinder(d=M_DIM[bolt_size][3]+1, h=1, $fn=6);
+                    cylinder(d=M_DIM[bolt_size][3], h=1, $fn=6);
                 } else {
-                    cylinder(d=M_DIM[bolt_size][3]+1, h=1);
+                    cylinder(d=M_DIM[bolt_size][3], h=1);
                 }
             }
         translate([
@@ -249,9 +249,7 @@ module arm(
             if (display == "all" || display == "arm"){
                     difference(){
                         hull(){
-                            
                             cube([20, ARM_BASE_W, 40]);
-                            echo([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
                             translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
                                 rotate([90, 0, 0]){
                                     cylinder(d=spool_d, h=ARM_BASE_W, center=true);
@@ -292,7 +290,11 @@ module arm(
                         if (spool_bolt_len >= 47){
                             if (display == "all" || display == "single_spool"){
                                 translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN])
-                                    spool(spool_bolt_len, spool_bolt_size, cutout_type="hex");
+                                    spool(
+                                        spool_bolt_len,
+                                        spool_bolt_size,
+                                        custom_offset=spool_bolt_len/2 - ARM_TOP_W/2 + 7,
+                                        cutout_type="hex");
                             }
                         } else {
                             echo("Minimum bolt length required is 47mm");
