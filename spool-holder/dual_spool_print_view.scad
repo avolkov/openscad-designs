@@ -1,10 +1,10 @@
 include <spool_holder.scad>;
 use <spool_holder.scad>;
 
-SPOOL_MOUNT_HW = M8;
-SPOOL_MOUNT_HW_LEN = 47;
-
-BOLT_SIZE=M8;
+SPOOL_MOUNT_HW = M5;
+SPOOL_MOUNT_HW_LEN = 74;
+CONN_BOLT_LEN = 50;
+BOLT_SIZE=M5;
 
 difference(){
     union(){

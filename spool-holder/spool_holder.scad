@@ -57,16 +57,15 @@ DISPLAY_JAW = true;
 
 module outer_holder(){
     linear_extrude(BASE_LEN){
-                polygon(points=[
-                    [0, 0],
-                    [0, 2.5],
-                    [4.6, 2.5],
-                    [5.5, 1.5],
-                    [5.5, 0]
-                ]);
-            }
+        polygon(points=[
+            [0, 0],
+            [0, 2.5],
+            [4.6, 2.5],
+            [5.5, 1.5],
+            [5.5, 0]
+        ]);
+    }
 }
-
 
 module jaw() {
     bottom_offset = 4;
@@ -93,7 +92,6 @@ module jaw() {
 
 module base_imp(){
     // joining part
-    // TODO: possibly bring things closer by a mm
     base_w = 40;
     JAW_MOUNT_BIT_H = 14;
     // body
@@ -138,7 +136,6 @@ module base(display_jaw, display_base){
         for (i = [9, 27]) {
             translate([36, i, -3]) bolt_nut(CONN_BOLT_LEN + 2, BOLT_SIZE, flip=true);
         }
-    
         //extra meat compensator
         for (i=[10, 30]){
             translate([10, 30, i])
