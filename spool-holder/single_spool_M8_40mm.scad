@@ -9,11 +9,11 @@ BOLT_SIZE=M8;
 difference(){
     union(){
             // jaw model (lower part)
-            *translate([0,ARM_BASE_W,0]) base(display_jaw=true);
+            translate([0,ARM_BASE_W,0]) base(display_jaw=true);
             // base model(upper part)
-            *translate([0,ARM_BASE_W,0]) base(display_base=true);
+            translate([0,ARM_BASE_W,0]) base(display_base=true);
             // arm model
-            *arm(
+            arm(
                 dual_spool=true,
                 display="arm",
                 spool_bolt_size=SPOOL_MOUNT_HW,

@@ -15,11 +15,8 @@
 
 /*
  * TODOs:
- * DONE. Add connector ridges for the part when spool holder mates with the arm
- * NOPE. Make arm thicker, not enough meat holding m8 bolts to the base
- * Add 'cups' that hold m8 threads for jaw and base bolts
- * Figure out how to cut the edges (45 degree cubes?) 
- * - check out https://github.com/rcolyer/smooth-prim
+ * fix vertical cuts for nuts/bolts in spool
+ 
  */
 
 /*
