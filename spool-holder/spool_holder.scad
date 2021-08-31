@@ -16,7 +16,6 @@
 /*
  * TODOs:
  * DONE. Add connector ridges for the part when spool holder mates with the arm
- * Add teeth that go in between base and jaw (5-8mm long or so) to add vertical rigidity
  * NOPE. Make arm thicker, not enough meat holding m8 bolts to the base
  * Add 'cups' that hold m8 threads for jaw and base bolts
  * Figure out how to cut the edges (45 degree cubes?) 
@@ -67,17 +66,6 @@ module tooth(tooth_len, tooth_width){
         translate([0, tooth_width - 1, 0])
             cube([tooth_len, 1, tooth_depth]);
             
-    }
-}
-
-
-module rotate_teeth(count, tooth_len, tooth_width, r){
-    // Post here solves rotation
-    // http://forum.openscad.org/Re-Rotate-relative-or-make-spokes-td14882.html
-    for (i=[0:count]){
-        rotate([0,0, 360/count*i])
-            translate([r, -tooth_width/2, 0])
-                tooth(tooth_len, tooth_width);
     }
 }
 
@@ -204,11 +192,6 @@ module spool(bolt_len, bolt_size, cutout_type, custom_offset=SPOOL_BOLT_OFFSET){
                     cylinder(d1=spool_d, d2=spool_d + 10, h=5, $fn=fn);
                     translate([0, 0, 5]) cylinder(d=spool_d + 10, h=5, $fn=fn);
                 }
-                /*
-                // This currently doesn't work
-                // disable teeth for now. I'm not certain this feature is needed
-                    rotate_teeth(6, 4, 3, 5.5);
-                */
             }
             // hole to pass through the head or bolt.
             spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type);
@@ -263,13 +246,19 @@ module arm(
     //reinforcement_holes();
     difference(){
         union(){
-                    hull(){
-                        cube([20, ARM_BASE_W, 40]);
-                        echo([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
-                        translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
-                            rotate([90, 0, 0]){
-                                cylinder(d=spool_d, h=ARM_BASE_W, center=true);
-                            }
+            if (display == "all" || display == "arm"){
+                    difference(){
+                        hull(){
+                            
+                            cube([20, ARM_BASE_W, 40]);
+                            echo([SPOOL_X_ADJUST, ARM_BASE_W, ARM_LEN])
+                            translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
+                                rotate([90, 0, 0]){
+                                    cylinder(d=spool_d, h=ARM_BASE_W, center=true);
+                                }
+                        }
+                        // Cutting reinforcement holes
+                        reinforcement_holes();
                     }
                     // Flat area for spool holder mating
                     translate([SPOOL_X_ADJUST, ARM_BASE_W/2-ARM_TOP_W, ARM_LEN])
@@ -279,6 +268,7 @@ module arm(
                     for (i=[0, 20]){
                         translate([0,0, i]) rotate([0, 270, 0]) alu_connector(ARM_BASE_W, 0);
                     }
+                }
                     if (dual_spool){
                         if ( display == "left" || display == "all") {
                             translate([SPOOL_X_ADJUST, SPOOL_Y_OFFSET-ARM_BASE_W/2, ARM_LEN])
@@ -320,23 +310,7 @@ module arm(
                 rotate([90, 0, 0])
                     bolt_nut(spool_bolt_len, spool_bolt_size, flip=true);
         }
-    
-
-        // Cutting reinforcement holes
-        reinforcement_holes();
-        /*
-        // disable teeth for now. I'm not certain this feature is needed
-        translate([SPOOL_X_ADJUST,
-            SPOOL_Y_OFFSET - ARM_BASE_W/2, // Adjusting tolerances for mating teeth
-            ARM_LEN
-            ])
-            mirror([0,1,0])
-                rotate([90, 0, 0])
-                rotate_teeth(6, 5, 3, 5);
-        */
     }
-    // Spool mating teeth
-    
 }
 
 
