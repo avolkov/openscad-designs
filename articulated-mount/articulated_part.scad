@@ -153,3 +153,4 @@ single_ear(base_thickness, ear_reach, m5_nut_thick, 6);
 translate([0,0,-7])
 make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
 */
+make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
