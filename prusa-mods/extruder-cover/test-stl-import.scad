@@ -1,4 +1,4 @@
-import("extruder-cover_fixed.stl");
+import("extruder-cover_v2.stl");
 /*
 You can check and fix the normals of an STL with the --normal-directions option of ADMesh:
 https://admesh.readthedocs.io/en/latest/cli.html#options
@@ -8,4 +8,6 @@ https://admesh.readthedocs.io/en/latest/cli.html#options
 
 // tried formware too. didn't work
 //https://www.formware.co/onlinestlrepair
-//cube([20, 20, 20]);
+
+// Extruder cover v2 works!
+cube([20, 20, 20]);

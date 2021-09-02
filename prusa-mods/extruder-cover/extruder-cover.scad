@@ -26,6 +26,19 @@ module m3head()
 }
 
 
+module lower_fan_mount(){
+    difference(){
+        union(){
+            translate([-37.75,-38.5,-40]) rotate([0,0,0]) cylinder( h=5, r=5.9, $fn=6 );
+            translate([-34,-41.5,-40]) rotate([0,0,20]) cube([30,8,4]); 
+        }
+        // lower cooling fan screw
+        translate([-37.75,-38.5,-42]) cylinder( h=20, r=1.6, $fn=30 );
+        translate([-37.75,-38.5,-39.4]) cylinder( h=4, r=3.1, $fn=6 );
+        translate([-37.75,-38.5,-37.5]) cylinder( h=3, r1=3.1, r2=4.0, $fn=6 );
+    }
+}
+
 module extruder_cover()
 {
     difference()
@@ -35,8 +48,7 @@ module extruder_cover()
         {
             // base block
             translate([-17,-36.5,-40.0]) cube([41.5,42.25,23.0]); 
-            translate([-37.75,-38.5,-40]) rotate([0,0,0]) cylinder( h=5, r=5.9, $fn=6 );
-            translate([-34,-41.5,-40]) rotate([0,0,20]) cube([30,8,4]); 
+            lower_fan_mount();
             translate([16,-38.5,-40]) rotate([0,0,45]) cube([3,3,23]);  
             
             // fan nozzle mount
@@ -105,11 +117,6 @@ module extruder_cover()
     translate([2.8,-2.2,-39]) cube([5.6,3.4,2.5]); 
     translate([3.8,-2.2,-39]) cube([3.4,3.4,2.9]); 
     translate([2.8,5.4,-38.4]) rotate([45,0,0]) cube([5.6,10,2]);  
-    
-    // lower cooling fan screw
-    translate([-37.75,-38.5,-42]) cylinder( h=20, r=1.6, $fn=30 );
-    translate([-37.75,-38.5,-39.4]) cylinder( h=4, r=3.1, $fn=6 );
-    translate([-37.75,-38.5,-37.5]) cylinder( h=3, r1=3.1, r2=4.0, $fn=6 );
     
     // nozzle screw
     translate([14.5,-40.5,-42]) cylinder( h=10, r=1.4, $fn=30 );
