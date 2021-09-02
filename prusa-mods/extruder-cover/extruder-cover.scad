@@ -22,28 +22,6 @@ module m3head()
     translate([30,5,17-3.5])cylinder(r=3.1,h = 20, $fn=30); // head cut
 }
 
-module grill()
-{
-difference()
-        {
-            translate([24,-5,-20]) cylinder( h=23, r=20.4, $fn=50 ); 
-            translate([24,-5,-21]) cylinder( h=26, r=19, $fn=50 ); 
-            translate([23,-30,-30]) cube([30,60,35]);   
-            translate([-11,-30,-30]) cube([30,60,35]);   
-            translate([-19,-20,-30]) cube([60,60,35]);   
-        }
-    translate([23,-24.65,-20]) cylinder( h=23, r=0.72, $fn=50 ); 
-    translate([19,-24.01,-20]) cylinder( h=23, r=0.72, $fn=50 ); 
-}
-
-
-translate([-35.25,10,-20]) grill();
-translate([-35.25,0,-20]) grill();
-// horizontal fins
-translate([-16.5,-35,-25]) cube([4,31,1]);   
-translate([-16.5,-6,-24.5]) rotate([90,0,0]) cylinder( h=30, r=0.5, $fn=50 ); 
-translate([-12.5,-6,-24.5]) rotate([90,0,0]) cylinder( h=30, r=0.5, $fn=50 ); 
-
 
 module extruder_cover()
 {
