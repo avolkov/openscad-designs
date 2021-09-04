@@ -80,7 +80,7 @@ module atx_benchtop_mount(){
     }
 }
 
-module benchtop_mount_base(){
+module benchtop_mount_tabletop(){
     base_h=4;
     radiiPoints=[
         [0, 0 , 2],
@@ -95,7 +95,7 @@ module benchtop_mount_base(){
             * x offset math: (71 + 4 - 49 + 3/2 + 1)/2
             * y offset math: (95 - 84 + 3/2 + 1)/2
             */
-             translate([14.25, 6.75, base_h]) mount_pegs(3.6, 7);
+             translate([14.25, 6.75, base_h]) mount_pegs(4.6, 7);
         }
         
         translate([14.25, 6.75, 0]) mount_hanging_holes(z=3, h=7, ir=M_DIM[3][0]/2);
@@ -103,5 +103,5 @@ module benchtop_mount_base(){
 
 }
 
-atx_benchtop_mount();
-//benchtop_mount_base();
+//atx_benchtop_mount();
+benchtop_mount_tabletop();
