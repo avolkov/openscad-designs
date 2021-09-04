@@ -1,5 +1,6 @@
 include <../libs/hardware-recess.scad>;
 include <Round-Anything/polyround.scad>
+use <NopSCADlib/utils/hanging_hole.scad>
 /*
  * ATX mount for Benchtop Power Board
  *
@@ -10,8 +11,11 @@ include <Round-Anything/polyround.scad>
  * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
  * https://creativecommons.org/licenses/by-sa/4.0/
  *
+ 
+ * Version 1.1 2021-09-03 Using hanging holes for nut traps, added benchtop mount base
  * Version 1.0 2021-04-05 Initial publication
  */
+
 
 
 $fn=50;
@@ -29,6 +33,8 @@ module mount_pegs(peg_h, peg_d){
     translate([c_x -edge_offset, c_y - edge_offset, 0]) cylinder(d=peg_d, h=peg_h);
     translate([c_x -edge_offset, edge_offset, 0]) cylinder(d=peg_d, h=peg_h);
 }
+
+
 
 module top_plate() {
     peg_h = 7;
@@ -56,6 +62,13 @@ module mount_holes(hole_d, hole_h) {
     translate([c_x -edge_offset, edge_offset, 0]) hole_w_end(hole_h, M_DIM[3][0], "hex", hole_d, flip=true);
 }
 
+module mount_hanging_holes(z, h, ir){
+    translate([edge_offset, edge_offset, 0]) #hanging_hole(z, ir, h) circle(d=M_DIM[3][3], $fn=6);
+    translate([edge_offset, c_y - edge_offset, 0]) #hanging_hole(z, ir, h) circle(d=M_DIM[3][3], $fn=6);
+    translate([c_x -edge_offset, c_y - edge_offset, 0]) #hanging_hole(z, ir, h) circle(d=M_DIM[3][3], $fn=6);
+    translate([c_x -edge_offset, edge_offset, 0]) #hanging_hole(z, ir, h) circle(d=M_DIM[3][3], $fn=6);
+}
+
 
 module atx_benchtop_mount(){
     difference() {
@@ -63,7 +76,7 @@ module atx_benchtop_mount(){
             base_plate();
             translate([10, 0, 0]) top_plate(3.6, 7);
         }
-        translate([10, 0, 0]) mount_holes(3.6, 7);
+        translate([10, 0, 0]) mount_hanging_holes(z=3, h=7, ir=M_DIM[3][0]/2);
         translate([10, 10, 0])cube([50, 66, thick_z]);
     }
 }
@@ -71,10 +84,7 @@ module atx_benchtop_mount(){
 module benchtop_mount_base(){
      
 
-        /*
-         * x offset math: (71 + 4 - 49 - 3/2 -1)/2
-         * y offset math: (95 - 84 - 3/2 - 1)/2
-         */
+        
         
         radiiPoints=[
             [0, 0 , 2],
@@ -85,17 +95,20 @@ module benchtop_mount_base(){
         difference(){
             union(){
                 linear_extrude(5)polygon(polyRound(radiiPoints,30));
-                translate([11.75, 4.25, 0]) mount_pegs(3.6, 7);
+                /*
+                * x offset math: (71 + 4 - 49 + 3/2 + 1)/2
+                * y offset math: (95 - 84 + 3/2 + 1)/2
+                */
+                 translate([14.25, 6.75, 5]) mount_pegs(3.6, 7);
             }
-            /*
-             * x offset math: (71 + 4 - 49 - 3/2 -1)/2
-             * y offset math: (95 - 84 - 3/2 - 1)/2
-             */
-            translate([11.75, 4.25, 0]) mount_holes(3.6, 7);
+            
+            translate([14.25, 6.75, 0]) mount_hanging_holes(z=3, h=7, ir=M_DIM[3][0]/2);
+            
+            
         }
 
 }
 
-//atx_benchtop_mount();
+atx_benchtop_mount();
 
-benchtop_mount_base();
+//benchtop_mount_base();
