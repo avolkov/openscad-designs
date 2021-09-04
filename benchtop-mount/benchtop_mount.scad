@@ -48,10 +48,10 @@ module base_plate(){
 module mount_holes() {
     hole_d=3.6;
     peg_h = 7;
-    translate([edge_offset, edge_offset, 0])hole_w_end(peg_h, m3_bolt_thick, "hex", hole_d, flip=true);
-    translate([edge_offset, c_y - edge_offset, 0]) hole_w_end(peg_h, m3_bolt_thick, "hex", hole_d, flip=true);
-    translate([c_x -edge_offset, c_y - edge_offset, 0]) hole_w_end(peg_h, m3_bolt_thick, "hex", hole_d, flip=true);
-    translate([c_x -edge_offset, edge_offset, 0]) hole_w_end(peg_h, m3_bolt_thick, "hex", hole_d, flip=true);
+    translate([edge_offset, edge_offset, 0])hole_w_end(peg_h, M_DIM[3][0], "hex", hole_d, flip=true);
+    translate([edge_offset, c_y - edge_offset, 0]) hole_w_end(peg_h, M_DIM[3][0], "hex", hole_d, flip=true);
+    translate([c_x -edge_offset, c_y - edge_offset, 0]) hole_w_end(peg_h, M_DIM[3][0], "hex", hole_d, flip=true);
+    translate([c_x -edge_offset, edge_offset, 0]) hole_w_end(peg_h, M_DIM[3][0], "hex", hole_d, flip=true);
 }
 
 difference() {
