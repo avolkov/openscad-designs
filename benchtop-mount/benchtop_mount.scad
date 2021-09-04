@@ -103,5 +103,5 @@ module benchtop_mount_base(){
 
 }
 
-//atx_benchtop_mount();
+atx_benchtop_mount();
 //benchtop_mount_base();
