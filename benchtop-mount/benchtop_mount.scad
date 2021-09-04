@@ -36,9 +36,8 @@ module mount_pegs(peg_h, peg_d){
 
 
 
-module top_plate() {
-    peg_h = 7;
-    peg_d = 8;
+module top_plate(peg_h, peg_d) {
+    
     cube([c_x, c_y, thick_z]);
     mount_pegs(peg_h, peg_d);
 }
@@ -74,7 +73,7 @@ module atx_benchtop_mount(){
     difference() {
         union(){
             base_plate();
-            translate([10, 0, 0]) top_plate(3.6, 7);
+            translate([10, 0, 0]) top_plate(7, 8);
         }
         translate([10, 0, 0]) mount_hanging_holes(z=3, h=7, ir=M_DIM[3][0]/2);
         translate([10, 10, 0])cube([50, 66, thick_z]);
@@ -82,33 +81,27 @@ module atx_benchtop_mount(){
 }
 
 module benchtop_mount_base(){
-     
-
-        
-        
-        radiiPoints=[
-            [0, 0 , 2],
-            [cube_x + 4, 0, 2],
-            [cube_x + 4, cube_y + 18, 2],
-            [0, cube_y + 18, 2],
-        ];
-        difference(){
-            union(){
-                linear_extrude(5)polygon(polyRound(radiiPoints,30));
-                /*
-                * x offset math: (71 + 4 - 49 + 3/2 + 1)/2
-                * y offset math: (95 - 84 + 3/2 + 1)/2
-                */
-                 translate([14.25, 6.75, 5]) mount_pegs(3.6, 7);
-            }
-            
-            translate([14.25, 6.75, 0]) mount_hanging_holes(z=3, h=7, ir=M_DIM[3][0]/2);
-            
-            
+    base_h=4;
+    radiiPoints=[
+        [0, 0 , 2],
+        [cube_x + 4, 0, 2],
+        [cube_x + 4, cube_y + 18, 2],
+        [0, cube_y + 18, 2],
+    ];
+    difference(){
+        union(){
+            linear_extrude(base_h)polygon(polyRound(radiiPoints,30));
+            /*
+            * x offset math: (71 + 4 - 49 + 3/2 + 1)/2
+            * y offset math: (95 - 84 + 3/2 + 1)/2
+            */
+             translate([14.25, 6.75, base_h]) mount_pegs(3.6, 7);
         }
+        
+        translate([14.25, 6.75, 0]) mount_hanging_holes(z=3, h=7, ir=M_DIM[3][0]/2);
+    }
 
 }
 
-atx_benchtop_mount();
-
+//atx_benchtop_mount();
 //benchtop_mount_base();
