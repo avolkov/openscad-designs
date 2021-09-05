@@ -39,7 +39,7 @@ module light_base(){
 module handle(){
     translate([90/2,BODY_LEN/2 + 23, COVER_THICK])
         rotate([0, 0, 90])
-            handle_fastened_assembly(COVER_THICK);
+             handle_fastened_assembly(COVER_THICK);
 }
 
 module handle_wo_inserts(){
@@ -197,6 +197,7 @@ module cover(show_handle=true){
     if (show_handle){
         handle();
     }
+    
     set_pylons(3, "hole");
 }
 
@@ -317,13 +318,11 @@ module fix_for_first_product(){
 
 /* Parts */
 
-handle_wo_inserts();
-// handle() // handle with inserts to directly screw into plastic
-
+*handle_wo_inserts();
+//handle_assembly(); // handle with inserts to directly screw into plastic
 *cover(show_handle=false);
 *ps_12v_cover_w_holes();
 *led_driver_w_holes();
-*led_driver_cover();
 *light_body();
 
 /* Parts extra */
