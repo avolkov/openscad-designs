@@ -226,10 +226,6 @@ module led_driver_cover(){
     }
 }
 
-module toggle_hole(){
-    cylinder(d=6.2, h=5);
-}
-
 module shell(show_cover=false){
     translate([0,-1.5,30+15]) light_base();
     translate([-45, 0, 0]){
