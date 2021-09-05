@@ -48,7 +48,6 @@ module handle_wo_inserts(){
         translate_z(handle_height())
             stl_colour(pp1_colour) vflip() handle_stl();
     }
-
 }
 
 
@@ -230,11 +229,13 @@ module toggle_hole(){
     cylinder(d=6.2, h=5);
 }
 
-module shell(){
+module shell(show_cover=false){
     translate([0,-1.5,30+15]) light_base();
     translate([-45, 0, 0]){
         body_shell();
-        *translate([0, 0, INNER_Z]) cover(show_handle=true);
+        if (show_cover){
+            translate([0, 0, INNER_Z]) cover(show_handle=true);
+        }
     }
 }
 
@@ -252,7 +253,7 @@ module power_mounting_holes(){
 
 
 module complete_body(){
-    shell();
+    shell(show_cover=true);
     translate([0, 100, 20]){
         translate([18, 0, 0]) {
             led_driver();
@@ -310,11 +311,21 @@ module fix_for_first_product(){
 }
 
 //Definitions to generate stl of complete object or render each part 
+/* Complete object*/
 
-*fix_for_first_product();
-*handle_wo_inserts();
+*complete_body();
+
+/* Parts */
+
+handle_wo_inserts();
+// handle() // handle with inserts to directly screw into plastic
+
 *cover(show_handle=false);
 *ps_12v_cover_w_holes();
 *led_driver_w_holes();
 *led_driver_cover();
-light_body();
+*light_body();
+
+/* Parts extra */
+
+*fix_for_first_product();
