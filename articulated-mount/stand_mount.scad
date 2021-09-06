@@ -89,7 +89,9 @@ difference(){
         translate([total_len/2, ear_outer/2, stand_mount_h  ])
             cylinder(h=large_outer_h-stand_mount_h, d=outer_width);
     }
-    mounting_holes(base_thick, m5_nut_thick-2, "round");
+    // Round hole mount
+    //mounting_holes(base_thick, m5_nut_thick-2, "round");
+    mounting_holes(base_thick, m5_nut_thick-1, "hex");
 }
 
 //stand_hole(stand_mount_h, outer_width, inner_width, top_segment);

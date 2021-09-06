@@ -49,15 +49,16 @@ Total thickness:
 
 difference(){
     
-    /* //Regular config
+    //Regular config
     quarter_20_space = 3;
     mounting_base(quarter_20_height, quarter_20_space);
     mounting_holes(quarter_20_height + quarter_20_space, 0, "none");
-    */
+    
     
     /* //Tripod config */
+    /*
     quarter_20_space = 1;
     mounting_base(quarter_20_height, quarter_20_space);
     mounting_holes(quarter_20_height + quarter_20_space, 5, "hex", flip=true);
-    
+    */
 }

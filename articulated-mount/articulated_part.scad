@@ -129,6 +129,28 @@ module m5_ear_correct_orientation(){
 }
 
 
+module m8_rod_mount(base_thick, ear_extra_len, nut_height, ear_thick=8){
+    //mount m8 rod through an non-articulating mount
+    
+    translate([ ear_outer/2, -screw_mount_space, 0])
+        rotate([0, 0, 90]){
+            difference(){
+                
+                cube([total_len, ear_outer, base_thick]);
+                mounting_holes(base_thick, nut_height, end_type="round");
+            }
+            
+        }
+    translate([-ear_outer/2,, -screw_mount_space + total_len /4, base_thick])
+        difference(){
+            cube([total_len/2, ear_outer, 8*2]);
+            translate([-10, (total_len/2)/2, 8])
+                rotate([0, 90, 0])
+                    cylinder(d=8.2, h=50);
+        }
+    
+}
+
 base_thickness = 8;
 ear_reach = 2;
 
@@ -136,15 +158,15 @@ ear_reach = 2;
 //m5_ear_correct_orientation();
 // Mounting gap for the new single-ear setup (old 6.9mm)
 mounting_gap = 8;
-/*
-// Default setup
-base_and_ears(base_thickness, ear_reach, m5_nut_thick);
-*/
-// Correnct 
 
-    
+// Default setup
+//base_and_ears(base_thickness, ear_reach, m5_nut_thick);
+
+// M8 mount
+
+m8_rod_mount(base_thickness, ear_reach, m5_nut_thick);
+
 //make_base_m3(end_width, led_driver_h, 5);
-//make_base_m5(end_width, led_driver_h, 5);
 
     
 // single mount
@@ -153,4 +175,4 @@ single_ear(base_thickness, ear_reach, m5_nut_thick, 6);
 translate([0,0,-7])
 make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
 */
-make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
+//make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
