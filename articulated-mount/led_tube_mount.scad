@@ -97,7 +97,7 @@ module wired_catch(end_width, side_offset){
 
 module dummy_catch(end_width, side_offset) {
     difference(){
-        cube([end_width, end_depth, end_height]);
+        cube([end_width, end_depth - 10, end_height]);
         punch_led_end(wide_bit_d/2 + side_offset, end_height/2, "dummy");
         punch_led_end(end_width - wide_bit_d/2 - side_offset, end_height/2, "dummy");
     }
@@ -116,7 +116,7 @@ module make_hole(x_offset, y_offset, hole_len, bolt_d, type, flip){
         }
 }
 
-module m5_mount_holes(){
+module m5_mount_holes(end_depth){
         translate([10, end_depth/2, 0])
             m5_hole_w_end(end_height, m5_nut_thick, "round");
             //m5_hole_w_ends(end_height, nut_extra=5);
@@ -131,7 +131,8 @@ module build_dummy_side() {
     difference() {
         dummy_catch(led_driver_h, side_offset);
                 // Holes to fasten two pieces of the model
-        m5_mount_holes();
+        m5_mount_holes(end_depth - 10);
+        // for the use with m8_rods_led_short
     }
 }
 
@@ -249,6 +250,6 @@ module wired_mount(side){
 // Top level geometry called here
 
 *mid_mount_winglets(12);
-*dummy_mount("top");
-wired_mount("top");
-mid_mount("bottom");
+dummy_mount("top");
+*wired_mount("top");
+*mid_mount("bottom");

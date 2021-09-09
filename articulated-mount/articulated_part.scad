@@ -130,6 +130,29 @@ module m5_ear_correct_orientation(){
         make_base_led_mid_m5(end_width, led_driver_h, 5);
 }
 
+
+module m8_rods_led(base_thick, base_len){
+    make_base_led_mid_m5(end_width, led_driver_h, 5);
+    translate([-ear_outer/2, -total_len/2, 0]){
+        difference(){
+            cube([ear_outer, total_len, base_thick]);
+            translate([40, 0, 0])
+                dual_m8_rod_cutout(base_thick);
+        }
+    }
+}
+
+
+module m8_rods_led_short(base_thick){
+    make_base_led_mid_m5(total_len/2, led_driver_h, 5);
+    translate([-ear_outer/2, -total_len/2, 0]){
+        difference(){
+            cube([ear_outer, total_len - 4, base_thick]);
+            translate([40, 0, 0])
+                dual_m8_rod_cutout(base_thick);
+        }
+    }
+}
 // code related to dual overhead rod mount
 
 module m8_rod_mount_center(base_thick, ear_extra_len, nut_height, ear_thick=8){
@@ -150,6 +173,19 @@ module m8_rod_mount_center(base_thick, ear_extra_len, nut_height, ear_thick=8){
         
 }
 
+module dual_m8_rod_cutout(base_thick){
+    translate([-50, 15, base_thick/2])
+        rotate([0, 90, 0])
+            cylinder(d=8.2, h=50);
+    /*
+     * total_len - 15 = 49
+     * gap between rods is 49 - 15 = 34mm
+     */
+    translate([-50, total_len-15, base_thick/2])
+        rotate([0, 90, 0])
+            cylinder(d=8.2, h=50);
+}
+
 module m8_rods_mount(base_thick, ear_extra_len, nut_height, ear_thick=8){
     //mount m8 rod through an non-articulating mount
     
@@ -161,16 +197,7 @@ module m8_rods_mount(base_thick, ear_extra_len, nut_height, ear_thick=8){
                     mounting_holes(base_thick, nut_height, end_type="round");
                     }
                 }
-            translate([-50, 15, base_thick/2])
-                rotate([0, 90, 0])
-                    cylinder(d=8.2, h=50);
-            /*
-             * total_len - 15 = 49
-             * gap between rods is 49 - 15 = 34mm
-             */
-            translate([-50, total_len-15, base_thick/2])
-                rotate([0, 90, 0])
-                    cylinder(d=8.2, h=50);
+            dual_m8_rod_cutout(base_thick);
         }
 }
 
@@ -192,7 +219,8 @@ mounting_gap = 8;
 // M8 mount
 
 *m8_rods_mount(8*2, ear_reach, m5_nut_thick);
-
+*m8_rods_led(8*2);
+m8_rods_led_short(8*2);
 //make_base_m3(end_width, led_driver_h, 5);
 
     
@@ -204,4 +232,4 @@ make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
 */
 //make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
 // led mounts
-m5_ear_correct_orientation();
+*m5_ear_correct_orientation();
