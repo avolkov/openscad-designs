@@ -116,44 +116,17 @@ module make_hole(x_offset, y_offset, hole_len, bolt_d, type, flip){
         }
 }
 
-module dummy_side_mounts(total_width, total_depth, hole_len, type, center_hole=true,        side_holes=true){
-    /*
-       create mount holes for dummy end.
-        width -- rectangle width
-        depth -- rectangle height
-        hole_len -- object dept
-        type -- type of hole to make "hex", "round" or "both"
-        center_hole -- make center hole (default)
-
-    */
-    bolt_d = 3;
-    corner_offset = m3_bolt_thick + 1;
-
-    // Add holes to front corners
-    make_hole(corner_offset, corner_offset, hole_len, bolt_d, type, true);
-    make_hole(total_width - corner_offset, corner_offset, hole_len, bolt_d, type, true);
-    // Holes for future handle
-    if (side_holes){
-        make_hole(total_width/2 , corner_offset, hole_len, bolt_d, type, false);
-        make_hole(total_width/2 , total_depth - corner_offset, hole_len, bolt_d, type, false);
-    }
-
-    // Holes  back corners
-    make_hole(
-    corner_offset, total_depth - corner_offset, hole_len, bolt_d, type, true);
-    make_hole(total_width - corner_offset, total_depth - corner_offset, hole_len, bolt_d, type, true);
-
-    // hole in the center
-    if (center_hole){
-        translate([total_width/2, total_depth /2, 0])
-            bolt_nut(hole_len, bolt_d);
-    }
-}
-
 module build_dummy_side() {
     difference() {
         dummy_catch(led_driver_h, side_offset);
-        dummy_side_mounts(led_driver_h, end_depth, end_height, "hex");
+                // Holes to fasten two pieces of the model
+        translate([10, end_depth/2, 0])
+            m5_hole_w_end(end_height, m5_nut_thick, "round");
+            //m5_hole_w_ends(end_height, nut_extra=5);
+
+        translate([led_driver_h-10, end_depth/2, 0])
+            m5_hole_w_end(end_height, m5_nut_thick, "round");
+            //m5_hole_w_ends(end_height, nut_extra=5);
     }
 }
 
@@ -247,7 +220,7 @@ module dummy_mount(side){
             translate([0,0, end_height/2])
                 cube([led_driver_h, end_depth, end_height/2]);
         } else if (side == "top"){
-            
+            cube([led_driver_h, end_depth, end_height/2]);
         }
     }
 }
@@ -270,8 +243,8 @@ module wired_mount(side){
 // Top level geometry called here
 
 *mid_mount_winglets(12);
-*dummy_mount("top");
+dummy_mount("top");
 *wired_mount("top");
-*mid_mount("top");
+mid_mount("bottom");
 
 
