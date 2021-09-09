@@ -116,10 +116,7 @@ module make_hole(x_offset, y_offset, hole_len, bolt_d, type, flip){
         }
 }
 
-module build_dummy_side() {
-    difference() {
-        dummy_catch(led_driver_h, side_offset);
-                // Holes to fasten two pieces of the model
+module m5_mount_holes(){
         translate([10, end_depth/2, 0])
             m5_hole_w_end(end_height, m5_nut_thick, "round");
             //m5_hole_w_ends(end_height, nut_extra=5);
@@ -127,6 +124,14 @@ module build_dummy_side() {
         translate([led_driver_h-10, end_depth/2, 0])
             m5_hole_w_end(end_height, m5_nut_thick, "round");
             //m5_hole_w_ends(end_height, nut_extra=5);
+}
+
+
+module build_dummy_side() {
+    difference() {
+        dummy_catch(led_driver_h, side_offset);
+                // Holes to fasten two pieces of the model
+        m5_mount_holes();
     }
 }
 
@@ -149,13 +154,7 @@ module build_mid_mount(end_width, end_depth, end_height, side_offset) {
             }
         }
         // Holes to fasten two pieces of the model
-        translate([10, end_depth/2, 0])
-            m5_hole_w_end(end_height, m5_nut_thick, "round");
-            //m5_hole_w_ends(end_height, nut_extra=5);
-
-        translate([end_width-10, end_depth/2, 0])
-            m5_hole_w_end(end_height, m5_nut_thick, "round");
-            //m5_hole_w_ends(end_height, nut_extra=5);
+        m5_mount_holes();
     }
 
 
@@ -190,6 +189,13 @@ module build_wired_side(){
     }
 }
 
+
+module simple_wired_side(){
+    difference(){
+        wired_catch(led_driver_h, side_offset);
+        m5_mount_holes();
+    }
+}
 
 module mid_mount(side){
     difference(){
@@ -228,7 +234,7 @@ module dummy_mount(side){
 module wired_mount(side){
     difference(){
         //build_dummy_side();
-        build_wired_side();
+        simple_wired_side();
         if (side == "top"){
             cube([led_driver_h, end_depth, end_height/2]);
         }else if (side == "bottom"){
@@ -243,8 +249,6 @@ module wired_mount(side){
 // Top level geometry called here
 
 *mid_mount_winglets(12);
-dummy_mount("top");
-*wired_mount("top");
+*dummy_mount("top");
+wired_mount("top");
 mid_mount("bottom");
-
-
