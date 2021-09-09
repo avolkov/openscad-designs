@@ -91,7 +91,7 @@ difference(){
     }
     // Round hole mount
     //mounting_holes(base_thick, m5_nut_thick-2, "round");
-    mounting_holes(base_thick, m5_nut_thick-1, "hex");
+    mounting_holes(base_thick, m5_nut_thick-2.5, "hex");
 }
 
 //stand_hole(stand_mount_h, outer_width, inner_width, top_segment);

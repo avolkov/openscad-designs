@@ -218,13 +218,15 @@ module build_wired_side(){
 }
 
 
-module mid_mount(){
+module mid_mount(side){
     difference(){
         build_mid_mount(led_driver_h,end_depth, end_height, side_offset);
-        translate([0,0, end_height/2])
+        if (side == "bottom"){
+            translate([0,0, end_height/2])
+                cube([led_driver_h, end_depth, end_height/2]);
+        } else if (side == "top") {
             cube([led_driver_h, end_depth, end_height/2]);
-        //translate([0,0, 0])
-        //    cube([led_driver_h, end_depth, end_height/2]);
+        }
     }
 }
 
@@ -238,18 +240,28 @@ module mid_mount_winglets(end_depth){
 
 }
 
-module wired_mount(){
-    build_dummy_side();
-    translate([0,0, end_height/2])
-        cube([led_driver_h, end_depth, end_height/2]);
+module dummy_mount(side){
+    difference(){
+        build_dummy_side();
+        if (side == "bottom"){
+            translate([0,0, end_height/2])
+                cube([led_driver_h, end_depth, end_height/2]);
+        } else if (side == "top"){
+            
+        }
+    }
 }
 
-module dummy_mount(){
+module wired_mount(side){
     difference(){
         //build_dummy_side();
         build_wired_side();
-        //translate([0,0, end_height/2])
+        if (side == "top"){
             cube([led_driver_h, end_depth, end_height/2]);
+        }else if (side == "bottom"){
+            translate([0,0, end_height/2])
+                cube([led_driver_h, end_depth, end_height/2]);
+        }
     }
 }
 
@@ -257,7 +269,9 @@ module dummy_mount(){
 
 // Top level geometry called here
 
-//mid_mount_winglets(12);
-
+*mid_mount_winglets(12);
+*dummy_mount("top");
+*wired_mount("top");
+*mid_mount("top");
 
 

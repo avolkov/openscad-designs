@@ -93,19 +93,6 @@ module make_base_m3(width, depth, height){
     }
 }
 
-module make_base_led_mid_m5(width, depth, height){
-    translate([-width/2, -depth/2, -height]){
-        difference(){
-            cube([width, depth, height]);
-            translate([width/2,10 , 0])
-                cylinder(d=5.2, h=height);
-            translate([width/2, depth-10, 0])
-                cylinder(d=5.2, h=height);
-                //m5_hole_w_ends(end_height, nut_extra=5);
-            
-        }
-    }
-}
 
 
 module make_base_m5(width, depth, height, base_thick){
@@ -122,12 +109,28 @@ module make_base_m5(width, depth, height, base_thick){
         }
     }
 
+// Code related to LED T8 tube mount
+module make_base_led_mid_m5(width, depth, height){
+    translate([-width/2, -depth/2, -height]){
+        difference(){
+            cube([width, depth, height]);
+            translate([width/2,10 , 0])
+                cylinder(d=5.2, h=height);
+            translate([width/2, depth-10, 0])
+                cylinder(d=5.2, h=height);
+                //m5_hole_w_ends(end_height, nut_extra=5);
+            
+        }
+    }
+}
+
 module m5_ear_correct_orientation(){
     single_ear(base_thickness, ear_reach, m3_nut_thick, 6);
     rotate([0,0,90])
         make_base_led_mid_m5(end_width, led_driver_h, 5);
 }
 
+// code related to dual overhead rod mount
 
 module m8_rod_mount_center(base_thick, ear_extra_len, nut_height, ear_thick=8){
     //mount m8 rod through an non-articulating mount
@@ -172,6 +175,9 @@ module m8_rods_mount(base_thick, ear_extra_len, nut_height, ear_thick=8){
 }
 
 
+
+
+
 base_thickness = 8;
 ear_reach = 2;
 
@@ -185,7 +191,7 @@ mounting_gap = 8;
 
 // M8 mount
 
-m8_rods_mount(8*2, ear_reach, m5_nut_thick);
+*m8_rods_mount(8*2, ear_reach, m5_nut_thick);
 
 //make_base_m3(end_width, led_driver_h, 5);
 
@@ -197,3 +203,5 @@ translate([0,0,-7])
 make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
 */
 //make_base_m5(base_thickness, ear_reach, m5_nut_thick, 8);
+// led mounts
+m5_ear_correct_orientation();
