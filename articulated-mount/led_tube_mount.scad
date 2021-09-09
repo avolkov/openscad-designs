@@ -61,6 +61,11 @@ module punch_led_end(x_offset, enclosure_height, type){
 }
 
 module wired_catch(end_width, side_offset){
+    /*
+     * TODO: wiring holes don't need to be on opposite sides any more
+     * because LED drivers are no longer attached to the tubes
+     * TODO: Add provisions for mounting XT60 male connector
+     */
     difference(){
         cube([end_width, end_depth, end_height]);
         punch_led_end(wide_bit_d/2 + side_offset, end_height/2, "wired");
@@ -155,7 +160,7 @@ module build_mid_mount(end_width, end_depth, end_height, side_offset) {
             }
         }
         // Holes to fasten two pieces of the model
-        m5_mount_holes();
+        m5_mount_holes(end_depth);
     }
 
 
@@ -193,8 +198,9 @@ module build_wired_side(){
 
 module simple_wired_side(){
     difference(){
+        
         wired_catch(led_driver_h, side_offset);
-        m5_mount_holes();
+        m5_mount_holes(end_depth);
     }
 }
 
@@ -250,6 +256,6 @@ module wired_mount(side){
 // Top level geometry called here
 
 *mid_mount_winglets(12);
-dummy_mount("top");
-*wired_mount("top");
+*dummy_mount("top");
+wired_mount("top");
 *mid_mount("bottom");
