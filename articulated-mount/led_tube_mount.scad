@@ -257,5 +257,5 @@ module wired_mount(side){
 
 *mid_mount_winglets(12);
 *dummy_mount("top");
-wired_mount("top");
+*wired_mount("top");
 *mid_mount("bottom");

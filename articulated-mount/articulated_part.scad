@@ -1,7 +1,26 @@
 //include  <common.scad>;
+
+$layer_height = 0.25;
+
+
+include <NopSCADlib/utils/core/core.scad>
+include <NopSCADlib/vitamins/washers.scad>
+
+
+use <NopSCADlib/utils/fillet.scad>
+use <NopSCADlib/utils/horiholes.scad>
+
+
 include <led_tube_mount.scad>;
 $fn=32;
 
+show_disc = true;
+use_horihole = true;
+thickness = 6;
+length = 60;
+height = 20;
+overlap_x = 15;
+overlap_y = 10;
 //DERIVED GLOBAL VALUES
 
 
@@ -110,8 +129,17 @@ module make_base_m5(width, depth, height, base_thick){
     }
 
 // Code related to LED T8 tube mount
-module make_base_led_mid_m5(width, depth, height){
+module make_base_led_mid_m5(width, depth, height, display=false){
     translate([-width/2, -depth/2, -height]){
+        if (display){
+            translate([width/2,10 , 5]){
+                screw(M5_cap_screw, 30);
+            }
+            translate([width/2, depth-10 , 5]){
+                screw(M5_cap_screw, 30);
+                washer(M5_washer);
+            }
+        }
         difference(){
             cube([width, depth, height]);
             translate([width/2,10 , 0])
@@ -145,9 +173,12 @@ module m8_rods_led(base_thick, base_len){
 
 module m8_rods_led_short(base_thick){
     make_base_led_mid_m5(total_len/2, led_driver_h, 5);
-    translate([-ear_outer/2, -total_len/2, 0]){
+    translate([-ear_outer/2, -(total_len - 6)/2, 0]){
+        translate([ear_outer, total_len - 6, 0,]) rotate([0, 270, 0]) fillet(3, ear_outer);
+        translate([0, 0, 0,]) rotate([90, 270, 90]) fillet(3, ear_outer);
         difference(){
-            cube([ear_outer, total_len - 4, base_thick]);
+            cube([ear_outer, total_len - 6, base_thick]);
+            
             translate([40, 0, 0])
                 dual_m8_rod_cutout(base_thick);
         }
@@ -175,15 +206,16 @@ module m8_rod_mount_center(base_thick, ear_extra_len, nut_height, ear_thick=8){
 
 module dual_m8_rod_cutout(base_thick){
     translate([-50, 15, base_thick/2])
-        rotate([0, 90, 0])
-            cylinder(d=8.2, h=50);
+        rotate([90, 0, 90])
+            linear_extrude(50) horihole(4.1, 0.2, center=true);
     /*
      * total_len - 15 = 49
      * gap between rods is 49 - 15 = 34mm
      */
     translate([-50, total_len-15, base_thick/2])
-        rotate([0, 90, 0])
-            cylinder(d=8.2, h=50);
+        rotate([90, 0, 90])
+            linear_extrude(50) horihole(4.1, 0.2, center=true);
+            //cylinder(d=8.2, h=50);
 }
 
 module m8_rods_mount(base_thick, ear_extra_len, nut_height, ear_thick=8){
