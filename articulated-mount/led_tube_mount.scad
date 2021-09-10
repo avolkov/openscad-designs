@@ -30,9 +30,9 @@ module tube_trap() {
 module led_end_wired(){
     tube_trap();
     //conduit bit
-    translate([-22/2, -15+5 ,41]){
+    translate([-22/2 - 1, -15+5 ,41]){
         //bump tolerances here
-        cube([20+tolerance*4, 15+tolerance*4, 19+tolerance*3]);
+        cube([20+tolerance*4, 18+tolerance*4, 19+tolerance*3]);
 
     }
 }
@@ -248,5 +248,5 @@ module wired_mount(side){
 
 *mid_mount_winglets(12);
 *dummy_mount("bottom");
-wired_mount("bottom");
+*wired_mount("top");
 *mid_mount("bottom");
