@@ -78,23 +78,15 @@ module wired_catch(end_width, side_offset){
             wide_bit_d/2 + side_offset/2+2,
             wide_bit_h+narrow_bit_h*2+9,
             wide_bit_d/2]){
-            cube([10, 12 ,50]);
+                cube([10, 12 ,50]);
         }
         // second wiring hole
         translate([
             wide_bit_d*2 + 8,
             wide_bit_h+narrow_bit_h*2+9,
-            0]){
-            cube([10, 12 ,20]);
+            wide_bit_d/2]){
+                cube([10, 12 ,20]);
         }
-        // hole for mounting wire
-        translate([
-            led_driver_h/2,
-            end_depth+10,
-            5]){
-        rotate([45, 0 ,0])
-            cylinder(h=50, d=10, $fn=20);
-    }
     }
 
 
@@ -198,7 +190,6 @@ module build_wired_side(){
 
 module simple_wired_side(){
     difference(){
-        
         wired_catch(led_driver_h, side_offset);
         m5_mount_holes(end_depth);
     }
@@ -256,6 +247,6 @@ module wired_mount(side){
 // Top level geometry called here
 
 *mid_mount_winglets(12);
-*dummy_mount("top");
-*wired_mount("top");
+*dummy_mount("bottom");
+wired_mount("bottom");
 *mid_mount("bottom");
