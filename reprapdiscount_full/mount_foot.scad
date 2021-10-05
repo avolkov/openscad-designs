@@ -41,7 +41,10 @@ module mount_foot(alu_mount){
             }
         }
         if (alu_mount){
-            translate([10, 7, 0 - ALU_PROFILE_H])
+            translate([10, 6, 0 - ALU_PROFILE_H])
+                //cylinder(h=mat_thick + ALU_PROFILE_H , d=M_DIM[5][0], $fn=50);
+                hole_w_end(mat_thick + ALU_PROFILE_H, 0.5, "round", M_DIM[5][0]);
+            translate([10, 24, 0 - ALU_PROFILE_H])
                 //cylinder(h=mat_thick + ALU_PROFILE_H , d=M_DIM[5][0], $fn=50);
                 hole_w_end(mat_thick + ALU_PROFILE_H, 0.5, "round", M_DIM[5][0]);
         } else {
@@ -68,18 +71,19 @@ module pedestal(x, y){
 
 
 difference(){
+    PEDESTAL_OFFSET=35;
     union(){
         mount_foot(alu_mount=ALU_MOUNT);
         difference(){
             union(){
                 
-                translate([0,30,0])connector();
-                translate([0, 25, top_shave])rotate([0, 30, 0])pedestal(x=22,y=35);
+                translate([0, PEDESTAL_OFFSET+5, 0])connector();
+                translate([0, PEDESTAL_OFFSET, top_shave])rotate([0, 30, 0])pedestal(x=22,y=35);
                 // fill in gap between podium and base
-                translate([0, 25, top_shave])cube([10, 35, 10]);
+                translate([0, PEDESTAL_OFFSET, top_shave])cube([10, 35, 10]);
             }
             //shave off the top
-            translate([0, 20, top_shave+mat_thick+0.7])
+            translate([0, PEDESTAL_OFFSET - 5, top_shave+mat_thick+0.7])
                 rotate([0, 30, 0])
                     mountcube(x=25, y=FOOT_BASE, z=10);
         }
@@ -88,9 +92,9 @@ difference(){
     
     //Shaving off front to simplify printing
     translate([20, 0, 0])
-        cube([30, 60, 30]);
+        cube([30, 45 + PEDESTAL_OFFSET, 30]);
     //Shaving off top to simplify printing
     translate([0, 0, 30])
-        cube([30, 60, 30]);
+        cube([30, 45 + PEDESTAL_OFFSET, 30]);
     
 }
