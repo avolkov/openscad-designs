@@ -5,10 +5,10 @@ ARM_FRICTION_OFFSET = 0.8;
 
 difference(){
     union(){
-        *translate([ARM_FRICTION_OFFSET,ARM_BASE_W,0]) base(display_base=true);
+        translate([ARM_FRICTION_OFFSET,ARM_BASE_W,0]) base(display_base=true);
         translate([ARM_FRICTION_OFFSET,ARM_BASE_W,0]) base(display_jaw=true);
         
-        *arm(
+        arm(
             dual_spool=false,
             display="all",
             spool_bolt_size=M5,

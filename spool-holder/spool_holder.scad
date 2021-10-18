@@ -33,10 +33,11 @@ spool_d = 25;
 CONN_BOLT_LEN = 47;
 BOLT_SIZE = M8;
 
-ARM_LEN = 150;
+ARM_LEN = 180;
 ARM_BASE_W = 15;
 ARM_TOP_W = 12;
 
+CLAMPING_TOLERANCE = 0.5;
 
 // some of this value is due to bug in hole_w_end function that doesn't calculate
 // bolt trap/nut trap offset correctly
@@ -44,7 +45,7 @@ SPOOL_BOLT_OFFSET = 16;
 
 DISPLAY_SPOOL = true;
 
-SPOOL_ANGLE = 30;
+SPOOL_ANGLE = 15;
 SPOOL_LEN = 75;
 SPOOL_Y_OFFSET = ARM_TOP_W - 3; // from the arm, this is probably calculation error coming from somewhere
 
@@ -52,14 +53,14 @@ BASE_LEN = 28;
 
 DISPLAY_JAW = true;
 
-module outer_holder(){
-    linear_extrude(BASE_LEN){
+module outer_holder(holder_len, lip_h){
+    linear_extrude(holder_len){
         polygon(points=[
             [0, 0],
             [0, 1],
-            [4.2, 1],
-            [5.5, 0.5],
-            [5.5, 0]
+            [lip_h+ 0.2, 1],
+            [lip_h + 1.5, 0.5],
+            [lip_h + 1.5, 0]
         ]);
     }
 }
@@ -67,23 +68,30 @@ module outer_holder(){
 module jaw() {
     bottom_offset = 4;
     base_w = 40;
+    clamp_len=36;
+    jaw_body=22;
     
     // Jaw
-    translate([-21, 0, -bottom_offset])
-        cube([41, BASE_LEN, 4]);
+    translate([-21, jaw_body - 6, -1])
+        hull(){
+            max_hull = 3;
+            translate([30,0, -max_hull]) cube([10, clamp_len, max_hull]);
+            cube([41, clamp_len, 1]);
+        }
     // lip that goes around 2020 bit
-    translate([-21.5, 0, -bottom_offset]){
+    translate([-21.5, jaw_body - 6, -1]){
         rotate([270, 270, 0])
-            outer_holder();
+            outer_holder(clamp_len, 1);
     }
     // Jaw body implementation
-    translate([0, BASE_LEN/2, 0]){
-        cube([20, BASE_LEN/2, 40 - 0.4]);
+    translate([0, jaw_body - 6, 0]){
+        cube([20, jaw_body, 40 - CLAMPING_TOLERANCE]);
         for (i=[0, 20]){
-            translate([0,0, i]) rotate([0, 270, 0]) alu_connector(BASE_LEN/2, 0);
+            translate([0,0, i]) rotate([0, 270, 0]) alu_connector(jaw_body, 0);
         }
     }
-    translate([-20, 0, -bottom_offset]) alu_connector(BASE_LEN, 4);
+    //bottom alu connector
+    translate([-20, jaw_body - 6, -bottom_offset]) alu_connector(clamp_len, 4);
     
 }
 
@@ -180,9 +188,9 @@ module spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type){
 
 
 module reinforcement_holes(base_d=14, chamfer_extra=3){
-    for(i= [0.42:0.14:1]){
+    for(i= [0.36:0.12:0.88]){
         translate([
-            ARM_LEN*cos(90-SPOOL_ANGLE) *i  - 1.5 ,
+            ARM_LEN * cos(90 - SPOOL_ANGLE - 1) * i +6,
             ARM_BASE_W,
             ARM_LEN * sin(90 - SPOOL_ANGLE)*i])
             rotate([90, 0, 0]){
@@ -207,7 +215,7 @@ module arm(
             if (display == "all" || display == "arm"){
                     difference(){
                         hull(){
-                            cube([20, ARM_BASE_W, 40]);
+                            translate([0, 0, CLAMPING_TOLERANCE]) cube([20, ARM_BASE_W, 40 - CLAMPING_TOLERANCE]);
                             translate([SPOOL_X_ADJUST, ARM_BASE_W/2, ARM_LEN])
                                 rotate([90, 0, 0]){
                                     cylinder(d=spool_d, h=ARM_BASE_W, center=true);
@@ -272,5 +280,20 @@ module arm(
         }
     }
 }
+module arm_mount(){
+    // overhead_part
+    hull(){
+        translate([2, 23, 39.8]) cube([15, ARM_BASE_W , 12]);
+        translate([-20.5, 2, 39.8]) cube([40.5, BASE_LEN + 8, 8]);
+    }
+    translate([-20, 2, 39.8]) alu_connector(BASE_LEN + 8, 4, flip=true);
+    
+}
+arm(
+        dual_spool=false,
+        display="all",
+        spool_bolt_size=M8,
+        spool_bolt_len=73);
 
-
+translate([0, -ARM_BASE_W - 8, 0])arm_mount();
+translate([0, -ARM_BASE_W - 22, 0]) base(display_jaw=true);
