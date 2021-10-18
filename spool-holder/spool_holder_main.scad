@@ -12,8 +12,8 @@ difference(){
         arm(
                 dual_spool=false,
                 display="all",
-                spool_bolt_size=M8,
-                spool_bolt_len=73);
+                spool_bolt_size=M5,
+                spool_bolt_len=50);
 
         translate([0, -ARM_BASE_W - 8, 0])arm_mount();
         translate([0, -ARM_BASE_W - 22, 0]) jaw();
@@ -30,4 +30,10 @@ difference(){
 if (preview){
     translate([10,-10,40]) screw(M8_cap_screw, 40);
     translate([10,-10,1.8])rotate([0,0,30] )nut(M8_nut, nyloc=false);
+    
+    translate([56.5 ,15, 180]){
+        rotate([270, 0, 0]) screw(M5_cap_screw, 45);
+        translate([0, -37.5, 0])
+            rotate([90, 30, 0]) nut(M5_nut, nyloc=true);
+    }
 }
