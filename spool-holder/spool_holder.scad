@@ -26,6 +26,8 @@
  *
  *
  */
+
+ 
 include <../libs/hardware-recess.scad>;
 
 spool_d = 25;
@@ -69,84 +71,33 @@ module jaw() {
     bottom_offset = 4;
     base_w = 40;
     clamp_len=36;
-    jaw_body=22;
+    jaw_body_offset = 4.6 + CLAMPING_TOLERANCE;
+    jaw_body=21.6 - CLAMPING_TOLERANCE;
     
     // Jaw
-    translate([-21, jaw_body - 6, -1])
+    translate([-21, jaw_body - jaw_body_offset, -1])
         hull(){
             max_hull = 3;
-            translate([30,0, -max_hull]) cube([10, clamp_len, max_hull]);
+            translate([21,0, -max_hull]) cube([20, clamp_len, max_hull]);
             cube([41, clamp_len, 1]);
         }
     // lip that goes around 2020 bit
-    translate([-21.5, jaw_body - 6, -1]){
+    translate([-21.5, jaw_body - jaw_body_offset , -1]){
         rotate([270, 270, 0])
             outer_holder(clamp_len, 1);
     }
     // Jaw body implementation
-    translate([0, jaw_body - 6, 0]){
+    translate([0, jaw_body - 5 , 0]){
         cube([20, jaw_body, 40 - CLAMPING_TOLERANCE]);
         for (i=[0, 20]){
             translate([0,0, i]) rotate([0, 270, 0]) alu_connector(jaw_body, 0);
         }
     }
     //bottom alu connector
-    translate([-20, jaw_body - 6, -bottom_offset]) alu_connector(clamp_len, 4);
+    translate([-20, jaw_body - jaw_body_offset, -bottom_offset]) alu_connector(clamp_len, 4);
     
 }
 
-module base_imp(){
-    // joining part
-    base_w = 40;
-    JAW_MOUNT_BIT_H = 14;
-    // body
-    translate([0,0, 0.2])
-        cube([20, BASE_LEN/2, 40 - 0.2]);
-    
-    // overhead_part
-    translate([-20.5, 0, 39.8]) cube([40.5, BASE_LEN, 8]);
-    translate([-20, 0, 39.8]) alu_connector(BASE_LEN, 4, flip=true);
-    
-    // lip that goes around 2020 bit
-    translate([-21.5, 0, 44])
-        rotate([270, 90, 0])
-            mirror([0, 1, 0])
-            outer_holder();
-    // fill out bit of space above the lip
-    translate([-21.5, 0, 43.8])
-        cube([3, BASE_LEN, 4]);
-    // 2040 connectors
-    for (i=[0, 20]){
-        translate([0,0, i])
-            rotate([0, 270, 0])
-                alu_connector(BASE_LEN/2, 0);
-    }
-}
-
-
-module base(display_jaw, display_base){
-    difference() {
-        union(){
-            if (display_base){
-                base_imp();
-            }
-            // bottom part -> jaw
-            if (display_jaw){
-                jaw();
-            }
-        }
-        //Jaw mounting hardware
-        for (i = [9, 27]) {
-            translate([36, i, -3]) bolt_nut(CONN_BOLT_LEN + 2, BOLT_SIZE, flip=true);
-        }
-        //extra meat compensator
-        for (i=[10, 30]){
-            translate([10, 30, i])
-               rotate([270, 0, 0])
-                    cylinder(d=M_DIM[BOLT_SIZE][3], h=20, $fn=6);
-        }
-    }
-}
 
 module spool(bolt_len, bolt_size, cutout_type, custom_offset=SPOOL_BOLT_OFFSET){
     fn=50;
@@ -283,17 +234,9 @@ module arm(
 module arm_mount(){
     // overhead_part
     hull(){
-        translate([2, 23, 39.8]) cube([15, ARM_BASE_W , 12]);
-        translate([-20.5, 2, 39.8]) cube([40.5, BASE_LEN + 8, 8]);
+        translate([2, 23, 39.8]) cube([15, ARM_BASE_W , 8]);
+        translate([-20.5, 2, 39.8]) cube([40.5, BASE_LEN + 8, 2]);
     }
     translate([-20, 2, 39.8]) alu_connector(BASE_LEN + 8, 4, flip=true);
     
 }
-arm(
-        dual_spool=false,
-        display="all",
-        spool_bolt_size=M8,
-        spool_bolt_len=73);
-
-translate([0, -ARM_BASE_W - 8, 0])arm_mount();
-translate([0, -ARM_BASE_W - 22, 0]) base(display_jaw=true);
