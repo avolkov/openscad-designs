@@ -11,6 +11,7 @@
  * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
  * https://creativecommons.org/licenses/by-sa/4.0/
  *
+ * Version 1.1 2021-10-04 When using prusa bed, display needs to be all the way on the right
  * Version 1.0 2021-06-24 Initial publication
  */
 
@@ -61,7 +62,7 @@ module connector(){
 module pedestal(x, y){
     difference(){
         mountcube(x=x, y=y);
-        translate([0,2,0]){
+        translate([0,5,0]){
             translate([10, 7.5, 0]) hole_w_end(mat_thick, 2, "hex", M_DIM[3][0], flip=true);
             translate([10, 7.5*3, 0]) hole_w_end(mat_thick, 2, "hex", M_DIM[3][0], flip=true);
         }
