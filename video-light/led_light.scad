@@ -314,7 +314,7 @@ module fix_for_first_product(){
 
 /* Parts */
 
-*handle_wo_inserts();
+handle_wo_inserts();
 //handle_assembly(); // handle with inserts to directly screw into plastic
 *cover(show_handle=false);
 *ps_12v_cover_w_holes();

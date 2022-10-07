@@ -13,7 +13,7 @@
 
 include <../libs/hardware-recess.scad>;
 
-endstop_offset=25;
+endstop_offset=27;
 extra_width = 6;
 
 module endstop_mount(){
