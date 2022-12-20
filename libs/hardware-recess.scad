@@ -8,6 +8,8 @@
  *
  * License: Attribution-ShareAlike 4.0 International (CC BY-SA)
  * https://creativecommons.org/licenses/by-sa/4.0/
+ * Version 0.6 2022-12-19 Fixing offset bug in bolt_nut and hole_w_end
+ * Version 0.5 2022-11-14 Add more generic hole_w_ends module
  * Version 0.4 2022-10-06 Make M_DIM into overridable variable
  * Version 0.3 2021-08-14 Added gradation when making hole_w_end to reduce overhangs
  * Version 0.2 2021-05-26 Refactoring variables into M_DIM list
@@ -116,14 +118,31 @@ module hole_w_end(hole_len, trap_height, type, bolt_d, flip=false, grade=false){
                 //Round up ceiling where 
                 grade_end(hole_len, trap_height, type, bolt_d);
             } else {
-            make_recess(trap_height, type, get_trap_d(type, bolt_d));
-            translate([0,0,trap_height])
-                cylinder(h=hole_len-trap_height, d=$M_DIM[bolt_d][0], $fn=20);
+                // TODO: account for trap height here -- extra bolt_h for bolt
+                make_recess(trap_height, type, get_trap_d(type, bolt_d));
+                if (type == "round"){
+
+                    translate([0,0,trap_height])
+                        cylinder(h=hole_len-trap_height, d=$M_DIM[bolt_d][0], $fn=20);
+                } else {
+                    translate([0,0,trap_height])
+                        cylinder(h=hole_len-trap_height, d=$M_DIM[bolt_d][0], $fn=20);
+                }
             }
         } else {
-            translate([0,0, hole_len])
-                rotate([0,180,0])
-                    make_recess(trap_height, type, get_trap_d(type, bolt_d));
+            
+            if (type == "round"){
+                echo("Processing round2")
+                translate([0,0, hole_len+trap_height])
+                    rotate([0,180,0])
+                    // TODO: account for trap height here -- extra bolt_h for bolt
+                        make_recess(trap_height, type, get_trap_d(type, bolt_d));
+            } else {
+                translate([0,0, hole_len])
+                    rotate([0,180,0])
+                    // TODO: account for trap height here -- extra bolt_h for bolt
+                        make_recess(trap_height, type, get_trap_d(type, bolt_d));
+            }
         }
     } else {
         cylinder(h=hole_len, d=bolt_d);
@@ -141,19 +160,11 @@ module bolt_nut(hole_len, bolt_d, flip=false){
     */
     // currently only implemented for 3mm
     if (flip){
-        hole_w_end(hole_len, $M_DIM[bolt_d][4], "hex", $M_DIM[bolt_d][0]);
-        translate([0,0, hole_len]){
-            rotate([180, 0, 0]){
-                hole_w_end(hole_len, $M_DIM[bolt_d][2], "round", $M_DIM[bolt_d][0]);
-            }
-        }
+       hole_w_end(hole_len+ $M_DIM[bolt_d][4], $M_DIM[bolt_d][4], "hex", $M_DIM[bolt_d][0]);
+       hole_w_end(hole_len, $M_DIM[bolt_d][2], "round", $M_DIM[bolt_d][0], flip=true);
     } else {
         hole_w_end(hole_len, $M_DIM[bolt_d][2], "round", $M_DIM[bolt_d][0]);
-        translate([0,0, hole_len]){
-            rotate([180, 0, 0]){
-                hole_w_end(hole_len, $M_DIM[bolt_d][4], "hex", $M_DIM[bolt_d][0]);
-            }
-        }
+        hole_w_end(hole_len, $M_DIM[bolt_d][4], "hex", $M_DIM[bolt_d][0], flip=true);
     }
 }
 
@@ -168,12 +179,49 @@ module m5_hole_w_end(hole_len, trap_height, type){
     //Given hole lenght and trap height create a nut trap hole
     hole_w_end(hole_len, trap_height, type, 5);
 }
+
+module hole_w_ends(size, hole_len, extra=0, equal=false){
+    if(equal){
+        hole_w_end(hole_len, $M_DIM[size][2] + extra/2, "round", size);
+    } else {
+        hole_w_end(hole_len, $M_DIM[size][2] + extra/2, "round", size);
+    }
+    rotate([0, 180, 0]){
+        translate([0, 0, - hole_len]) {
+            if (equal){
+                hole_w_end(hole_len,$M_DIM[size][4] + extra/2, "hex", size);
+            } else {
+                hole_w_end(hole_len,$M_DIM[size][4] + extra, "hex", size);
+            }
+        }
+    }
+
+}
+
+module m5_hole_w_ends(hole_len, extra=0, equal=false){
+    if(equal){
+        m5_hole_w_end(hole_len, $M_DIM[5][2] + extra/2, "round");
+    } else {
+        m5_hole_w_end(hole_len, $M_DIM[5][2], "round");
+    }
+    rotate([0, 180, 0]){
+        translate([0, 0, - hole_len]) {
+            if (equal){
+                m5_hole_w_end(hole_len,$M_DIM[5][4] + extra/2, "hex");
+            } else {
+                m5_hole_w_end(hole_len,$M_DIM[5][4] + extra, "hex");
+            }
+        }
+    }
+}
+
 module m5_hole_w_ends(hole_len, nut_extra=0){
     m5_hole_w_end(hole_len, $M_DIM[5][2], "round");
     rotate([0, 180, 0])
         translate([0, 0, - hole_len])
             m5_hole_w_end(hole_len,$M_DIM[5][4] + nut_extra, "hex");
 }
+
 
 module m3_hole_w_ends(hole_len, nut_extra=0){
     hole_w_end(hole_len, $M_DIM[M3][4], "round", $M_DIM[M3][2]);
@@ -316,3 +364,5 @@ module alu_connector(face_len, thickness, flip=false){
                     alu_profile();
     }
 }
+
+//bolt_nut(60, M5);
