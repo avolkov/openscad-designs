@@ -70,11 +70,11 @@ module pop_filter_mount_points() {
         cube([20, thick, 10]);
         translate([x_offset, 0, z_offset]){
             rotate([270, 0, 0])
-                cylinder(d=m3_bolt_thick, h=thick, $fn=20);
+                cylinder(d=$M_DIM[3][0], h=thick, $fn=20);
         }
         translate([x_len - x_offset, 0, z_offset]){
             rotate([270, 0, 0])
-                cylinder(d=m3_bolt_thick, h=thick, $fn=20);
+                cylinder(d=$M_DIM[3][0], h=thick, $fn=20);
         }
     }
 }
@@ -113,9 +113,9 @@ module base_w_gopro_mount(connector_type){
         rod_d=13.5,
         th=3.2,
         gap=2.4,
-        screw_d=m3_bolt_thick,
-        screw_head_d = m3_bolt_head_d,
-        screw_nut_d = m3_nut_trap_d,
+        screw_d=$M_DIM[3][0],
+        screw_head_d = $M_DIM[3][1],
+        screw_nut_d = $M_DIM[3][3],
         screw_shoulder_th=4.5,
         screw_reversed=true
         );
