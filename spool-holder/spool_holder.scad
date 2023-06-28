@@ -121,9 +121,9 @@ module spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type){
         translate([0, 0, custom_offset ])
             rotate([0,0,30]){
                 if (cutout_type == "hex"){
-                    cylinder(d=M_DIM[bolt_size][3], h=1, $fn=6);
+                    cylinder(d=$M_DIM[bolt_size][3], h=1, $fn=6);
                 } else {
-                    cylinder(d=M_DIM[bolt_size][3], h=1);
+                    cylinder(d=$M_DIM[bolt_size][3], h=1);
                 }
             }
         translate([
@@ -131,7 +131,7 @@ module spool_cutout(bolt_len, custom_offset, bolt_size, cutout_type){
             0,
             SPOOL_LEN])
             cylinder(
-                d=M_DIM[bolt_size][3] + 3,
+                d=$M_DIM[bolt_size][3] + 3,
                 h=10,
                 $fn=40);
     }

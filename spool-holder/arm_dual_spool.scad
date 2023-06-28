@@ -2,21 +2,21 @@ include <spool_holder.scad>;
 
 //Minimum bolt len -> 47mm
 
-exploded_view = false;
+exploded_view = true;
 
 
 difference(){
     union(){
         if (exploded_view){
-            translate([0,ARM_BASE_W,0]) base(display_jaw=true);
-            translate([0,ARM_BASE_W - 2,0]) base(display_base=true);
+            translate([0, -ARM_BASE_W - 8, 0]) arm_mount();
+            translate([0, -ARM_BASE_W - 22, 0]) jaw();
             translate([0, -4, 0]) arm(dual_spool=true, display="all", spool_bolt_len=47);
         } else {
-            translate([0,ARM_BASE_W,0]) base(display_jaw=true);
-            translate([0,ARM_BASE_W,0]) base(display_base=true);
+            //translate([0,ARM_BASE_W,0]) jaw(display_jaw=true);
+            //translate([0,ARM_BASE_W,0]) jaw(display_base=true);
             arm(
                 dual_spool=true,
-                display="all",
+                display="arm",
                 spool_bolt_size=M5,
                 spool_bolt_len=73);
         }
