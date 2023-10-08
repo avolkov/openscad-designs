@@ -10,9 +10,8 @@ BOLT_SIZE=M8;
 difference(){
     union(){
             // jaw model (lower part)
-            *translate([0,ARM_BASE_W,0]) base(display_jaw=true);
-            // base model(upper part)
-            *translate([0,ARM_BASE_W,0]) base(display_base=true);
+            translate([0, -ARM_BASE_W - 8, 0]) arm_mount();
+            translate([0, -ARM_BASE_W - 22, 0]) jaw();
             // arm model
             arm(
                 dual_spool=false,
