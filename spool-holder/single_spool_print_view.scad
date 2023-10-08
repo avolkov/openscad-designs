@@ -14,7 +14,7 @@ difference(){
             // base model(upper part)
             *translate([0,ARM_BASE_W,0]) base(display_base=true);
             // arm model
-            *arm(
+            arm(
                 dual_spool=false,
                 display="arm",
                 spool_bolt_size=SPOOL_MOUNT_HW,

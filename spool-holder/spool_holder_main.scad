@@ -10,10 +10,10 @@ preview = false;
 
 module arm_body(){
         arm(
-            dual_spool=false,
+            dual_spool=true,
             //display="single_spool",
-            //display="all",
-            display="arm",
+            display="left",
+            //display="arm",
             spool_bolt_size=M5,
             spool_bolt_len=50);
         translate([0, -ARM_BASE_W - 8, 0]) arm_mount();
@@ -25,7 +25,7 @@ difference(){
    arm_body();
    *translate([0, -ARM_BASE_W - 22, 0]) jaw();
    translate([10,-10,2]) bolt_nut(CONN_BOLT_LEN + 2, BOLT_SIZE);
-   translate([10,-10, -5]) make_recess(10, "hex", M_DIM[M8][3]);
+   translate([10,-10, -5]) make_recess(10, "hex", $M_DIM[M8][3]);
    
 }
  
