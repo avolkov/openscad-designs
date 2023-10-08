@@ -41,12 +41,13 @@ $M_DIM = [
     [], // spacing
     [], // M1
     [1.95, 3.8, 2, 4.3, 1.5, 1.5*2], // M2 don't know actual locknut height
-    [3.2, 5.6, 3.2, 6.6, 2.4, 3], // M3
+    //[3.2, 5.6, 3.2, 6.6, 2.4, 3], // M3
+    [3.2, 5.6, 3.2, 6.2, 2.4, 3], // M3
     [4.1, 7.1, 4.05, 9.0, 3.9, 4], // M4
-    [5.2, 8.6, 4.90, 9.5, 4, 5],  // M5
+    [5.25, 8.6, 4.90, 9.05, 4, 5],  // M5
     [], // M6
     [], // M7
-    [8.1, 13.1, 7.98, 15.8, 6.3, 8] // M8
+    [8.1, 13.2, 7.98, 15, 6.3, 8] // M8
 ];
 
 
@@ -265,7 +266,7 @@ module m3_square_nut(depth, height){
 //Mounting Patterns
 module mounting_holes_2(fastener_len, nut_height, end_type){
     /* Two-hole mounting pattern for M5 bolts*/
-    width_offsetn = 16;
+    width_offset = 16;
     set_mounting_hole(
         screw_mount_offset,
         width_offset + mounting_diff,
@@ -392,4 +393,26 @@ module iec320_keyed(obj_thickness, lip=1){
         linear_extrude(obj_thickness){
             _iec_body_cut(obj_thickness, center=true);
     }
+}
+
+module poly_outline(){
+ polygon(points=[
+            [0,0],
+            [4, 5.5],
+            [6.5, 5.5],
+            [6.5, 23.5],
+            [4, 23.5],
+            [0, 29],
+            [-1.2, 29],
+            //[0, 24],
+            //[-2, 24],
+            [-1.2, 0]
+            //[-0.5, 24],
+            //[-0.5, 6],
+            //[0, 6],
+        ]);
+}
+module photoflex_connector(conn_len){
+    linear_extrude(conn_len)
+       poly_outline();
 }

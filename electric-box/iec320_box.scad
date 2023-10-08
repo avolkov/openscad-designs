@@ -101,8 +101,8 @@ module bottom(){
         translate([0,0, h/2 - offset/2]) cube([w, d, offset], center=true);
     }
 }
-//top();
-bottom();
+top();
+//bottom();
 //ledge();
 
 
